@@ -1,0 +1,13 @@
+{
+  "name": "eyejack-backend",
+  "version": "1.0.0",
+  "description": "Eyejack Shopify Integration",
+  "scripts": {
+    "start": "cd shopify-middleware && npm start",
+    "install": "cd shopify-middleware && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+
