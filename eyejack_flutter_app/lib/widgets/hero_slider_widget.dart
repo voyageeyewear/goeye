@@ -221,11 +221,11 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
       fit: StackFit.expand,
       children: [
         if (chewie != null && (controller?.value.isInitialized ?? false))
-          FittedBox(
-            fit: BoxFit.cover,
-            child: SizedBox(
-              width: controller!.value.size.width,
-              height: controller.value.size.height,
+          Center(
+            child: AspectRatio(
+              aspectRatio: controller!.value.aspectRatio == 0
+                  ? 16 / 9
+                  : controller.value.aspectRatio,
               child: Chewie(controller: chewie),
             ),
           )
@@ -233,13 +233,13 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
           // Show poster image while loading
           CachedNetworkImage(
             imageUrl: posterImage,
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
             placeholder: (context, url) => Container(
-              color: Colors.grey[200],
+              color: Colors.black,
               child: const Center(child: CircularProgressIndicator()),
             ),
             errorWidget: (context, url, error) => Container(
-              color: Colors.grey[300],
+              color: Colors.black,
               child: const Icon(Icons.video_library, size: 80, color: Colors.grey),
             ),
           ),
@@ -261,13 +261,13 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
         // Background Image
         CachedNetworkImage(
           imageUrl: imageUrl,
-          fit: BoxFit.cover,
+          fit: BoxFit.contain,
           placeholder: (context, url) => Container(
-            color: Colors.grey[200],
+            color: Colors.black,
             child: const Center(child: CircularProgressIndicator()),
           ),
           errorWidget: (context, url, error) => Container(
-            color: Colors.grey[300],
+            color: Colors.black,
             child: const Icon(Icons.image, size: 80, color: Colors.grey),
           ),
         ),

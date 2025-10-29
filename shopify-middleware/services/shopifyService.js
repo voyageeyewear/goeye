@@ -96,8 +96,8 @@ exports.fetchThemeSections = async () => {
               type: 'video',
               heading: '',
               subheading: '',
-              // Video 2 - MP4 direct URL
-              videoUrl: 'https://eyejack.in/cdn/shop/videos/c/vp/9b52c2e2c4a5484f83e48e0f225d227a/9b52c2e2c4a5484f83e48e0f225d227a.HD-720p-4.5Mbps-60870469.mp4',
+              // Video 2 - Shopify CDN MP4
+              videoUrl: 'https://cdn.shopify.com/videos/c/o/v/604cffed10e0435bad06b64c814c3b3d.mp4',
               posterImage: 'https://eyejack.in/cdn/shop/files/preview_images/9b52c2e2c4a5484f83e48e0f225d227a.thumbnail.0000000000_1800x.jpg',
               ctaText: '',
               ctaLink: '/collections/sunglasses'
@@ -106,8 +106,8 @@ exports.fetchThemeSections = async () => {
               type: 'video',
               heading: '',
               subheading: '',
-              // Video 3 - MP4 direct URL
-              videoUrl: 'https://eyejack.in/cdn/shop/videos/c/vp/9b0d6c8890234236b35903c5a2bfc1b9/9b0d6c8890234236b35903c5a2bfc1b9.SD-480p-1.5Mbps-60864834.mp4',
+              // Video 3 - Shopify CDN MP4
+              videoUrl: 'https://cdn.shopify.com/videos/c/o/v/acd4483b96bb40429e9cb0b413cfa616.mp4',
               posterImage: 'https://eyejack.in/cdn/shop/files/preview_images/9b0d6c8890234236b35903c5a2bfc1b9.thumbnail.0000000000_1800x.jpg',
               ctaText: '',
               ctaLink: '/collections/eyeglasses'
