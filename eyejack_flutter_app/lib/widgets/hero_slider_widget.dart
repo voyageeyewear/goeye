@@ -14,129 +14,117 @@ class HeroSliderWidget extends StatefulWidget {
 }
 
 class _HeroSliderWidgetState extends State<HeroSliderWidget> {
-  final Map<int, VideoPlayerController?> _videoControllers = {};
-  final Map<int, ChewieController?> _chewieControllers = {};
+  VideoPlayerController? _currentVideoController;
+  ChewieController? _currentChewieController;
   int _currentSlideIndex = 0;
+  int? _currentVideoIndex;
 
   @override
   void initState() {
     super.initState();
-    _initializeVideos();
+    _initializeCurrentSlide();
   }
 
   @override
   void didUpdateWidget(covariant HeroSliderWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.settings != widget.settings) {
-      // Recreate controllers when slides/settings change
-      for (var controller in _videoControllers.values) {
-        controller?.dispose();
-      }
-      _videoControllers.clear();
+      _disposeCurrentVideo();
       _currentSlideIndex = 0;
-      _initializeVideos();
-      setState(() {});
+      _currentVideoIndex = null;
+      _initializeCurrentSlide();
     }
   }
 
-  void _initializeVideos() {
+  void _initializeCurrentSlide() {
     final slides = widget.settings['slides'] as List<dynamic>? ?? [];
-    
-    for (int i = 0; i < slides.length; i++) {
-      final slide = slides[i];
+    if (_currentSlideIndex < slides.length) {
+      final slide = slides[_currentSlideIndex];
       final slideType = slide['type'] ?? 'image';
       
       if (slideType == 'video') {
-        final videoUrl = slide['videoUrl'] ?? '';
-        if (videoUrl.isNotEmpty) {
-          final controller = VideoPlayerController.networkUrl(
-            Uri.parse(videoUrl),
-          );
-          
-          controller.initialize().then((_) {
-            controller.setLooping(true);
-            controller.setVolume(0); // Muted by default
-
-            // Create Chewie controller for better auto-initialize/autoplay
-            final chewie = ChewieController(
-              videoPlayerController: controller,
-              autoInitialize: true,
-              autoPlay: i == _currentSlideIndex,
-              looping: true,
-              showControls: false,
-              allowFullScreen: false,
-              allowMuting: false,
-              allowPlaybackSpeedChanging: false,
-              aspectRatio: controller.value.aspectRatio == 0
-                  ? 16 / 9
-                  : controller.value.aspectRatio,
-            );
-            _chewieControllers[i] = chewie;
-
-            if (mounted) setState(() {});
-          }).catchError((error) {
-            debugPrint('Error loading video $i: $error');
-          });
-          
-          _videoControllers[i] = controller;
-        }
+        _initializeVideo(_currentSlideIndex, slide);
       }
     }
+  }
+
+  Future<void> _initializeVideo(int index, Map<String, dynamic> slide) async {
+    final videoUrl = slide['videoUrl'] ?? '';
+    if (videoUrl.isEmpty) return;
+
+    // Dispose previous video if exists
+    _disposeCurrentVideo();
+
+    try {
+      final controller = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
+      await controller.initialize();
+      
+      if (!mounted) {
+        controller.dispose();
+        return;
+      }
+
+      controller.setLooping(true);
+      controller.setVolume(0);
+
+      final chewie = ChewieController(
+        videoPlayerController: controller,
+        autoInitialize: true,
+        autoPlay: true,
+        looping: true,
+        showControls: false,
+        allowFullScreen: false,
+        allowMuting: false,
+        allowPlaybackSpeedChanging: false,
+        aspectRatio: controller.value.aspectRatio == 0 ? 16 / 9 : controller.value.aspectRatio,
+      );
+
+      if (mounted) {
+        setState(() {
+          _currentVideoController = controller;
+          _currentChewieController = chewie;
+          _currentVideoIndex = index;
+        });
+      } else {
+        controller.dispose();
+        chewie.dispose();
+      }
+    } catch (e) {
+      debugPrint('Error loading video $index: $e');
+    }
+  }
+
+  void _disposeCurrentVideo() {
+    _currentChewieController?.dispose();
+    _currentVideoController?.dispose();
+    _currentChewieController = null;
+    _currentVideoController = null;
+    _currentVideoIndex = null;
   }
 
   Future<void> _onSlideChanged(int index) async {
     if (_currentSlideIndex == index) return;
 
-    // Pause previous video (if any)
-    _videoControllers[_currentSlideIndex]?.pause();
-    _chewieControllers[_currentSlideIndex]?.pause();
+    setState(() {
+      _currentSlideIndex = index;
+    });
 
-    // Ensure the new video's controller is initialized before playing
-    final controller = _videoControllers[index];
-    if (controller != null) {
-      if (!controller.value.isInitialized) {
-        try {
-          await controller.initialize();
-          controller.setLooping(true);
-          controller.setVolume(0);
-        } catch (e) {
-          debugPrint('Video init error on slide $index: $e');
-        }
+    final slides = widget.settings['slides'] as List<dynamic>? ?? [];
+    if (index < slides.length) {
+      final slide = slides[index];
+      final slideType = slide['type'] ?? 'image';
+      
+      if (slideType == 'video') {
+        await _initializeVideo(index, slide);
+      } else {
+        _disposeCurrentVideo();
       }
-      if (controller.value.isInitialized) {
-        // Create Chewie controller if missing
-        _chewieControllers[index] ??= ChewieController(
-          videoPlayerController: controller,
-          autoInitialize: true,
-          autoPlay: true,
-          looping: true,
-          showControls: false,
-          allowFullScreen: false,
-          allowMuting: false,
-          allowPlaybackSpeedChanging: false,
-          aspectRatio: controller.value.aspectRatio == 0
-              ? 16 / 9
-              : controller.value.aspectRatio,
-        );
-        _chewieControllers[index]?.play();
-      }
-    }
-
-    if (mounted) {
-      setState(() {
-        _currentSlideIndex = index;
-      });
     }
   }
 
   @override
   void dispose() {
-    for (var controller in _videoControllers.values) {
-      controller?.dispose();
-    }
-    for (var c in _chewieControllers.values) {
-      c?.dispose();
-    }
+    _disposeCurrentVideo();
     super.dispose();
   }
 
@@ -150,16 +138,22 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
     if (slides.isEmpty) return const SizedBox.shrink();
 
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     final isMobile = screenWidth < 600;
+    
+    // Calculate height based on screen - taller for portrait videos
+    final sliderHeight = isMobile 
+        ? (screenHeight * 0.6).clamp(500.0, 800.0)  // 60% of screen height
+        : 600.0;
 
     return SizedBox(
-      height: isMobile ? 400 : 500,
+      height: sliderHeight,
       width: double.infinity,
       child: Stack(
         children: [
           FlutterCarousel(
             options: CarouselOptions(
-              height: isMobile ? 400 : 500,
+              height: sliderHeight,
               viewportFraction: 1.0,
               autoPlay: autoplay,
               autoPlayInterval: Duration(milliseconds: autoplaySpeed),
@@ -213,37 +207,38 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
   }
 
   Widget _buildVideoSlide(int index, Map<String, dynamic> slide, bool isMobile) {
-    final controller = _videoControllers[index];
-    final chewie = _chewieControllers[index];
-    final posterImage = slide['posterImage'] ?? '';
+    final isCurrentVideo = _currentVideoIndex == index;
+    final controller = isCurrentVideo ? _currentVideoController : null;
+    final chewie = isCurrentVideo ? _currentChewieController : null;
     
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        if (chewie != null && (controller?.value.isInitialized ?? false))
-          Center(
-            child: AspectRatio(
-              aspectRatio: controller!.value.aspectRatio == 0
-                  ? 16 / 9
-                  : controller.value.aspectRatio,
-              child: Chewie(controller: chewie),
-            ),
-          )
-        else
-          // Show poster image while loading
-          CachedNetworkImage(
-            imageUrl: posterImage,
-            fit: BoxFit.contain,
-            placeholder: (context, url) => Container(
+    return Container(
+      color: Colors.black,
+      width: double.infinity,
+      height: double.infinity,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          if (chewie != null && (controller?.value.isInitialized ?? false))
+            FittedBox(
+              fit: BoxFit.cover,
+              child: SizedBox(
+                width: controller!.value.size.width,
+                height: controller.value.size.height,
+                child: Chewie(controller: chewie),
+              ),
+            )
+          else
+            // Show loading indicator while video initializes
+            Container(
               color: Colors.black,
-              child: const Center(child: CircularProgressIndicator()),
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              ),
             ),
-            errorWidget: (context, url, error) => Container(
-              color: Colors.black,
-              child: const Icon(Icons.video_library, size: 80, color: Colors.grey),
-            ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -261,7 +256,7 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
         // Background Image
         CachedNetworkImage(
           imageUrl: imageUrl,
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
           placeholder: (context, url) => Container(
             color: Colors.black,
             child: const Center(child: CircularProgressIndicator()),
