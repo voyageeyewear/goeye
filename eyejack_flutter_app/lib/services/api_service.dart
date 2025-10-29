@@ -127,5 +127,209 @@ class ApiService {
       throw Exception('Error searching products: $e');
     }
   }
+
+  // Add item to cart
+  Future<Map<String, dynamic>> addToCart({
+    required String variantId,
+    required int quantity,
+    Map<String, dynamic>? properties,
+  }) async {
+    try {
+      final body = {
+        'variantId': variantId,
+        'quantity': quantity,
+        if (properties != null) 'properties': properties,
+      };
+
+      final response = await http
+          .post(
+            Uri.parse('${ApiConfig.baseUrl}/api/shopify/cart/add'),
+            headers: {'Content-Type': 'application/json'},
+            body: json.encode(body),
+          )
+          .timeout(ApiConfig.timeout);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data'];
+      } else {
+        throw Exception('Failed to add to cart: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error adding to cart: $e');
+    }
+  }
+
+  // Add multiple items to cart (lens + frame together)
+  Future<Map<String, dynamic>> addMultipleToCart({
+    required List<Map<String, dynamic>> items,
+  }) async {
+    try {
+      print('🛒 ADDING MULTIPLE ITEMS: ${json.encode(items)}');
+      
+      final response = await http
+          .post(
+            Uri.parse('${ApiConfig.baseUrl}/api/shopify/cart/add-multiple'),
+            headers: {'Content-Type': 'application/json'},
+            body: json.encode({'items': items}),
+          )
+          .timeout(ApiConfig.timeout);
+
+      print('🔍 RESPONSE STATUS: ${response.statusCode}');
+      print('🔍 RESPONSE BODY: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data'];
+      } else {
+        throw Exception('Failed to add multiple items: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('❌ ERROR: $e');
+      throw Exception('Error adding multiple items: $e');
+    }
+  }
+
+  // Create checkout with cart items
+  Future<String> createCheckout({
+    required List<Map<String, dynamic>> lineItems,
+  }) async {
+    try {
+      final body = {'lineItems': lineItems};
+
+      final response = await http
+          .post(
+            Uri.parse('${ApiConfig.baseUrl}/api/shopify/checkout/create'),
+            headers: {'Content-Type': 'application/json'},
+            body: json.encode(body),
+          )
+          .timeout(ApiConfig.timeout);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data']['webUrl'] as String;
+      } else {
+        throw Exception('Failed to create checkout: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error creating checkout: $e');
+    }
+  }
+
+  // Get current cart
+  Future<Map<String, dynamic>> getCart() async {
+    try {
+      final response = await http
+          .get(Uri.parse('${ApiConfig.baseUrl}/api/shopify/cart'))
+          .timeout(ApiConfig.timeout);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data'];
+      } else {
+        throw Exception('Failed to get cart: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error getting cart: $e');
+    }
+  }
+
+  // Update cart item quantity
+  Future<Map<String, dynamic>> updateCart({
+    required String variantId,
+    required int quantity,
+  }) async {
+    try {
+      final body = {
+        'variantId': variantId,
+        'quantity': quantity,
+      };
+
+      final response = await http
+          .post(
+            Uri.parse('${ApiConfig.baseUrl}/api/shopify/cart/update'),
+            headers: {'Content-Type': 'application/json'},
+            body: json.encode(body),
+          )
+          .timeout(ApiConfig.timeout);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data'];
+      } else {
+        throw Exception('Failed to update cart: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error updating cart: $e');
+    }
+  }
+
+  // Remove item from cart
+  Future<Map<String, dynamic>> removeFromCart({
+    required String variantId,
+  }) async {
+    try {
+      final body = {'variantId': variantId};
+
+      final response = await http
+          .post(
+            Uri.parse('${ApiConfig.baseUrl}/api/shopify/cart/remove'),
+            headers: {'Content-Type': 'application/json'},
+            body: json.encode(body),
+          )
+          .timeout(ApiConfig.timeout);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data'];
+      } else {
+        throw Exception('Failed to remove from cart: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error removing from cart: $e');
+    }
+  }
+
+  // Clear all items from cart
+  Future<Map<String, dynamic>> clearCart() async {
+    try {
+      final response = await http
+          .post(Uri.parse('${ApiConfig.baseUrl}/api/shopify/cart/clear'))
+          .timeout(ApiConfig.timeout);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data'];
+      } else {
+        throw Exception('Failed to clear cart: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error clearing cart: $e');
+    }
+  }
+
+  // Fetch lens options from Shopify (categorized by type)
+  Future<Map<String, dynamic>> fetchLensOptions() async {
+    try {
+      final response = await http
+          .get(Uri.parse('${ApiConfig.baseUrl}/api/shopify/lens-options'))
+          .timeout(ApiConfig.timeout);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        // Return categorized lenses
+        return {
+          'antiGlareLenses': List<Map<String, dynamic>>.from(data['data']['antiGlareLenses'] ?? []),
+          'blueBlockLenses': List<Map<String, dynamic>>.from(data['data']['blueBlockLenses'] ?? []),
+          'colourLenses': List<Map<String, dynamic>>.from(data['data']['colourLenses'] ?? []),
+          'allLenses': List<Map<String, dynamic>>.from(data['data']['lenses'] ?? []),
+        };
+      } else {
+        throw Exception('Failed to load lens options: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching lens options: $e');
+    }
+  }
 }
 

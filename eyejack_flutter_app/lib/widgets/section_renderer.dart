@@ -38,7 +38,8 @@ class SectionRenderer extends StatelessWidget {
       
       // New sections matching eyejack.in (New BOGO Theme)
       case 'app_header':
-        return AppHeaderWidget(settings: section.settings);
+        // Skip app_header section - using Flutter AppBar instead
+        return const SizedBox.shrink();
       
       case 'announcement_bars':
         return AnnouncementBarsWidget(settings: section.settings);

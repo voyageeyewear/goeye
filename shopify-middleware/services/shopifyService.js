@@ -533,6 +533,81 @@ exports.searchProducts = async (searchQuery) => {
   return response.data.data.products.edges.map(edge => formatProduct(edge.node));
 };
 
+// Fetch active theme and its assets
+exports.fetchThemeFiles = async () => {
+  try {
+    // Get the active theme
+    const themesResponse = await adminClient.get('/themes.json');
+    const activeTheme = themesResponse.data.themes.find(theme => theme.role === 'main');
+    
+    if (!activeTheme) {
+      throw new Error('No active theme found');
+    }
+
+    console.log('Active theme:', activeTheme.name, 'ID:', activeTheme.id);
+
+    // Fetch specific assets we need for product page
+    const assetKeys = [
+      'sections/main-product.liquid',
+      'sections/main-product--default.liquid',
+      'sections/main-product--defult.liquid',
+      'snippets/product-card.liquid',
+      'snippets/product-form.liquid',
+      'snippets/product-variant-picker.liquid',
+      'snippets/sticky-cart.liquid',
+      'snippets/lens-selector.liquid'
+    ];
+
+    const assets = {};
+    
+    for (const key of assetKeys) {
+      try {
+        const assetResponse = await adminClient.get(`/themes/${activeTheme.id}/assets.json`, {
+          params: { 'asset[key]': key }
+        });
+        if (assetResponse.data.asset) {
+          assets[key] = assetResponse.data.asset.value;
+          console.log(`✓ Fetched: ${key}`);
+        }
+      } catch (err) {
+        console.log(`✗ Not found: ${key}`);
+      }
+    }
+
+    return {
+      themeName: activeTheme.name,
+      themeId: activeTheme.id,
+      assets
+    };
+  } catch (error) {
+    console.error('Error fetching theme files:', error.message);
+    throw error;
+  }
+};
+
+// Fetch all assets for a theme (useful for finding all snippets)
+exports.fetchAllThemeAssets = async () => {
+  try {
+    const themesResponse = await adminClient.get('/themes.json');
+    const activeTheme = themesResponse.data.themes.find(theme => theme.role === 'main');
+    
+    if (!activeTheme) {
+      throw new Error('No active theme found');
+    }
+
+    const assetsResponse = await adminClient.get(`/themes/${activeTheme.id}/assets.json`);
+    
+    return {
+      themeName: activeTheme.name,
+      themeId: activeTheme.id,
+      assetList: assetsResponse.data.assets.map(asset => asset.key)
+    };
+  } catch (error) {
+    console.error('Error fetching theme assets:', error.message);
+    throw error;
+  }
+};
+
 // Helper function to format product data
 function formatProduct(product) {
   return {
@@ -549,6 +624,798 @@ function formatProduct(product) {
     priceRange: product.priceRange,
     compareAtPriceRange: product.compareAtPriceRange,
     variants: product.variants?.edges?.map(edge => edge.node) || []
+  };
+}
+
+// Cart operations using Storefront API
+let currentCartId = null;
+
+exports.addToCart = async (variantId, quantity, properties) => {
+  try {
+    // Create cart if doesn't exist
+    if (!currentCartId) {
+      const createCartMutation = `
+        mutation cartCreate($input: CartInput!) {
+          cartCreate(input: $input) {
+            cart {
+              id
+              checkoutUrl
+              lines(first: 100) {
+                edges {
+                  node {
+                    id
+                    quantity
+                    merchandise {
+                      ... on ProductVariant {
+                        id
+                        title
+                        price {
+                          amount
+                          currencyCode
+                        }
+                        product {
+                          title
+                          images(first: 1) {
+                            edges {
+                              node {
+                                url
+                                altText
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              cost {
+                totalAmount {
+                  amount
+                  currencyCode
+                }
+                subtotalAmount {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      `;
+
+      // Clean up variantId - remove gid:// prefix if present, then add it back
+      let cleanId = variantId;
+      if (cleanId.includes('gid://shopify/ProductVariant/')) {
+        cleanId = cleanId.replace('gid://shopify/ProductVariant/', '');
+      }
+      const merchandiseId = `gid://shopify/ProductVariant/${cleanId}`;
+      
+      console.log('🔍 CART: Variant ID conversion (create cart):', { original: variantId, clean: cleanId, final: merchandiseId });
+      
+      const lineItem = {
+        merchandiseId: merchandiseId,
+        quantity: parseInt(quantity)
+      };
+      
+      // Only add attributes if properties exist
+      if (properties && Object.keys(properties).length > 0) {
+        lineItem.attributes = Object.entries(properties).map(([key, value]) => ({ 
+          key, 
+          value: String(value) 
+        }));
+      }
+
+      const response = await storefrontClient.post('', {
+        query: createCartMutation,
+        variables: {
+          input: {
+            lines: [lineItem]
+          }
+        }
+      });
+
+      if (!response.data || !response.data.data || !response.data.data.cartCreate) {
+        throw new Error('Invalid response from Shopify: ' + JSON.stringify(response.data));
+      }
+
+      currentCartId = response.data.data.cartCreate.cart.id;
+      return formatCart(response.data.data.cartCreate.cart);
+    } else {
+      // Add to existing cart
+      const addLinesMutation = `
+        mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+          cartLinesAdd(cartId: $cartId, lines: $lines) {
+            cart {
+              id
+              checkoutUrl
+              lines(first: 100) {
+                edges {
+                  node {
+                    id
+                    quantity
+                    merchandise {
+                      ... on ProductVariant {
+                        id
+                        title
+                        price {
+                          amount
+                          currencyCode
+                        }
+                        product {
+                          title
+                          images(first: 1) {
+                            edges {
+                              node {
+                                url
+                                altText
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              cost {
+                totalAmount {
+                  amount
+                  currencyCode
+                }
+                subtotalAmount {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      `;
+
+      // Clean up variantId - remove gid:// prefix if present, then add it back
+      let cleanId = variantId;
+      if (cleanId.includes('gid://shopify/ProductVariant/')) {
+        cleanId = cleanId.replace('gid://shopify/ProductVariant/', '');
+      }
+      const merchandiseId = `gid://shopify/ProductVariant/${cleanId}`;
+      
+      console.log('🔍 CART: Variant ID conversion (add to existing):', { original: variantId, clean: cleanId, final: merchandiseId });
+      
+      const lineItem = {
+        merchandiseId: merchandiseId,
+        quantity: parseInt(quantity)
+      };
+      
+      // Only add attributes if properties exist
+      if (properties && Object.keys(properties).length > 0) {
+        lineItem.attributes = Object.entries(properties).map(([key, value]) => ({ 
+          key, 
+          value: String(value) 
+        }));
+      }
+
+      const response = await storefrontClient.post('', {
+        query: addLinesMutation,
+        variables: {
+          cartId: currentCartId,
+          lines: [lineItem]
+        }
+      });
+
+      if (!response.data || !response.data.data || !response.data.data.cartLinesAdd) {
+        throw new Error('Invalid response from Shopify: ' + JSON.stringify(response.data));
+      }
+
+      return formatCart(response.data.data.cartLinesAdd.cart);
+    }
+  } catch (error) {
+    console.error('Error adding to cart:', error);
+    throw error;
+  }
+};
+
+// Add multiple items to cart (for lens + frame together)
+exports.addMultipleToCart = async (items) => {
+  try {
+    console.log('🛒 Adding multiple items to cart:', JSON.stringify(items, null, 2));
+    
+    // Prepare line items
+    const lineItems = items.map(item => {
+      // Clean up variantId
+      let cleanId = item.variantId;
+      if (cleanId.includes('gid://shopify/ProductVariant/')) {
+        cleanId = cleanId.replace('gid://shopify/ProductVariant/', '');
+      }
+      const merchandiseId = `gid://shopify/ProductVariant/${cleanId}`;
+      
+      const lineItem = {
+        merchandiseId: merchandiseId,
+        quantity: parseInt(item.quantity)
+      };
+      
+      // Add attributes if properties exist
+      if (item.properties && Object.keys(item.properties).length > 0) {
+        lineItem.attributes = Object.entries(item.properties).map(([key, value]) => ({
+          key,
+          value: String(value)
+        }));
+      }
+      
+      return lineItem;
+    });
+    
+    console.log('🔍 Prepared line items:', JSON.stringify(lineItems, null, 2));
+    
+    // Create cart if doesn't exist
+    if (!currentCartId) {
+      const createCartMutation = `
+        mutation cartCreate($input: CartInput!) {
+          cartCreate(input: $input) {
+            cart {
+              id
+              checkoutUrl
+              lines(first: 100) {
+                edges {
+                  node {
+                    id
+                    quantity
+                    attributes {
+                      key
+                      value
+                    }
+                    merchandise {
+                      ... on ProductVariant {
+                        id
+                        title
+                        price {
+                          amount
+                          currencyCode
+                        }
+                        product {
+                          title
+                          images(first: 1) {
+                            edges {
+                              node {
+                                url
+                                altText
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              cost {
+                totalAmount {
+                  amount
+                  currencyCode
+                }
+                subtotalAmount {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+            userErrors {
+              field
+              message
+            }
+          }
+        }
+      `;
+
+      const response = await storefrontClient.post('', {
+        query: createCartMutation,
+        variables: {
+          input: {
+            lines: lineItems
+          }
+        }
+      });
+
+      if (!response.data || !response.data.data || !response.data.data.cartCreate) {
+        throw new Error('Invalid response from Shopify: ' + JSON.stringify(response.data));
+      }
+
+      const { cart, userErrors } = response.data.data.cartCreate;
+
+      if (userErrors && userErrors.length > 0) {
+        console.error('❌ Shopify userErrors (create):', JSON.stringify(userErrors, null, 2));
+        throw new Error(`Shopify error: ${userErrors.map(e => e.message).join(', ')}`);
+      }
+
+      if (!cart) {
+        throw new Error('Cart creation failed - cart is null');
+      }
+
+      currentCartId = cart.id;
+      console.log('✅ Cart created with multiple items:', currentCartId);
+      return formatCart(cart);
+    } else {
+      // Add to existing cart
+      const addLinesMutation = `
+        mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+          cartLinesAdd(cartId: $cartId, lines: $lines) {
+            cart {
+              id
+              checkoutUrl
+              lines(first: 100) {
+                edges {
+                  node {
+                    id
+                    quantity
+                    attributes {
+                      key
+                      value
+                    }
+                    merchandise {
+                      ... on ProductVariant {
+                        id
+                        title
+                        price {
+                          amount
+                          currencyCode
+                        }
+                        product {
+                          title
+                          images(first: 1) {
+                            edges {
+                              node {
+                                url
+                                altText
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              cost {
+                totalAmount {
+                  amount
+                  currencyCode
+                }
+                subtotalAmount {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+            userErrors {
+              field
+              message
+            }
+          }
+        }
+      `;
+
+      const response = await storefrontClient.post('', {
+        query: addLinesMutation,
+        variables: {
+          cartId: currentCartId,
+          lines: lineItems
+        }
+      });
+
+      if (!response.data || !response.data.data || !response.data.data.cartLinesAdd) {
+        throw new Error('Invalid response from Shopify: ' + JSON.stringify(response.data));
+      }
+
+      const { cart, userErrors } = response.data.data.cartLinesAdd;
+
+      if (userErrors && userErrors.length > 0) {
+        console.error('❌ Shopify userErrors (add lines):', JSON.stringify(userErrors, null, 2));
+        throw new Error(`Shopify error: ${userErrors.map(e => e.message).join(', ')}`);
+      }
+
+      if (!cart) {
+        throw new Error('Adding items failed - cart is null');
+      }
+
+      console.log('✅ Added multiple items to existing cart');
+      return formatCart(cart);
+    }
+  } catch (error) {
+    console.error('Error adding multiple items to cart:', error);
+    throw error;
+  }
+};
+
+exports.updateCart = async (lineItemId, quantity) => {
+  const mutation = `
+    mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+      cartLinesUpdate(cartId: $cartId, lines: $lines) {
+        cart {
+          id
+          checkoutUrl
+          lines(first: 100) {
+            edges {
+              node {
+                id
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                    price {
+                      amount
+                      currencyCode
+                    }
+                    product {
+                      title
+                      images(first: 1) {
+                        edges {
+                          node {
+                            url
+                            altText
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          cost {
+            totalAmount {
+              amount
+              currencyCode
+            }
+            subtotalAmount {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const response = await storefrontClient.post('', {
+    query: mutation,
+    variables: {
+      cartId: currentCartId,
+      lines: [{ id: lineItemId, quantity: parseInt(quantity) }]
+    }
+  });
+
+  return formatCart(response.data.data.cartLinesUpdate.cart);
+};
+
+exports.removeFromCart = async (lineItemId) => {
+  const mutation = `
+    mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+      cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+        cart {
+          id
+          checkoutUrl
+          lines(first: 100) {
+            edges {
+              node {
+                id
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                    price {
+                      amount
+                      currencyCode
+                    }
+                    product {
+                      title
+                      images(first: 1) {
+                        edges {
+                          node {
+                            url
+                            altText
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          cost {
+            totalAmount {
+              amount
+              currencyCode
+            }
+            subtotalAmount {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const response = await storefrontClient.post('', {
+    query: mutation,
+    variables: {
+      cartId: currentCartId,
+      lineIds: [lineItemId]
+    }
+  });
+
+  return formatCart(response.data.data.cartLinesRemove.cart);
+};
+
+exports.getCart = async () => {
+  if (!currentCartId) {
+    return { items: [], total: '0.00', subtotal: '0.00', itemCount: 0 };
+  }
+
+  const query = `
+    query getCart($cartId: ID!) {
+      cart(id: $cartId) {
+        id
+        checkoutUrl
+        lines(first: 100) {
+          edges {
+            node {
+              id
+              quantity
+              merchandise {
+                ... on ProductVariant {
+                  id
+                  title
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  product {
+                    title
+                    images(first: 1) {
+                      edges {
+                        node {
+                          url
+                          altText
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cost {
+          totalAmount {
+            amount
+            currencyCode
+          }
+          subtotalAmount {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  `;
+
+  const response = await storefrontClient.post('', {
+    query,
+    variables: { cartId: currentCartId }
+  });
+
+  return formatCart(response.data.data.cart);
+};
+
+exports.clearCart = async () => {
+  currentCartId = null;
+  return { items: [], total: '0.00', subtotal: '0.00', itemCount: 0 };
+};
+
+exports.createCheckout = async (lineItems) => {
+  const mutation = `
+    mutation checkoutCreate($input: CheckoutCreateInput!) {
+      checkoutCreate(input: $input) {
+        checkout {
+          id
+          webUrl
+          lineItems(first: 100) {
+            edges {
+              node {
+                title
+                quantity
+                variant {
+                  price {
+                    amount
+                    currencyCode
+                  }
+                }
+              }
+            }
+          }
+          totalPrice {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  `;
+
+  const response = await storefrontClient.post('', {
+    query: mutation,
+    variables: {
+      input: {
+        lineItems: lineItems.map(item => ({
+          variantId: `gid://shopify/ProductVariant/${item.variantId}`,
+          quantity: item.quantity
+        }))
+      }
+    }
+  });
+
+  return response.data.data.checkoutCreate.checkout;
+};
+
+// Fetch lens options from Shopify (from products tagged with 'lens-option')
+exports.fetchLensOptions = async () => {
+  try {
+    const query = `
+      query getLensProducts {
+        products(first: 50, query: "vendor:LensAdvizor OR title:upto") {
+          edges {
+            node {
+              id
+              title
+              tags
+              description
+              vendor
+              priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
+              variants(first: 20) {
+                edges {
+                  node {
+                    id
+                    title
+                    availableForSale
+                    price {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await storefrontClient.post('', { query });
+    const lensProducts = response.data.data.products.edges.map(edge => edge.node);
+
+    // Organize lens options by type
+    const lensOptions = {
+      types: [],
+      powerTypes: ['Single Vision', 'Progressive', 'Bifocal'],
+      antiGlareLenses: [],
+      blueBlockLenses: [],
+      colourLenses: [],
+      lenses: []
+    };
+
+    console.log(`Processing ${lensProducts.length} lens products...`);
+    
+    // Color keywords for identifying colored lenses
+    const colorKeywords = ['LIGHT', 'DARK', 'BLACK', 'GREY', 'GRAY', 'BLUE', 'YELLOW', 'BROWN', 'GREEN', 'PINK', 'RED'];
+    
+    lensProducts.forEach(product => {
+      // Extract features from description
+      const features = product.description
+        ?.split(/[-'\n]/)
+        .map(f => f.trim())
+        .filter(f => f && f.length > 3 && f.length < 100 && !f.includes('Index:'))
+        .slice(0, 5) || [];
+
+      // Extract variants data
+      const variants = product.variants?.edges?.map(edge => ({
+        id: edge.node.id.replace('gid://shopify/ProductVariant/', ''),
+        title: edge.node.title,
+        price: edge.node.price.amount,
+        available: edge.node.availableForSale
+      })) || [];
+
+      // Use first variant ID if product has variants, otherwise use product ID as fallback
+      const defaultVariant = variants[0] || { id: product.id.replace('gid://shopify/Product/', '') };
+
+      const lensData = {
+        id: defaultVariant.id, // NOW USING VARIANT ID!
+        productId: product.id.replace('gid://shopify/Product/', ''),
+        name: product.title,
+        description: product.description || '',
+        price: product.priceRange.minVariantPrice.amount,
+        currency: product.priceRange.minVariantPrice.currencyCode,
+        features: features,
+        vendor: product.vendor || '',
+        tags: product.tags || [],
+        variants: variants // Include all variants for power range selection
+      };
+
+      // Categorize the lens based on features and name
+      const nameUpper = product.title.toUpperCase();
+      const featuresText = features.join(' ').toLowerCase();
+      const isColorLens = colorKeywords.some(keyword => nameUpper.includes(keyword));
+
+      if (isColorLens) {
+        // Colour/Tinted lenses (LIGHT BLACK, DARK GREY, etc.)
+        lensData.category = 'colour';
+        lensOptions.colourLenses.push(lensData);
+      } else if (featuresText.includes('blue light')) {
+        // Blue block lenses (have "Blue light protection" in features)
+        lensData.category = 'blue-block';
+        lensOptions.blueBlockLenses.push(lensData);
+      } else if (featuresText.includes('anti reflection') || featuresText.includes('uv protect')) {
+        // Anti-glare lenses (have "Anti reflection" or basic UV protection)
+        lensData.category = 'anti-glare';
+        lensOptions.antiGlareLenses.push(lensData);
+      } else {
+        // Default to anti-glare if uncertain
+        lensData.category = 'anti-glare';
+        lensOptions.antiGlareLenses.push(lensData);
+      }
+
+      lensOptions.lenses.push(lensData);
+    });
+
+    console.log(`Successfully organized lenses: ${lensOptions.antiGlareLenses.length} anti-glare, ${lensOptions.blueBlockLenses.length} blue-block, ${lensOptions.colourLenses.length} colour`);
+    return lensOptions;
+  } catch (error) {
+    console.error('Error fetching lens options:', error);
+    // Return default lens options if fetch fails
+    return {
+      types: [
+        { id: '1', name: 'Anti-Glare', price: '0', currency: 'INR', features: ['Reduces eye strain', 'Better clarity'] },
+        { id: '2', name: 'Blue Cut', price: '300', currency: 'INR', features: ['Blocks blue light', 'Protects eyes'] },
+        { id: '3', name: 'Photochromatic', price: '800', currency: 'INR', features: ['Auto-tinting', 'UV protection'] }
+      ],
+      powerTypes: ['Single Vision', 'Progressive', 'Bifocal'],
+      lenses: []
+    };
+  }
+};
+
+function formatCart(cart) {
+  if (!cart) {
+    return { items: [], total: '0.00', subtotal: '0.00', itemCount: 0 };
+  }
+
+  const items = cart.lines?.edges?.map(edge => ({
+    id: edge.node.id,
+    variantId: edge.node.merchandise.id.replace('gid://shopify/ProductVariant/', ''),
+    title: edge.node.merchandise.product.title,
+    variantTitle: edge.node.merchandise.title,
+    quantity: edge.node.quantity,
+    price: edge.node.merchandise.price.amount,
+    currency: edge.node.merchandise.price.currencyCode,
+    image: edge.node.merchandise.product.images?.edges?.[0]?.node?.url || ''
+  })) || [];
+
+  return {
+    id: cart.id,
+    items,
+    total: cart.cost?.totalAmount?.amount || '0.00',
+    subtotal: cart.cost?.subtotalAmount?.amount || '0.00',
+    currency: cart.cost?.totalAmount?.currencyCode || 'INR',
+    itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
+    checkoutUrl: cart.checkoutUrl
   };
 }
 

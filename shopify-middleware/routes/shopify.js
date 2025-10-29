@@ -4,6 +4,8 @@ const shopifyController = require('../controllers/shopifyController');
 
 // Theme and homepage sections
 router.get('/theme-sections', shopifyController.getThemeSections);
+router.get('/theme-files', shopifyController.getThemeFiles);
+router.get('/theme-assets', shopifyController.getAllThemeAssets);
 
 // Products
 router.get('/products', shopifyController.getProducts);
@@ -19,6 +21,20 @@ router.get('/shop', shopifyController.getShopInfo);
 
 // Search
 router.get('/search', shopifyController.searchProducts);
+
+// Cart endpoints
+router.post('/cart/add', shopifyController.addToCart);
+router.post('/cart/add-multiple', shopifyController.addMultipleToCart);
+router.post('/cart/update', shopifyController.updateCart);
+router.post('/cart/remove', shopifyController.removeFromCart);
+router.get('/cart', shopifyController.getCart);
+router.post('/cart/clear', shopifyController.clearCart);
+
+// Checkout endpoint
+router.post('/checkout/create', shopifyController.createCheckout);
+
+// Lens options endpoint (fetch lens data from product metafields)
+router.get('/lens-options', shopifyController.getLensOptions);
 
 module.exports = router;
 

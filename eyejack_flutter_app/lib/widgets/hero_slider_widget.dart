@@ -141,10 +141,10 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
     final screenHeight = MediaQuery.of(context).size.height;
     final isMobile = screenWidth < 600;
     
-    // Calculate height based on screen - taller for portrait videos
+    // Full-height slider to match live site (memory optimized via single video controller)
     final sliderHeight = isMobile 
-        ? (screenHeight * 0.6).clamp(500.0, 800.0)  // 60% of screen height
-        : 600.0;
+        ? (screenHeight * 0.65).clamp(450.0, 700.0)  // 65% of screen height for full view
+        : 600.0;  // Desktop height
 
     return SizedBox(
       height: sliderHeight,

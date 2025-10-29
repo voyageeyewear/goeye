@@ -1,0 +1,3132 @@
+<!-- TRIGGER BUTTON - Hidden but functional -->
+{% unless product.tags contains 'no-power' %}
+    <div class="mobile-only" style="display: none !important; visibility: hidden !important; opacity: 0 !important; position: absolute !important; pointer-events: none !important;">
+      <button id="lens-selector-button" class="la-trigger__button" style="background: #67B067; color: #fff; border: none; width: 100%; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; margin-bottom: 16px; transition: background-color 0.2s ease;">
+        Free Lens+Frame
+      </button>
+    </div>
+    {% endunless %}
+    
+    <!-- DRAWER -->
+    <div id="lens-drawer" 
+         class="mobile-only lens-advisor-section" 
+         aria-hidden="true"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="la-drawer-title">
+      
+      <h2 id="la-drawer-title" class="sr-only">Lens Advisor</h2>
+      <div class="la-backdrop"></div>
+      <div class="la-sheet">
+        <div class="la-handle"></div>
+        <button class="la-close" aria-label="Close lens advisor">×</button>
+    
+        <!-- STEPS NAV -->
+        <nav class="la-steps">
+          <div class="la-step is-active" data-step="1">
+            <span class="la-step__num">1</span>
+            <span class="la-step__label">Lens<br>Type</span>
+          </div>
+          <div class="la-step" data-step="2">
+            <span class="la-step__num">2</span>
+            <span class="la-step__label">Power<br>Type</span>
+          </div>
+          <div class="la-step" data-step="3">
+            <span class="la-step__num">3</span>
+            <span class="la-step__label">Lenses</span>
+          </div>
+          <div class="la-step" data-step="4">
+            <span class="la-step__num">4</span>
+            <span class="la-step__label">Add<br>Power</span>
+          </div>
+        </nav>
+        <div class="la-progress">
+          <div class="la-progress__bar"><div class="la-progress__fill"></div></div>
+        </div>
+    
+        <!-- STEP 1: LENS TYPE -->
+        <div class="la-content la-content--step-1">
+          <h3 class="la-step1-heading">Choose your Lens Type:</h3>
+          <div class="la-prepaid-notice">
+            <div class="la-prepaid-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="2" y="6" width="20" height="12" rx="3" fill="#1976D2" fill-opacity="0.1"/>
+                <rect x="2" y="6" width="20" height="12" rx="3" stroke="#1976D2" stroke-width="1.5"/>
+                <circle cx="7" cy="12" r="1.5" fill="#1976D2"/>
+                <path d="M11 10h6M11 14h4" stroke="#1976D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="la-prepaid-content">
+              <div class="la-prepaid-title">Lenses: Prepaid Payment Required</div>
+              <div class="la-prepaid-subtitle">Lenses require prepaid payment • Frames & other products available with COD</div>
+            </div>
+          </div>
+          <div class="la-list">
+            <div class="la-lens-type" data-step-target="1" data-type-handle="single-vision">
+              <img src="https://cdn.shopify.com/s/files/1/0570/8120/0663/files/Screenshot_2025-05-23_at_10.57.04_AM.png?v=1747978074" class="la-item__icon" alt="Single Vision" width="56" height="56">
+              <div class="la-item__content">
+                <div class="la-item__header">
+                  <div class="la-item__title">With power/Single Vision</div>
+                </div>
+                <div class="la-item__subtitle">Standard lens type • Prepaid orders only</div>
+              </div>
+              <svg class="la-item__arrow" viewBox="0 0 24 24">
+                <path fill="#102047" d="M9 18l6-6-6-6"/>
+              </svg>
+            </div>
+    
+            <div class="la-lens-type" data-step-target="1" data-type-handle="zero-power">
+              <img src="https://cdn.shopify.com/s/files/1/0570/8120/0663/files/Screenshot_2025-05-23_at_10.57.14_AM.png?v=1747978074" class="la-item__icon" alt="Zero Power" width="56" height="56">
+              <div class="la-item__content">
+                <div class="la-item__header">
+                  <div class="la-item__title">Zero power</div>
+                </div>
+                <div class="la-item__subtitle">No power required • Prepaid orders only</div>
+              </div>
+              <svg class="la-item__arrow" viewBox="0 0 24 24">
+                <path fill="#102047" d="M9 18l6-6-6-6"/>
+              </svg>
+            </div>
+    
+            <!-- 🛒 FRAME ONLY OPTION - BOTTOM POSITION -->
+            <div class="la-lens-type la-frame-only-option" 
+                 data-step-target="frame-only" 
+                 data-type-handle="frame-only"
+                 style="display: flex !important; opacity: 1 !important; visibility: visible !important; margin-top: 16px !important;">
+              <div class="la-item__icon la-frame-icon">
+                <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                  <rect width="56" height="56" rx="8" fill="#F0FFF4"/>
+                  <!-- Shopping Cart Icon -->
+                  <g transform="translate(14, 14)">
+                    <path d="M6 2L3 2L2.4 0H0V2H1.6L4.4 13.8L3.9 16H6.1L6.6 14H18.4L19 12H7L6.4 10H20L22 6H8L6 2Z" 
+                          fill="#27916D"/>
+                    <circle cx="8" cy="20" r="2" fill="#27916D"/>
+                    <circle cx="16" cy="20" r="2" fill="#27916D"/>
+                    <!-- Plus sign in cart -->
+                    <rect x="11" y="7" width="6" height="2" fill="white" rx="1"/>
+                    <rect x="13" y="5" width="2" height="6" fill="white" rx="1"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="la-item__content">
+                <div class="la-item__header">
+                  <div class="la-item__title">🛒 Frame Only</div>
+                  <span class="la-item__badge la-quick-add-badge">Quick Add</span>
+                </div>
+                <div class="la-item__subtitle">Just the frame, no lenses</div>
+              </div>
+              <svg class="la-item__arrow" viewBox="0 0 24 24">
+                <path fill="#27916D" d="M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+          </div>
+          <div class="la-error-message" hidden>Please select a lens type to continue</div>
+        </div>
+    
+        <!-- STEP 2: POWER TYPE -->
+        <div class="la-content la-content--step-2" hidden>
+          <div class="la-step-header">
+            <button type="button" class="la-back-button la-back-to-step-1">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+            </button>
+            <h3 class="la-step2-heading">Choose your Power Type:</h3>
+          </div>
+          <div class="la-list">
+            <!-- Anti glare lenses -->
+            <div class="la-item" 
+                 data-step-target="2" 
+                 data-power="anti-glare" 
+                 data-compatible-types="single-vision"
+                 data-collection-handle="with-power-anti-glare"
+                 data-hide-for="zero-power">
+              <div class="la-item__icon">
+                <svg viewBox="0 0 100 100" width="56" height="56">
+                  <path d="M50 20L20 80h60L50 20z" stroke="#102047" fill="none" stroke-width="2"/>
+                  <line x1="20" y1="50" x2="80" y2="50" stroke="#102047" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="la-item__content">
+                <div class="la-item__header">
+                  <div class="la-item__title">Anti glare lenses</div>
+                  <span class="la-item__badge">Most common</span>
+                </div>
+                <div class="la-item__subtitle">Positive, Negative or Cylindrical</div>
+              </div>
+              <svg class="la-item__arrow" viewBox="0 0 24 24">
+                <path fill="#102047" d="M9 18l6-6-6-6"/>
+              </svg>
+            </div>
+    
+            <!-- Blue Block Lenses -->
+            <div class="la-item" 
+                 data-step-target="2" 
+                 data-power="blue-block" 
+                 data-compatible-types="single-vision,zero-power">
+              <div class="la-item__icon">
+                <svg viewBox="0 0 100 100" width="56" height="56">
+                  <circle cx="50" cy="50" r="40" stroke="#102047" fill="none" stroke-width="2"/>
+                  <line x1="30" y1="35" x2="70" y2="65" stroke="#102047" stroke-width="2"/>
+                  <line x1="30" y1="45" x2="70" y2="75" stroke="#102047" stroke-width="2"/>
+                  <line x1="30" y1="25" x2="70" y2="55" stroke="#102047" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="la-item__content">
+                <div class="la-item__header">
+                  <div class="la-item__title">Blue Block Lenses</div>
+                  <span class="la-item__badge">Most common</span>
+                </div>
+                <div class="la-item__subtitle">Positive, Negative or Cylindrical</div>
+              </div>
+              <svg class="la-item__arrow" viewBox="0 0 24 24">
+                <path fill="#102047" d="M9 18l6-6-6-6"/>
+              </svg>
+            </div>
+    
+            <!-- Colour Lenses -->
+            <div class="la-item" 
+                 data-step-target="2" 
+                 data-power="colour" 
+                 data-compatible-types="single-vision"
+                 data-hide-for="zero-power">
+              <div class="la-item__icon">
+                <svg viewBox="0 0 100 100" width="56" height="56">
+                  <circle cx="35" cy="50" r="20" fill="#000" opacity="0.8"/>
+                  <circle cx="65" cy="50" r="20" fill="#4CAF50" opacity="0.8"/>
+                </svg>
+              </div>
+              <div class="la-item__content">
+                <div class="la-item__header">
+                  <div class="la-item__title">Colour Lenses</div>
+                </div>
+                <div class="la-item__subtitle">Positive, Negative or Cylindrical</div>
+              </div>
+              <svg class="la-item__arrow" viewBox="0 0 24 24">
+                <path fill="#102047" d="M9 18l6-6-6-6"/>
+              </svg>
+            </div>
+          </div>
+          <div class="la-error-message" hidden>Please select a power type to continue</div>
+        </div>
+    
+        <!-- STEP 3: LENSES -->
+        <div class="la-content la-content--step-3" hidden>
+          <div class="la-step-header">
+            <button type="button" class="la-back-button la-back-to-step-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+            </button>
+            <h3 class="la-lenses-heading">Choose your Lens:</h3>
+          </div>
+          <div class="la-list la-list--lenses">
+            <div class="la-lens js-lens-card" data-power-option="with-power" data-product-handle="standard-lens">
+              <div class="la-lens__main-content">
+                <div class="la-lens__media">
+                  <svg width="80" height="40" viewBox="0 0 80 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="12" width="76" height="16" rx="8" stroke="#666" stroke-width="2" fill="none" opacity="0.3"/>
+                    <circle cx="20" cy="20" r="8" stroke="#666" stroke-width="2" fill="none"/>
+                    <circle cx="60" cy="20" r="8" stroke="#666" stroke-width="2" fill="none"/>
+                  </svg>
+                  <div class="la-lens__badge">6 Months Warranty</div>
+                </div>
+                <div class="la-lens__info">
+                  <div class="la-lens__title">Standard Lens</div>
+                  <button type="button" class="la-lens__link js-details-trigger">
+                    <span>View Details</span>
+                    <svg class="la-details-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="la-lens__select">
+                <div class="la-select-circle">
+                  <svg class="la-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </div>
+              </div>
+    
+              <div class="la-lens__details-popup" hidden>
+                <div class="la-popup__content">
+                  <button type="button" class="la-popup__close" aria-label="Close details">×</button>
+                  
+                  <div class="la-popup__header">
+                    <div class="la-popup__brand-image">
+                      <svg width="60" height="30" viewBox="0 0 60 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="1" y="9" width="58" height="12" rx="6" stroke="#666" stroke-width="1.5" fill="none" opacity="0.3"/>
+                        <circle cx="15" cy="15" r="6" stroke="#666" stroke-width="1.5" fill="none"/>
+                        <circle cx="45" cy="15" r="6" stroke="#666" stroke-width="1.5" fill="none"/>
+                      </svg>
+                    </div>
+                    <div class="la-popup__title-wrap">
+                      <h4 class="la-popup__title">Standard Lens</h4>
+                      <div class="la-popup__warranty">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <span>6 Months Warranty</span>
+                      </div>
+                    </div>
+                  </div>
+    
+                  <div class="la-popup__features">
+                    <h5 class="la-popup__subtitle">Key Features</h5>
+                    <div class="la-features-grid">
+                      <div class="la-feature-item">
+                        <div class="la-feature-icon">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                          </svg>
+                        </div>
+                        <div class="la-feature-text">Double Side Anti-Glare Lens</div>
+                      </div>
+                      <div class="la-feature-item">
+                        <div class="la-feature-icon">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                          </svg>
+                        </div>
+                        <div class="la-feature-text">Scratch Resistant</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="la-error-message" hidden>Please select a lens to continue</div>
+        </div>
+    
+        <!-- STEP 4: ADD POWER -->
+        <div class="la-content la-content--step-4" hidden>
+          <div class="la-step-header">
+            <button type="button" class="la-back-button la-back-to-step-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+            </button>
+            <h3 class="la-step4-heading">Add Your Power</h3>
+          </div>
+    
+          <!-- Variant picker -->
+          <div class="la-list la-list--powers"></div>
+    
+          <!-- Prescription entry options -->
+          <h4 class="la-prescription-heading">Add Your Prescription</h4>
+          <div class="la-list la-list--prescription">
+            <!-- Upload File -->
+            <label for="upload-prescription" class="la-item la-prescription-option" data-prescription-method="upload">
+              <div class="la-upload-content">
+                <div class="la-upload-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#102047"
+                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                </div>
+                <div class="la-upload-text">
+                  <span class="la-upload-label">Upload File</span>
+                  <span class="la-upload-info" style="display: none;">
+                    Selected: <span class="la-filename"></span>
+                    <button type="button" class="la-remove-file">×</button>
+                  </span>
+                </div>
+              </div>
+              <div class="la-upload-progress" style="display: none;">
+                <div class="la-progress-bar">
+                  <div class="la-progress-fill"></div>
+                </div>
+                <span class="la-progress-text">Processing...</span>
+              </div>
+              <input type="file" 
+                     id="upload-prescription" 
+                     name="prescription"
+                     accept=".pdf,.jpg,.jpeg,.png"
+                     style="display: none;">
+            </label>
+    
+            <!-- Enter Manually -->
+            <div class="la-item la-prescription-option" data-prescription-method="manual">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#102047"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L8 18l-4 1 1-4 11.5-11.5z" />
+              </svg>
+              <span style="margin-left: 1rem; font-weight: 600; color: #102047;">Enter Manually</span>
+            </div>
+    
+            <!-- Email Later -->
+            <div class="la-item la-prescription-option" data-prescription-method="email">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#102047"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16v16H4z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <span style="margin-left: 1rem; font-weight: 600; color: #102047;">Email Later</span>
+            </div>
+          </div>
+    
+          <!-- Manual Prescription Form -->
+          <div class="la-manual-prescription">
+            <button type="button" class="la-back-button">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Back
+            </button>
+    
+            <h4 class="la-form-heading">Enter Your Prescription Details</h4>
+    
+            <!-- Right Eye (OD) -->
+            <div class="la-eye-section">
+              <h4>Right Eye (OD)</h4>
+              <div class="la-prescription-fields">
+                <div class="la-field">
+                  <label for="od_sph">SPH</label>
+                  <select name="od_sph" id="od_sph" class="la-select">
+                    <option value="">Select SPH</option>
+                    {% for i in (-40..40) %}
+                      {% assign value = i | divided_by: 4.0 %}
+                      <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="la-field">
+                  <label for="od_cyl">CYL</label>
+                  <select name="od_cyl" id="od_cyl" class="la-select">
+                    <option value="">Select CYL</option>
+                    {% for i in (-24..0) %}
+                      {% assign value = i | divided_by: 4.0 %}
+                      <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="la-field">
+                  <label for="od_axis">AXIS</label>
+                  <select name="od_axis" id="od_axis" class="la-select">
+                    <option value="">Select AXIS</option>
+                    {% for i in (1..180) %}
+                      <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+    
+            <!-- Left Eye (OS) -->
+            <div class="la-eye-section">
+              <h4>Left Eye (OS)</h4>
+              <div class="la-prescription-fields">
+                <div class="la-field">
+                  <label for="os_sph">SPH</label>
+                  <select name="os_sph" id="os_sph" class="la-select">
+                    <option value="">Select SPH</option>
+                    {% for i in (-40..40) %}
+                      {% assign value = i | divided_by: 4.0 %}
+                      <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="la-field">
+                  <label for="os_cyl">CYL</label>
+                  <select name="os_cyl" id="os_cyl" class="la-select">
+                    <option value="">Select CYL</option>
+                    {% for i in (-24..0) %}
+                      {% assign value = i | divided_by: 4.0 %}
+                      <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="la-field">
+                  <label for="os_axis">AXIS</label>
+                  <select name="os_axis" id="os_axis" class="la-select">
+                    <option value="">Select AXIS</option>
+                    {% for i in (1..180) %}
+                      <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+    
+            <button type="button" class="la-save-prescription">Save Prescription</button>
+          </div>
+    
+          <!-- Add to Cart button -->
+          <button type="button" class="la-add-to-cart" disabled>Save and Continue</button>
+        </div>
+      </div>
+    </div>
+    
+    <style>
+    @media(min-width:768px){ .mobile-only{display:none!important} }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+    
+    .la-trigger__button {
+      width: 100%;
+      padding: .75rem;
+      background: #27916D;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    
+    .la-trigger__button:hover {
+      background: #1F7A53;
+    }
+    
+    .lens-advisor-section {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: none;
+    }
+    
+    .lens-advisor-section[aria-hidden="false"] {
+      display: block;
+    }
+    
+    .la-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.4);
+    }
+    
+    .la-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1rem;
+      transform: translateY(0);
+      transition: transform .3s;
+    }
+    
+    .la-handle {
+      width: 40px;
+      height: 4px;
+      background: #E0E0E0;
+      border-radius: 2px;
+      margin: 0 auto .75rem;
+    }
+    
+    .la-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      color: #7B7B7B;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
+    /* Steps Navigation */
+    .la-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: .5rem;
+    }
+    
+    .la-step {
+      flex: 1;
+      text-align: center;
+      color: #A5A5A5;
+      opacity: .6;
+      cursor: default;
+      pointer-events: none;
+    }
+    
+    .la-step.is-active {
+      color: #102047;
+      opacity: 1;
+      font-weight: 600;
+    }
+    
+    .la-step__num {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      margin-bottom: .25rem;
+    }
+    
+    /* Progress Bar */
+    .la-progress {
+      margin-bottom: 1rem;
+    }
+    
+    .la-progress__bar {
+      background: #E0E0E0;
+      height: 4px;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    
+    .la-progress__fill {
+      background: #27916D;
+      height: 100%;
+      width: 0;
+      transition: width .3s;
+    }
+    
+    /* Content Styles */
+    .la-step1-heading {
+      margin: 0 0 1rem;
+      font-weight: 600;
+      color: #102047;
+      text-align: center;
+    }
+    
+    .la-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .la-lens-type {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border: 1px solid #E5E5E5;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .la-lens-type:hover {
+      border-color: #27916D;
+      background: #F0FFF4;
+    }
+    
+    .la-lens-type.is-selected {
+      background: #F0FFF4;
+      border-color: #27916D;
+    }
+    
+    .la-item__icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      background: #F5F5F5;
+      object-fit: contain;
+    }
+    
+    .la-item__title {
+      font-weight: 700;
+      color: #102047;
+      margin-bottom: 0.25rem;
+    }
+    
+    .la-item__subtitle {
+      font-size: 0.875rem;
+      color: #7B7B7B;
+      line-height: 1.4;
+    }
+    
+    .la-item__arrow {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    
+    .la-error-message {
+      color: #dc3545;
+      text-align: center;
+      margin-top: 1rem;
+      font-size: .875rem;
+    }
+    
+    /* 🛒 FRAME ONLY SPECIAL STYLING - SNIPPETS VERSION */
+    .la-frame-only-option,
+    .la-lens-type[data-type-handle="frame-only"],
+    .la-lens-type.la-frame-only-option {
+      background: linear-gradient(135deg, #F0FFF4 0%, #E8F8E5 100%) !important;
+      border: 2px solid #27916D !important;
+      box-shadow: 0 2px 8px rgba(39, 145, 109, 0.15) !important;
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      margin-bottom: 16px !important;
+      position: relative !important;
+      z-index: 10 !important;
+    }
+    
+    /* Custom Frame Icon Styling */
+    .la-frame-icon {
+      width: 56px !important;
+      height: 56px !important;
+      border-radius: 8px !important;
+      background: transparent !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+    }
+    
+    .la-frame-icon svg {
+      width: 56px !important;
+      height: 56px !important;
+      border-radius: 8px !important;
+    }
+    
+    /* Enhanced Prepaid Notice Styling */
+    .la-prepaid-notice {
+      display: flex !important;
+      align-items: flex-start !important;
+      background: linear-gradient(135deg, #F8FAFF 0%, #EEF4FF 100%) !important;
+      border: 1.5px solid #E3F2FD !important;
+      border-left: 4px solid #1976D2 !important;
+      border-radius: 12px !important;
+      padding: 16px 18px !important;
+      margin: 16px 0 24px 0 !important;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08) !important;
+      position: relative !important;
+      overflow: hidden !important;
+    }
+    
+    .la-prepaid-notice::before {
+      content: '' !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      height: 1px !important;
+      background: linear-gradient(90deg, transparent, rgba(25, 118, 210, 0.2), transparent) !important;
+    }
+    
+    .la-prepaid-icon {
+      margin-right: 14px !important;
+      flex-shrink: 0 !important;
+      width: 20px !important;
+      height: 20px !important;
+      margin-top: 2px !important;
+    }
+    
+    .la-prepaid-content {
+      flex: 1 !important;
+    }
+    
+    .la-prepaid-title {
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      color: #1565C0 !important;
+      margin-bottom: 4px !important;
+      line-height: 1.3 !important;
+    }
+    
+    .la-prepaid-subtitle {
+      font-size: 13px !important;
+      font-weight: 400 !important;
+      color: #1976D2 !important;
+      line-height: 1.4 !important;
+      opacity: 0.85 !important;
+    }
+    
+    /* Zero Power Notice Styling */
+    .la-zero-power-notice {
+      display: none !important;
+      margin: 20px 0 !important;
+      padding: 16px !important;
+      background: linear-gradient(135deg, #E8F5E8 0%, #F0FFF4 100%) !important;
+      border: 1px solid #27916D !important;
+      border-radius: 12px !important;
+      box-shadow: 0 2px 8px rgba(39, 145, 109, 0.1) !important;
+    }
+    
+    .la-zero-notice-content {
+      display: flex !important;
+      align-items: flex-start !important;
+    }
+    
+    .la-notice-title {
+      font-weight: 600 !important;
+      font-size: 15px !important;
+      color: #1B5E20 !important;
+      margin-bottom: 4px !important;
+    }
+    
+    .la-notice-subtitle {
+      font-size: 13px !important;
+      color: #2E7D32 !important;
+      line-height: 1.4 !important;
+    }
+    
+    .la-frame-only-option:hover,
+    .la-lens-type[data-type-handle="frame-only"]:hover,
+    .la-lens-type.la-frame-only-option:hover {
+      background: linear-gradient(135deg, #E8F8E5 0%, #D4F4D9 100%) !important;
+      border-color: #1F7A53 !important;
+      box-shadow: 0 4px 12px rgba(39, 145, 109, 0.25) !important;
+      transform: translateY(-1px) !important;
+    }
+    
+    .la-quick-add-badge,
+    .la-frame-only-option .la-item__badge,
+    .la-lens-type[data-type-handle="frame-only"] .la-item__badge {
+      background: #27916D !important;
+      color: #FFFFFF !important;
+      font-weight: 600 !important;
+      animation: pulse 2s infinite !important;
+      border-radius: 12px !important;
+      padding: 0.2rem 0.5rem !important;
+      font-size: 0.75rem !important;
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(39, 145, 109, 0.4);
+      }
+      70% {
+        box-shadow: 0 0 0 8px rgba(39, 145, 109, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(39, 145, 109, 0);
+      }
+    }
+    
+    .la-frame-only-option .la-item__arrow,
+    .la-lens-type[data-type-handle="frame-only"] .la-item__arrow {
+      color: #27916D !important;
+    }
+    
+    .la-frame-only-option.is-selected,
+    .la-lens-type[data-type-handle="frame-only"].is-selected {
+      background: linear-gradient(135deg, #D4F4D9 0%, #C6F2CC 100%) !important;
+      border-color: #1F7A53 !important;
+    }
+    
+    /* Additional styles for new components */
+    .la-lens__details-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 400px;
+      max-height: 90vh;
+      overflow-y: auto;
+      z-index: 10000;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      animation: slideIn 0.2s ease-out;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translate(-50%, -48%);
+        opacity: 0;
+      }
+      to {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+      }
+    }
+    
+    .la-popup__content {
+      padding: 1.5rem;
+      position: relative;
+    }
+    
+    .la-popup__close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #7B7B7B;
+      cursor: pointer;
+      padding: 0.25rem;
+      line-height: 1;
+      z-index: 1;
+    }
+    
+    .la-popup__header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #E5E5E5;
+    }
+    
+    .la-popup__brand-image {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #F5F5F5;
+    }
+    
+    .la-popup__brand-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    
+    .la-popup__title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #102047;
+      margin: 0;
+    }
+    
+    .la-popup__warranty {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #27916D;
+      font-size: 0.875rem;
+    }
+    
+    .la-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    
+    .la-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: #F8F9FA;
+      border-radius: 8px;
+    }
+    
+    .la-feature-icon {
+      color: #27916D;
+    }
+    
+    .la-feature-text {
+      font-size: 0.875rem;
+      color: #4A4A4A;
+      line-height: 1.4;
+    }
+    
+    /* Step 4 specific styles */
+    .la-step4-heading {
+      font-size: 24px;
+      font-weight: 600;
+      color: #102047;
+      margin: 0 0 24px;
+    }
+    
+    .la-prescription-heading {
+      font-size: 20px;
+      font-weight: 600;
+      color: #102047;
+      margin: 32px 0 24px;
+    }
+    
+    .la-prescription-option {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: #FFFFFF;
+      border: 1px solid #E5E5E5;
+      border-radius: 16px;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+    }
+    
+    .la-prescription-option:hover {
+      border-color: #27916D;
+    }
+    
+    .la-prescription-option.is-selected {
+      border-color: #27916D;
+    }
+    
+    .la-prescription-option svg {
+      width: 24px;
+      height: 24px;
+      color: #102047;
+    }
+    
+    .la-prescription-option span {
+      font-size: 16px;
+      font-weight: 500;
+      color: #102047;
+    }
+    
+    .la-upload-content {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    
+    .la-upload-icon {
+      margin-right: 16px;
+    }
+    
+    .la-upload-text {
+      flex: 1;
+    }
+    
+    .la-upload-label {
+      font-weight: 500;
+      color: #102047;
+      font-size: 16px;
+    }
+    
+    /* Save and Continue button */
+    .la-add-to-cart {
+      width: 100%;
+      padding: 16px;
+      background: #27916D;
+      color: #FFFFFF;
+      font-size: 16px;
+      font-weight: 500;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 32px;
+      transition: background 0.2s ease;
+    }
+    
+    .la-add-to-cart:hover {
+      background: #1F7A53;
+    }
+    
+    .la-add-to-cart:disabled {
+      background: #E5E5E5;
+      cursor: not-allowed;
+    }
+    
+    /* Additional styles for the badges */
+    .la-item__badge {
+      background: #EEF8F1;
+      color: #27916D;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      margin-left: 0.5rem;
+    }
+    
+    .la-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border: 1px solid #E5E5E5;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .la-item:hover {
+      border-color: #27916D;
+      background: #F0FFF4;
+    }
+    
+    .la-item.is-selected {
+      background: #F0FFF4;
+      border-color: #27916D;
+    }
+    
+    .la-item__header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.25rem;
+    }
+    
+    .la-lens {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 16px;
+      background: #FFFFFF;
+      border: 1px solid #E5E5E5;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 12px;
+    }
+    
+    .la-lens:hover {
+      border-color: #27916D;
+      background: #F0FFF4;
+    }
+    
+    .la-lens.is-selected {
+      border-color: #27916D;
+      background: #F0FFF4;
+    }
+    
+    .la-lens__main-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+    }
+    
+    .la-lens__brand {
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+      background: #F5F5F5;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .la-lens__brand-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    
+    .la-lens__info {
+      flex: 1;
+    }
+    
+    .la-lens__title {
+      font-weight: 700;
+      color: #102047;
+      margin-bottom: 0.25rem;
+      font-size: 16px;
+    }
+    
+    .la-lens__link {
+      font-size: 14px;
+      color: #27916D;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .la-lens__select {
+      width: 22px;
+      height: 22px;
+      border: 1.5px solid #E5E5E5;
+      border-radius: 50%;
+      margin-left: auto;
+      transition: all 0.2s ease;
+    }
+    
+    .la-lens.is-selected .la-lens__select {
+      border-color: #27916D;
+      background: #27916D;
+    }
+    
+    .la-list--lenses {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    /* View Details link styling */
+    .la-lens__link {
+      color: #27916D;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .la-lens__link svg {
+      width: 12px;
+      height: 12px;
+      transition: transform 0.2s;
+    }
+    
+    .la-lens__link.is-open svg {
+      transform: rotate(180deg);
+    }
+    
+    /* Update list spacing */
+    .la-list--lenses {
+      gap: 6px;
+      padding: 6px 0;
+    }
+    
+    /* Free badge styles for lens cards */
+    .la-lens__free-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 12px;
+      line-height: 1;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+      z-index: 10;
+      animation: freeBadgePulse 2s infinite;
+    }
+    
+    .la-lens__brand {
+      position: relative;
+    }
+    
+    @keyframes freeBadgePulse {
+      0% {
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
+        transform: scale(1.05);
+      }
+      100% {
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        transform: scale(1);
+      }
+    }
+    
+    /* Add styles for power variants */
+    .la-power-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      background: #FFFFFF;
+      border: 1px solid #E5E5E5;
+      border-radius: 16px;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+    }
+    
+    .la-power-item:hover {
+      border-color: #27916D;
+    }
+    
+    .la-power-item.is-selected {
+      border-color: #27916D;
+    }
+    
+    .la-power-item__content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex: 1;
+    }
+    
+    .la-power-item__title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #102047;
+    }
+    
+    .la-power-item__price {
+      font-size: 16px;
+      color: #102047;
+      margin-left: auto;
+      margin-right: 16px;
+    }
+    
+    .la-power-item__price-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin-left: auto;
+      margin-right: 16px;
+      gap: 6px;
+    }
+    
+    .la-power-item__price-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+    }
+    
+    .la-power-item__original-price {
+      font-size: 13px;
+      color: #9CA3AF;
+      text-decoration: line-through;
+      line-height: 1.2;
+      font-weight: 400;
+    }
+    
+    .la-power-item__current-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: #059669;
+      line-height: 1;
+      letter-spacing: -0.025em;
+    }
+    
+    .la-power-item__savings-badge {
+      font-size: 11px;
+      font-weight: 600;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      padding: 3px 8px;
+      border-radius: 12px;
+      line-height: 1;
+      white-space: nowrap;
+      box-shadow: 0 1px 3px rgba(16, 185, 129, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .la-power-item__savings-badge::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+    
+    /* Enhanced hover effect for free lens items */
+    .la-power-item:has(.la-power-item__price-wrapper):hover {
+      border-color: #10B981;
+      background: linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+    }
+    
+    .la-power-item:has(.la-power-item__price-wrapper).is-selected {
+      border-color: #10B981;
+      background: linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    }
+    
+    .la-power-item .la-select-circle {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #E5E5E5;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    
+    .la-power-item.is-selected .la-select-circle {
+      border-color: #27916D;
+      background: #27916D;
+    }
+    
+    /* Manual prescription form styles */
+    .la-manual-prescription {
+      padding: 1rem;
+      background: #fff;
+      display: none;
+    }
+    
+    .la-form-heading {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #102047;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    
+    .la-eye-section {
+      margin-bottom: 1.5rem;
+    }
+    
+    .la-eye-section h4 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #102047;
+      margin-bottom: 1.5rem;
+      margin-top: 0;
+    }
+    
+    .la-prescription-fields {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .la-field {
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+    }
+    
+    .la-field label {
+      font-size: 0.875rem;
+      color: #666;
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    
+    .la-select {
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid #E5E5E5;
+      border-radius: 8px;
+      background: #fff;
+      color: #102047;
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23102047' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .la-select:focus {
+      outline: none;
+      border: 2px solid #FF4433;
+    }
+    
+    /* Integrated Step Header */
+    .la-step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      min-height: 32px;
+    }
+    
+    /* Integrated Back button styles */
+    .la-back-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(16, 32, 71, 0.06);
+      border: none;
+      color: #102047;
+      font-weight: 500;
+      font-size: 0;
+      padding: 8px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+    }
+    
+    .la-back-button:hover {
+      background: rgba(16, 32, 71, 0.12);
+      transform: translateX(-1px);
+    }
+    
+    .la-back-button svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2.5;
+    }
+    
+    /* Update heading styles to work with integrated header */
+    .la-step2-heading,
+    .la-lenses-heading,
+    .la-step4-heading {
+      margin: 0;
+      font-weight: 600;
+      color: #102047;
+      font-size: 18px;
+      flex: 1;
+      line-height: 1.2;
+      display: flex;
+      align-items: center;
+    }
+    
+    /* Save button styles */
+    .la-save-prescription {
+      width: 100%;
+      padding: 16px;
+      background: #27916D;
+      color: #FFFFFF;
+      font-size: 18px;
+      font-weight: 500;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 32px;
+      transition: background 0.2s ease;
+    }
+    
+    .la-save-prescription:hover {
+      background: #1F7A53;
+    }
+    
+    .la-save-prescription:disabled {
+      background: #E5E5E5;
+      cursor: not-allowed;
+    }
+    
+    /* Make heading more compact */
+    .la-lenses-heading {
+      font-size: 18px;
+      margin: 0 0 12px;
+      font-weight: 500;
+      color: #102047;
+    }
+    
+    .la-popup__description {
+      padding: 1rem;
+      color: #4A4A4A;
+      line-height: 1.6;
+      font-size: 0.875rem;
+      background: #F8F9FA;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    
+    .la-popup__description .rte {
+      margin: 0;
+    }
+    
+    .la-popup__description .rte p {
+      margin: 0 0 1em;
+    }
+    
+    .la-popup__description .rte p:last-child {
+      margin-bottom: 0;
+    }
+    
+    .la-popup__description .rte ul,
+    .la-popup__description .rte ol {
+      margin: 0 0 1em 1.25em;
+      padding: 0;
+    }
+    
+    .la-popup__description .rte li {
+      margin-bottom: 0.5em;
+    }
+    
+    .la-popup__description .rte strong {
+      color: #102047;
+      font-weight: 600;
+    }
+    
+    .la-popup__description .rte img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 1em 0;
+    }
+    
+    /* Add backdrop when popup is open */
+    .la-popup-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0);
+      z-index: 9999;
+      animation: fadeIn 0.2s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    </style>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get the main product variant ID on initialization
+      const variantSelector = document.querySelector('select[name="id"], input[name="id"]');
+      if (variantSelector) {
+        window.mainProductVariantId = variantSelector.value;
+      }
+    
+      const drawer = document.getElementById('lens-drawer');
+      const sheet = drawer.querySelector('.la-sheet');
+      const trigger = document.getElementById('lens-selector-button');
+      const backdrop = drawer.querySelector('.la-backdrop');
+      const closeBtn = drawer.querySelector('.la-close');
+      const steps = [...drawer.querySelectorAll('.la-step')];
+      const fill = drawer.querySelector('.la-progress__fill');
+      const contents = [...drawer.querySelectorAll('.la-content')];
+    
+      let currentStep = 1;
+      let selectedLensType = null;
+      let skippedStep3 = false; // Track if we skipped Step 3 (for anti-glare direct path)
+    
+      function validateStep(step) {
+        switch(step) {
+          case 1:
+            const lensTypeSelected = !!drawer.querySelector('.la-lens-type.is-selected');
+            if (!lensTypeSelected) showError(1);
+            return lensTypeSelected;
+          case 2:
+            // Only validate power type if single-vision was selected
+            if (selectedLensType === 'zero-power') return true;
+            const powerSelected = !!drawer.querySelector('.la-item[data-step-target="2"].is-selected');
+            if (!powerSelected) showError(2);
+            return powerSelected;
+          case 3:
+            const lensSelected = !!drawer.querySelector('.la-lens.is-selected');
+            if (!lensSelected) showError(3);
+            return lensSelected;
+          case 4:
+            const hasFile = !!prescriptionData;
+            const hasManual = !!window.prescriptionData;
+            const hasEmail = !!drawer.querySelector('[data-prescription-method="email"].is-selected');
+            const hasPrescription = hasFile || hasManual || hasEmail;
+            const hasVariant = !!selectedLensVariantId;
+            // Only require prescription for single-vision
+            if (selectedLensType === 'single-vision' && !hasPrescription) showError(4);
+            if (!hasVariant) showError(4);
+            return selectedLensType === 'zero-power' ? hasVariant : (hasPrescription && hasVariant);
+          default:
+            return false;
+        }
+      }
+    
+      function showError(step) {
+        const errorMsg = drawer.querySelector(`.la-content--step-${step} .la-error-message`);
+        if (errorMsg) {
+          errorMsg.hidden = false;
+          setTimeout(() => errorMsg.hidden = true, 3000);
+        }
+      }
+    
+      function goToStep(n) {
+        if (n > currentStep && !validateStep(currentStep)) {
+          return;
+        }
+    
+        currentStep = n;
+        steps.forEach(s => s.classList.toggle('is-active', s.dataset.step == n));
+        fill.style.width = ((n-1)*33.33)+'%';
+        contents.forEach(c => c.hidden = !c.classList.contains(`la-content--step-${n}`));
+        
+        // Special handling for Step 4 when zero-power is selected
+        if (n === 4 && selectedLensType === 'zero-power') {
+          hidePrescriptionForZeroPower();
+        } else if (n === 4) {
+          showPrescriptionSection();
+        }
+      }
+    
+      function open() { 
+        drawer.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        sheet.style.transform = '';
+      }
+      
+      function close() { 
+        drawer.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        sheet.style.transform = 'translateY(100%)';
+      }
+    
+      // Hide prescription section for zero power lenses
+      function hidePrescriptionForZeroPower() {
+        const step4Heading = drawer.querySelector('.la-step4-heading');
+        const prescriptionHeading = drawer.querySelector('.la-prescription-heading');
+        const prescriptionList = drawer.querySelector('.la-list--prescription');
+        const manualPrescription = drawer.querySelector('.la-manual-prescription');
+        
+        if (step4Heading) {
+          step4Heading.textContent = 'Select Zero Power Options';
+        }
+        
+        if (prescriptionHeading) {
+          prescriptionHeading.style.display = 'none';
+        }
+        
+        if (prescriptionList) {
+          prescriptionList.style.display = 'none';
+        }
+        
+        if (manualPrescription) {
+          manualPrescription.style.display = 'none';
+        }
+        
+        // Add a notice explaining zero power
+        let zeroPowerNotice = drawer.querySelector('.la-zero-power-notice');
+        if (!zeroPowerNotice) {
+          zeroPowerNotice = document.createElement('div');
+          zeroPowerNotice.className = 'la-zero-power-notice';
+          zeroPowerNotice.innerHTML = `
+            <div class="la-zero-notice-content">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="margin-right: 12px; flex-shrink: 0;">
+                <circle cx="10" cy="10" r="9" fill="#E8F5E8" stroke="#27916D" stroke-width="2"/>
+                <path d="M7 10l2 2 4-4" stroke="#27916D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div>
+                <div class="la-notice-title">Zero Power Selected</div>
+                <div class="la-notice-subtitle">No prescription needed - these lenses have no corrective power</div>
+              </div>
+            </div>
+          `;
+          
+          const powersList = drawer.querySelector('.la-list--powers');
+          if (powersList && powersList.parentNode) {
+            powersList.parentNode.insertBefore(zeroPowerNotice, powersList.nextSibling);
+          }
+        }
+        zeroPowerNotice.style.display = 'block';
+      }
+      
+      // Show prescription section for powered lenses
+      function showPrescriptionSection() {
+        const step4Heading = drawer.querySelector('.la-step4-heading');
+        const prescriptionHeading = drawer.querySelector('.la-prescription-heading');
+        const prescriptionList = drawer.querySelector('.la-list--prescription');
+        const manualPrescription = drawer.querySelector('.la-manual-prescription');
+        const zeroPowerNotice = drawer.querySelector('.la-zero-power-notice');
+        
+        if (step4Heading) {
+          step4Heading.textContent = 'Add Your Power';
+        }
+        
+        if (prescriptionHeading) {
+          prescriptionHeading.style.display = '';
+        }
+        
+        if (prescriptionList) {
+          prescriptionList.style.display = '';
+        }
+        
+        if (manualPrescription) {
+          manualPrescription.style.display = '';
+        }
+        
+        if (zeroPowerNotice) {
+          zeroPowerNotice.style.display = 'none';
+        }
+      }
+    
+      // Event Listeners with null checks
+      if (closeBtn) {
+        closeBtn.addEventListener('click', close);
+      }
+      if (trigger) {
+        trigger.addEventListener('click', () => { open(); goToStep(1); });
+      }
+      // Steps are no longer clickable - removed click event listeners
+    
+      // Back button event listeners
+      const backToStep1 = drawer.querySelector('.la-back-to-step-1');
+      const backToStep2 = drawer.querySelector('.la-back-to-step-2');
+      const backToStep3 = drawer.querySelector('.la-back-to-step-3');
+    
+      if (backToStep1) {
+        backToStep1.addEventListener('click', () => goToStep(1));
+      }
+      if (backToStep2) {
+        backToStep2.addEventListener('click', () => goToStep(2));
+      }
+      if (backToStep3) {
+        backToStep3.addEventListener('click', () => {
+          // If we skipped Step 3 (anti-glare direct path), go back to Step 2
+          if (skippedStep3) {
+            console.log('🔙 Going back to Step 2 (skipped Step 3)');
+            skippedStep3 = false; // Reset the flag
+            goToStep(2);
+          } else {
+            // Normal flow: go back to Step 3
+            goToStep(3);
+          }
+        });
+      }
+    
+      // Lens Type Selection
+      drawer.querySelectorAll('.la-lens-type').forEach(el => {
+        el.addEventListener('click', async () => {
+          drawer.querySelectorAll('.la-lens-type').forEach(i => i.classList.remove('is-selected'));
+          el.classList.add('is-selected');
+          selectedLensType = el.dataset.typeHandle;
+          
+          // Check which type was selected
+          if (selectedLensType === 'frame-only') {
+            // Handle Frame Only - Add main product to cart and open cart drawer
+            await handleFrameOnlySelection(el);
+          } else if (selectedLensType === 'single-vision' || selectedLensType === 'zero-power') {
+            // Hide/show options based on lens type
+            drawer.querySelectorAll('.la-item[data-step-target="2"]').forEach(item => {
+              if (item.dataset.hideFor === selectedLensType) {
+                item.style.display = 'none';
+              } else {
+                item.style.display = '';
+              }
+            });
+            // Show step 2 for both types
+            setTimeout(() => goToStep(2), 200);
+          }
+        });
+      });
+    
+      // Close drawer when clicking backdrop
+      backdrop.addEventListener('click', close);
+
+      // Function to set up prescription options (used when skipping to Step 4)
+      function setupPrescriptionOptions() {
+        const manualTrigger = drawer.querySelector('[data-prescription-method="manual"]');
+        const manualForm = drawer.querySelector('.la-manual-prescription');
+        const prescriptionList = drawer.querySelector('.la-list--prescription');
+        const savePrescriptionBtn = drawer.querySelector('.la-save-prescription');
+        const backButton = manualForm.querySelector('.la-back-button');
+        const emailMethodBtn = drawer.querySelector('[data-prescription-method="email"]');
+
+        // Manual prescription form handler
+        if (manualTrigger && !manualTrigger.hasAttribute('data-listener-attached')) {
+          manualTrigger.setAttribute('data-listener-attached', 'true');
+          manualTrigger.addEventListener('click', () => {
+            prescriptionList.style.display = 'none';
+            manualForm.style.display = 'block';
+            addToCartBtn.style.display = 'none';
+          });
+        }
+
+        // Back button handler
+        if (backButton && !backButton.hasAttribute('data-listener-attached')) {
+          backButton.setAttribute('data-listener-attached', 'true');
+          backButton.addEventListener('click', () => {
+            prescriptionList.style.display = 'flex';
+            manualForm.style.display = 'none';
+            addToCartBtn.style.display = 'block';
+            window.prescriptionData = null;
+            addToCartBtn.disabled = !validateStep(4);
+          });
+        }
+
+        // Save prescription button handler
+        if (savePrescriptionBtn && !savePrescriptionBtn.hasAttribute('data-listener-attached')) {
+          savePrescriptionBtn.setAttribute('data-listener-attached', 'true');
+          savePrescriptionBtn.addEventListener('click', () => {
+            const od_sph = drawer.querySelector('[name="od_sph"]').value;
+            const od_cyl = drawer.querySelector('[name="od_cyl"]').value;
+            const od_axis = drawer.querySelector('[name="od_axis"]').value;
+            const os_sph = drawer.querySelector('[name="os_sph"]').value;
+            const os_cyl = drawer.querySelector('[name="os_cyl"]').value;
+            const os_axis = drawer.querySelector('[name="os_axis"]').value;
+
+            const prescriptionData = {
+              right_eye: {
+                sph: od_sph || 'N/A',
+                cyl: od_cyl || 'N/A',
+                axis: od_axis || 'N/A'
+              },
+              left_eye: {
+                sph: os_sph || 'N/A',
+                cyl: os_cyl || 'N/A',
+                axis: os_axis || 'N/A'
+              }
+            };
+
+            window.prescriptionData = prescriptionData;
+            prescriptionList.style.display = 'flex';
+            manualForm.style.display = 'none';
+            addToCartBtn.style.display = 'block';
+            manualTrigger.querySelector('span').textContent = 'Prescription Entered ✓';
+            addToCartBtn.disabled = !selectedLensVariantId;
+          });
+        }
+
+        // Email Later option handler
+        if (emailMethodBtn && !emailMethodBtn.hasAttribute('data-listener-attached')) {
+          emailMethodBtn.setAttribute('data-listener-attached', 'true');
+          emailMethodBtn.addEventListener('click', function() {
+            drawer.querySelectorAll('.la-prescription-option').forEach(opt => opt.classList.remove('is-selected'));
+            this.classList.add('is-selected');
+            prescriptionData = null;
+            window.prescriptionData = null;
+            addToCartBtn.disabled = !selectedLensVariantId;
+          });
+        }
+      }
+    
+      // 🛒 Frame Only Selection Handler
+      async function handleFrameOnlySelection(element) {
+        try {
+          // Show loading state
+          const originalTitle = element.querySelector('.la-item__title').textContent;
+          const titleElement = element.querySelector('.la-item__title');
+          titleElement.textContent = 'Adding to Cart...';
+          element.style.opacity = '0.7';
+          element.style.pointerEvents = 'none';
+    
+          // Get the main product variant ID
+          let mainProductVariantId = window.mainProductVariantId;
+          
+          if (!mainProductVariantId) {
+            // Try to get the main product variant ID
+            const variantSelector = document.querySelector('select[name="id"], input[name="id"]');
+            if (variantSelector) {
+              mainProductVariantId = variantSelector.value;
+            } else {
+              // Use URL to extract product ID if needed
+              const matches = window.location.pathname.match(/\/products\/([^\/\?#]+)/);
+              if (matches && matches[1]) {
+                try {
+                  const productData = await fetch(`/products/${matches[1]}.js`).then(res => res.json());
+                  if (productData && productData.variants && productData.variants[0]) {
+                    mainProductVariantId = productData.variants[0].id;
+                  }
+                } catch (err) {
+                  console.error('Error fetching product data:', err);
+                }
+              }
+            }
+            
+            if (!mainProductVariantId) {
+              throw new Error('Cannot find frame product ID');
+            }
+            
+            window.mainProductVariantId = mainProductVariantId;
+          }
+    
+          console.log('🛒 SNIPPETS: Adding frame only to cart with variant ID:', mainProductVariantId);
+    
+          // Get frame SKU for identification
+          let frameSku = '';
+          try {
+            // Method 1: Try to get SKU from current product data
+            if (window.product && window.product.selected_or_first_available_variant) {
+              frameSku = window.product.selected_or_first_available_variant.sku || '';
+            }
+            
+            // Method 2: Try to get from variant selector if not found
+            if (!frameSku) {
+              const variantSelector = document.querySelector('select[name="id"], input[name="id"]');
+              if (variantSelector && variantSelector.value && window.product) {
+                const variant = window.product.variants.find(v => v.id == variantSelector.value);
+                if (variant) {
+                  frameSku = variant.sku || '';
+                }
+              }
+            }
+            
+            // Method 3: Fetch from API if still not found
+            if (!frameSku) {
+              const matches = window.location.pathname.match(/\/products\/([^\/\?#]+)/);
+              if (matches && matches[1]) {
+                try {
+                  const productData = await fetch(`/products/${matches[1]}.js`).then(res => res.json());
+                  if (productData && productData.variants) {
+                    const currentVariant = productData.variants.find(v => v.id == mainProductVariantId) || productData.variants[0];
+                    if (currentVariant) {
+                      frameSku = currentVariant.sku || '';
+                    }
+                  }
+                } catch (err) {
+                  console.error('Error fetching frame SKU:', err);
+                }
+              }
+            }
+            
+            // Fallback: use variant ID if no SKU found
+            if (!frameSku) {
+              frameSku = `VAR-${mainProductVariantId}`;
+            }
+            
+          } catch (err) {
+            console.error('Error getting frame SKU:', err);
+            frameSku = `VAR-${mainProductVariantId}`;
+          }
+    
+          // Add frame to cart
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              items: [{
+                id: mainProductVariantId,
+                quantity: 1,
+                properties: {
+                  '_frame_only': 'true',
+                  'Frame': 'Frame Only - No Lenses',
+                  'Frame SKU': frameSku,
+                  'Product Type': 'Frame Only',
+                  '_display_order': '1'
+                }
+              }]
+            })
+          });
+    
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Cart error response:', errorData);
+            throw new Error(errorData.description || 'Failed to add frame to cart');
+          }
+          
+          const result = await response.json();
+          console.log('🛒 SNIPPETS: Frame added to cart successfully:', result);
+    
+          // Show success state
+          titleElement.textContent = '✅ Added Successfully!';
+    
+          // Close the lens selector drawer
+          setTimeout(() => {
+            close();
+          }, 500);
+    
+          // Update cart and open cart drawer
+          try {
+            const cartResponse = await fetch('/cart.js');
+            const cartData = await cartResponse.json();
+            
+            // Update cart count elements
+            const cartCountElements = document.querySelectorAll('.cart-count');
+            cartCountElements.forEach(element => {
+              element.textContent = cartData.item_count || '';
+            });
+            
+            // Trigger cart refresh events
+            document.dispatchEvent(new CustomEvent('cart:updated', { 
+              detail: { cart: cartData }
+            }));
+            document.dispatchEvent(new CustomEvent('cart:refresh', { 
+              detail: { cart: cartData }
+            }));
+            document.dispatchEvent(new CustomEvent('cart:items-changed', { 
+              detail: { cart: cartData }
+            }));
+            
+            console.log('🛒 SNIPPETS: Cart updated and refresh events triggered');
+          } catch (error) {
+            console.error('🛒 SNIPPETS: Error updating cart count:', error);
+          }
+    
+          // Wait for cart drawer to be ready, then open
+          const waitForCartDrawerAndOpen = () => {
+            console.log('🛒 SNIPPETS: Checking if cart drawer is ready...');
+            
+            if (window.cartDrawerReady && window.fastCartDrawer && document.getElementById('newCartDrawer')) {
+              console.log('🛒 SNIPPETS: Cart drawer is ready! Opening cart drawer...');
+              
+              // Dispatch the custom event first
+              document.dispatchEvent(new CustomEvent('frame:added-to-cart', {
+                bubbles: true,
+                detail: { 
+                  source: 'lens-selector-frame-only-snippets',
+                  frameData: result,
+                  timestamp: Date.now()
+                }
+              }));
+              
+              // Open cart drawer with fresh data
+              window.fastCartDrawer.openWithFreshData();
+            } else {
+              console.log('🛒 SNIPPETS: Cart drawer not ready yet, waiting 100ms...');
+              setTimeout(waitForCartDrawerAndOpen, 100);
+            }
+          };
+          
+          // Start waiting for cart drawer (after lens selector closes)
+          setTimeout(waitForCartDrawerAndOpen, 600);
+          
+          // Ultimate fallback: redirect to cart if drawer doesn't open
+          setTimeout(() => {
+            const cartDrawer = document.getElementById('newCartDrawer');
+            const isDrawerOpen = cartDrawer && cartDrawer.classList.contains('active');
+            
+            if (!isDrawerOpen) {
+              console.warn('🛒 SNIPPETS: Cart drawer not opened after 3s, redirecting to cart page');
+              window.location.href = '/cart';
+            } else {
+              console.log('🛒 SNIPPETS: Cart drawer successfully opened!');
+            }
+          }, 3500);
+    
+        } catch (error) {
+          console.error('🛒 SNIPPETS: Frame only selection error:', error);
+          alert(error.message || 'Failed to add frame to cart. Please try again.');
+          
+          // Restore original state
+          const titleElement = element.querySelector('.la-item__title');
+          titleElement.textContent = originalTitle;
+          element.style.opacity = '';
+          element.style.pointerEvents = '';
+          element.classList.remove('is-selected');
+        }
+      }
+    
+      // Add power type selection with collection handling
+      drawer.querySelectorAll('.la-item[data-step-target="2"]').forEach(el => {
+        el.addEventListener('click', async () => {
+          drawer.querySelectorAll('.la-item').forEach(i => i.classList.remove('is-selected'));
+          el.classList.add('is-selected');
+          selectedPower = el.dataset.power;
+    
+          // Check if this is anti-glare or blue-block - skip to step 4 directly
+          if ((selectedPower === 'anti-glare' && selectedLensType === 'single-vision') || 
+              (selectedPower === 'blue-block' && (selectedLensType === 'single-vision' || selectedLensType === 'zero-power'))) {
+            console.log(`🎯 ${selectedPower} (${selectedLensType}) selected - skipping to Step 4 directly`);
+            
+            // Set flag to indicate we skipped Step 3
+            skippedStep3 = true;
+            
+            // Determine which product to fetch based on power type and lens type
+            let productHandle;
+            if (selectedPower === 'anti-glare' && selectedLensType === 'single-vision') {
+              productHandle = 'eyejack-single_vision-clear_standard-1';
+            } else if (selectedPower === 'blue-block' && selectedLensType === 'single-vision') {
+              productHandle = 'eyejackk-single_vision-clear_bluelight_blocking-1';
+            } else if (selectedPower === 'blue-block' && selectedLensType === 'zero-power') {
+              productHandle = 'eyejack';
+            }
+            
+            // Fetch the specific product directly
+            try {
+              const response = await fetch(`/products/${productHandle}.js`);
+              
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              
+              const product = await response.json();
+              console.log('✅ Found anti-glare product:', product.title);
+                
+                // Set up Step 4 with this product's variants
+                const wrap = drawer.querySelector('.la-content--step-4');
+                const list = wrap.querySelector('.la-list--powers');
+                list.innerHTML = '';
+                addToCartBtn.disabled = true;
+                selectedLensVariantId = null;
+                
+                // Go directly to step 4
+                goToStep(4);
+                
+                // Create power variant options
+                product.variants.forEach(v => {
+                  const el = document.createElement('div');
+                  el.className = 'la-power-item';
+                  el.dataset.variantId = v.id;
+                  
+                  // Custom pricing logic for specific variants
+                  let displayPrice = (v.price/100).toFixed(2);
+                  let isFreeLens = false;
+                  
+                  // Check if this is a free lens SKU
+                  if (v.sku && (v.sku.toLowerCase() === 'lens02' || v.sku.toLowerCase() === 'lens01' || 
+                      v.sku.toLowerCase() === 'lens3' || v.sku.toLowerCase() === 'lens4' || 
+                      v.sku.toLowerCase() === 'lens5' || v.sku.toLowerCase() === 'lens6')) {
+                    isFreeLens = true;
+                    // Set display prices based on SKU
+                    if (v.sku.toLowerCase() === 'lens02' || v.sku.toLowerCase() === 'lens5') {
+                      displayPrice = '399.00';
+                    } else if (v.sku.toLowerCase() === 'lens3') {
+                      displayPrice = '499.00';
+                    } else if (v.sku.toLowerCase() === 'lens6') {
+                      displayPrice = '599.00';
+                    } else if (v.sku.toLowerCase() === 'lens4') {
+                      displayPrice = '699.00';
+                    }
+                  }
+                  
+                  // Generate price display
+                  let priceHtml = '';
+                  if (isFreeLens) {
+                    priceHtml = `
+                      <div class="la-power-item__price-wrapper">
+                        <div class="la-power-item__price-container">
+                          <span class="la-power-item__original-price">₹${displayPrice}</span>
+                          <span class="la-power-item__current-price">FREE</span>
+                        </div>
+                        <div class="la-power-item__savings-badge">Save ₹${displayPrice}</div>
+                      </div>
+                    `;
+                  } else {
+                    priceHtml = `<div class="la-power-item__price">₹${displayPrice}</div>`;
+                  }
+                  
+                  el.innerHTML = `
+                    <div class="la-power-item__content">
+                      <div class="la-power-item__title">${v.title}</div>
+                      ${priceHtml}
+                    </div>
+                    <div class="la-power-item__select">
+                      <div class="la-select-circle"></div>
+                    </div>
+                  `;
+                  
+                  // Add click handler
+                  el.addEventListener('click', () => {
+                    list.querySelectorAll('.la-power-item').forEach(item => {
+                      item.classList.remove('is-selected');
+                    });
+                    el.classList.add('is-selected');
+                    selectedLensVariantId = v.id;
+                    addToCartBtn.disabled = !validateStep(4);
+                  });
+                  
+                  list.appendChild(el);
+                });
+                
+              // Set up prescription options
+              setupPrescriptionOptions();
+              
+              return; // Exit early, don't continue to Step 3
+            } catch (error) {
+              console.error(`Error fetching ${selectedPower} product:`, error);
+              alert(`Failed to load ${selectedPower} lens. Please try again.`);
+              return;
+            }
+          }
+    
+          // Get collection handle based on lens type (for other power types)
+          let collectionHandle;
+          if (selectedLensType === 'zero-power') {
+            // Use zero power collections
+            switch(selectedPower) {
+              case 'blue-block':
+                collectionHandle = 'zero-power-blue-block';
+                break;
+            }
+          } else {
+            // Use with-power collections
+            switch(selectedPower) {
+              case 'anti-glare':
+                collectionHandle = 'with-power-anti-glare';
+                break;
+              case 'blue-block':
+                collectionHandle = 'with-power-blue-block';
+                break;
+              case 'colour':
+                collectionHandle = 'with-power-colour-lens';
+                break;
+            }
+          }
+          console.log('DEBUG - Power type clicked:', {
+            power: selectedPower,
+            lensType: selectedLensType,
+            collectionHandle: collectionHandle,
+            element: el.outerHTML
+          });
+          
+          // Reset the skipped flag for normal flow (going to Step 3)
+          skippedStep3 = false;
+          
+          // Fetch products from collection if handle exists
+          if (collectionHandle) {
+            try {
+              // Encode the collection handle to handle spaces and special characters
+              const encodedHandle = encodeURIComponent(collectionHandle.toLowerCase());
+              console.log('DEBUG - Fetching collection:', {
+                originalHandle: collectionHandle,
+                encodedHandle: encodedHandle,
+                url: `/collections/${encodedHandle}/products.json`
+              });
+              
+              const response = await fetch(`/collections/${encodedHandle}/products.json`);
+              console.log('DEBUG - Response:', {
+                status: response.status,
+                ok: response.ok,
+                statusText: response.statusText
+              });
+              
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              
+              const data = await response.json();
+              console.log('DEBUG - Collection data:', data);
+              
+              // Update the lens options in step 3
+              const lensContainer = drawer.querySelector('.la-list--lenses');
+              lensContainer.innerHTML = ''; // Clear existing options
+              
+              if (!data.products || data.products.length === 0) {
+                console.log('DEBUG - No products found in collection');
+                lensContainer.innerHTML = '<p>No lenses available for this selection.</p>';
+                return;
+              }
+              
+              data.products.forEach(product => {
+                console.log('Product data:', {
+                  title: product.title,
+                  description: product.description,
+                  body_html: product.body_html,
+                  full_product: product
+                });
+                
+                // Get the first product image or a placeholder
+                const productImage = product.images && product.images.length > 0 
+                  ? product.images[0].src
+                  : product.featured_image && product.featured_image.src 
+                    ? product.featured_image.src 
+                    : 'https://cdn.shopify.com/s/files/1/0570/8120/0663/files/placeholder.png';
+                
+                                            // Check if this is a GoEye product (free lens)
+                                const isGoEyeProduct = product.title.toLowerCase().includes('goeye') || 
+                                                      product.handle.toLowerCase().includes('goeye') ||
+                                                      (product.variants && product.variants.some(v => v.sku && (v.sku.toLowerCase() === 'lens02' || v.sku.toLowerCase() === 'lens01' || v.sku.toLowerCase() === 'lens4' || v.sku.toLowerCase() === 'lens5' || v.sku.toLowerCase() === 'lens6')));
+                                
+                                const freeBadge = isGoEyeProduct ? '<div class="la-lens__free-badge">FREE</div>' : '';
+                                
+                                const lensCard = `
+                  <div class="la-lens js-lens-card" data-power-option="${selectedPower}" data-product-handle="${product.handle}">
+                    <div class="la-lens__main-content">
+                      <div class="la-lens__brand">
+                        <img 
+                          src="${productImage}"
+                          alt="${product.title}"
+                          class="la-lens__brand-logo"
+                          onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Crect width=\'36\' height=\'36\' fill=\'%23f1f1f1\'/%3E%3Cpath d=\'M12 6h12v24H12z\' fill=\'%23ddd\'/%3E%3C/svg%3E';"
+                        >
+                        ${freeBadge}
+                      </div>
+                      <div class="la-lens__info">
+                        <h3 class="la-lens__title">${product.title}</h3>
+                        <button type="button" class="la-lens__details-btn js-details-trigger">
+                          View Details
+                          <svg class="la-details-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                          </svg>
+                        </button>
+                      </div>
+                      <div class="la-lens__select">
+                        <div class="la-select-circle"></div>
+                      </div>
+                    </div>
+    
+                    <div class="la-lens__details-popup" hidden>
+                      <div class="la-popup__content">
+                        <button type="button" class="la-popup__close" aria-label="Close details">×</button>
+                        <div class="la-popup__header">
+                          <div class="la-popup__brand-image">
+                            <img src="${productImage}" alt="${product.title}">
+                          </div>
+                          <div class="la-popup__title-wrap">
+                            <h4 class="la-popup__title">${product.title}</h4>
+                          </div>
+                        </div>
+                        <div class="la-popup__description">
+                          ${product.body_html ? `<div class="rte">${product.body_html}</div>` : '<p>No description available.</p>'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `;
+                lensContainer.insertAdjacentHTML('beforeend', lensCard);
+              });
+    
+              // Reattach event listeners for new lens cards
+              attachLensCardListeners();
+            } catch (error) {
+              console.error('Error fetching collection products:', error);
+              const lensContainer = drawer.querySelector('.la-list--lenses');
+              lensContainer.innerHTML = '<p>Error loading lenses. Please try again.</p>';
+            }
+          } else {
+            console.log('No collection handle found for power type:', selectedPower);
+          }
+    
+          setTimeout(() => goToStep(3), 200);
+        });
+      });
+    
+      // Function to attach event listeners to lens cards
+      function attachLensCardListeners() {
+        drawer.querySelectorAll('.js-lens-card').forEach(card => {
+          card.addEventListener('click', async (e) => {
+            // Don't trigger if clicking the details button
+            if (e.target.closest('.js-details-trigger')) {
+              return;
+            }
+            
+            drawer.querySelectorAll('.la-lens').forEach(l => l.classList.remove('is-selected'));
+            card.classList.add('is-selected');
+            
+            const handle = card.dataset.productHandle;
+            const product = await (await fetch(`/products/${handle}.js`)).json();
+            const wrap = drawer.querySelector('.la-content--step-4');
+            const list = wrap.querySelector('.la-list--powers');
+            
+            list.innerHTML = '';
+            addToCartBtn.disabled = true;
+            selectedLensVariantId = null;
+    
+            // Go to step 4
+            goToStep(4);
+            
+            // Create power variant options
+            product.variants.forEach(v => {
+              const el = document.createElement('div');
+              el.className = 'la-power-item';
+              el.dataset.variantId = v.id;
+              
+              // Custom pricing logic for specific variants
+              let displayPrice = (v.price/100).toFixed(2);
+              let isFreeLens = false;
+              
+              // Check if this is the lens02 SKU that should show ₹399 but is actually free
+              if (v.sku && v.sku.toLowerCase() === 'lens02') {
+                displayPrice = '399.00';
+                isFreeLens = true;
+                console.log('🔍 LENS SELECTOR: Setting custom display price for SKU lens02:', v.title, 'Display: ₹399, Original: ₹' + (v.price/100), 'Free: true');
+              }
+              
+              // Check if this is the lens3 SKU that should show ₹499 but is actually free
+              if (v.sku && v.sku.toLowerCase() === 'lens3') {
+                displayPrice = '499.00';
+                isFreeLens = true;
+                console.log('🔍 LENS SELECTOR: Setting custom display price for SKU lens3:', v.title, 'Display: ₹499, Original: ₹' + (v.price/100), 'Free: true');
+              }
+              
+              // Check if this is the lens4 SKU that should show ₹699 but is actually free
+              if (v.sku && v.sku.toLowerCase() === 'lens4') {
+                displayPrice = '699.00';
+                isFreeLens = true;
+                console.log('🔍 LENS SELECTOR: Setting custom display price for SKU lens4:', v.title, 'Display: ₹699, Original: ₹' + (v.price/100), 'Free: true');
+              }
+              
+              // Check if this is the lens5 SKU that should show ₹399 but is actually free
+              if (v.sku && v.sku.toLowerCase() === 'lens5') {
+                displayPrice = '399.00';
+                isFreeLens = true;
+                console.log('🔍 LENS SELECTOR: Setting custom display price for SKU lens5:', v.title, 'Display: ₹399, Original: ₹' + (v.price/100), 'Free: true');
+              }
+              
+              // Check if this is the lens6 SKU that should show ₹599 but is actually free
+              if (v.sku && v.sku.toLowerCase() === 'lens6') {
+                displayPrice = '599.00';
+                isFreeLens = true;
+                console.log('🔍 LENS SELECTOR: Setting custom display price for SKU lens6:', v.title, 'Display: ₹599, Original: ₹' + (v.price/100), 'Free: true');
+              }
+              
+              console.log('🔍 LENS SELECTOR: Variant details:', {
+                title: v.title,
+                sku: v.sku,
+                originalPrice: (v.price/100),
+                displayPrice: displayPrice,
+                isFreeLens: isFreeLens
+              });
+              
+              // Generate price display with free tag if applicable
+              let priceHtml = '';
+              if (isFreeLens) {
+                priceHtml = `
+                  <div class="la-power-item__price-wrapper">
+                    <div class="la-power-item__price-container">
+                      <span class="la-power-item__original-price">₹${displayPrice}</span>
+                      <span class="la-power-item__current-price">FREE</span>
+                    </div>
+                    <div class="la-power-item__savings-badge">Save ₹${displayPrice}</div>
+                  </div>
+                `;
+              } else {
+                priceHtml = `<div class="la-power-item__price">₹${displayPrice}</div>`;
+              }
+              
+              el.innerHTML = `
+                <div class="la-power-item__content">
+                  <div class="la-power-item__title">${v.title}</div>
+                  ${priceHtml}
+                </div>
+                <div class="la-power-item__select">
+                  <div class="la-select-circle"></div>
+                </div>
+              `;
+              
+              // Add click handler
+              el.addEventListener('click', () => {
+                // Remove selected class from all items
+                list.querySelectorAll('.la-power-item').forEach(item => {
+                  item.classList.remove('is-selected');
+                });
+                
+                // Add selected class to clicked item
+                el.classList.add('is-selected');
+                
+                // Update selected variant
+                selectedLensVariantId = v.id;
+                
+                // Enable/disable add to cart button based on validation
+                addToCartBtn.disabled = !validateStep(4);
+              });
+              
+              list.appendChild(el);
+            });
+    
+            // Manual prescription form
+            const manualTrigger = drawer.querySelector('[data-prescription-method="manual"]');
+            const manualForm = drawer.querySelector('.la-manual-prescription');
+            const prescriptionList = drawer.querySelector('.la-list--prescription');
+            const savePrescriptionBtn = drawer.querySelector('.la-save-prescription');
+            const backButton = drawer.querySelector('.la-back-button');
+    
+            manualTrigger.addEventListener('click', () => {
+              prescriptionList.style.display = 'none';
+              manualForm.style.display = 'block';
+              addToCartBtn.style.display = 'none';
+            });
+    
+            backButton.addEventListener('click', () => {
+              prescriptionList.style.display = 'flex';
+              manualForm.style.display = 'none';
+              addToCartBtn.style.display = 'block';
+              window.prescriptionData = null;
+              addToCartBtn.disabled = !validateStep(4);
+            });
+    
+            savePrescriptionBtn.addEventListener('click', () => {
+              const od_sph = drawer.querySelector('[name="od_sph"]').value;
+              const od_cyl = drawer.querySelector('[name="od_cyl"]').value;
+              const od_axis = drawer.querySelector('[name="od_axis"]').value;
+              const os_sph = drawer.querySelector('[name="os_sph"]').value;
+              const os_cyl = drawer.querySelector('[name="os_cyl"]').value;
+              const os_axis = drawer.querySelector('[name="os_axis"]').value;
+    
+              const prescriptionData = {
+                right_eye: {
+                  sph: od_sph || 'N/A',
+                  cyl: od_cyl || 'N/A',
+                  axis: od_axis || 'N/A'
+                },
+                left_eye: {
+                  sph: os_sph || 'N/A',
+                  cyl: os_cyl || 'N/A',
+                  axis: os_axis || 'N/A'
+                }
+              };
+    
+              window.prescriptionData = prescriptionData;
+              prescriptionList.style.display = 'flex';
+              manualForm.style.display = 'none';
+              addToCartBtn.style.display = 'block';
+              manualTrigger.querySelector('span').textContent = 'Prescription Entered ✓';
+              addToCartBtn.disabled = !selectedLensVariantId;
+            });
+    
+            // Email Later option
+            const emailMethodBtn = drawer.querySelector('[data-prescription-method="email"]');
+            if (emailMethodBtn) {
+              emailMethodBtn.addEventListener('click', function() {
+                drawer.querySelectorAll('.la-prescription-option').forEach(opt => opt.classList.remove('is-selected'));
+                this.classList.add('is-selected');
+                prescriptionData = null;
+                window.prescriptionData = null;
+                addToCartBtn.disabled = !selectedLensVariantId;
+              });
+            }
+    
+            goToStep(4);
+          });
+    
+          // Details popup handling
+          const detailsTrigger = card.querySelector('.js-details-trigger');
+          if (detailsTrigger) {
+            detailsTrigger.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const currentPopup = card.querySelector('.la-lens__details-popup');
+              const isCurrentlyHidden = currentPopup.hidden;
+              
+              // Close any other open popups first
+              drawer.querySelectorAll('.la-lens__details-popup').forEach(popup => {
+                popup.hidden = true;
+              });
+              
+              // Remove any existing backdrops
+              document.querySelectorAll('.la-popup-backdrop').forEach(backdrop => {
+                backdrop.remove();
+              });
+              
+              if (!isCurrentlyHidden) {
+                currentPopup.hidden = true;
+                detailsTrigger.querySelector('.la-details-arrow').style.transform = 'rotate(0deg)';
+              } else {
+                // Create and add backdrop
+                const backdrop = document.createElement('div');
+                backdrop.className = 'la-popup-backdrop';
+                document.body.appendChild(backdrop);
+                
+                // Show popup
+                currentPopup.hidden = false;
+                detailsTrigger.querySelector('.la-details-arrow').style.transform = 'rotate(180deg)';
+                
+                // Close popup when clicking backdrop
+                backdrop.addEventListener('click', () => {
+                  currentPopup.hidden = true;
+                  backdrop.remove();
+                  detailsTrigger.querySelector('.la-details-arrow').style.transform = 'rotate(0deg)';
+                });
+                
+                // Close popup when clicking close button
+                const closeBtn = currentPopup.querySelector('.la-popup__close');
+                if (closeBtn) {
+                  closeBtn.addEventListener('click', () => {
+                    currentPopup.hidden = true;
+                    backdrop.remove();
+                    detailsTrigger.querySelector('.la-details-arrow').style.transform = 'rotate(0deg)';
+                  });
+                }
+              }
+            });
+          }
+        });
+      }
+    
+      // File upload handling
+      const fileInput = drawer.querySelector('#upload-prescription');
+      const uploadLabel = drawer.querySelector('.la-upload-label');
+      const uploadInfo = drawer.querySelector('.la-upload-info');
+      const filename = drawer.querySelector('.la-filename');
+      const removeFileBtn = drawer.querySelector('.la-remove-file');
+      const uploadProgress = drawer.querySelector('.la-upload-progress');
+      const addToCartBtn = drawer.querySelector('.la-add-to-cart');
+    
+      let prescriptionData = null;
+      let selectedLensVariantId = null;
+    
+      function resetFileUpload() {
+        fileInput.value = '';
+        uploadLabel.style.display = 'block';
+        uploadInfo.style.display = 'none';
+        uploadProgress.style.display = 'none';
+        prescriptionData = null;
+        addToCartBtn.disabled = !validateStep(4);
+      }
+    
+      fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+    
+        try {
+          const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+          if (!validTypes.includes(file.type)) {
+            throw new Error('Please upload a PDF or image file (JPG/PNG)');
+          }
+          if (file.size > 5 * 1024 * 1024) {
+            throw new Error('File size must be less than 5MB');
+          }
+    
+          uploadProgress.style.display = 'block';
+          
+          // Store the file directly
+          prescriptionData = file;
+          
+          // Show upload complete after a brief delay
+          setTimeout(() => {
+            uploadProgress.style.display = 'none';
+            uploadLabel.style.display = 'none';
+            uploadInfo.style.display = 'flex';
+            filename.textContent = file.name;
+            addToCartBtn.disabled = !validateStep(4);
+          }, 1000);
+    
+        } catch (error) {
+          alert(error.message);
+          resetFileUpload();
+        }
+      });
+    
+      removeFileBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        resetFileUpload();
+      });
+    
+          // Add to Cart
+      addToCartBtn.addEventListener('click', async () => {
+        if (!validateStep(4)) {
+          showError(4);
+          return;
+        }
+  
+        try {
+          // Show loading state briefly
+          addToCartBtn.disabled = true;
+          addToCartBtn.textContent = 'Adding…';
+          
+          // Close the drawer with a smooth delay for better UX
+          setTimeout(() => {
+            close();
+            console.log('🚪 Lens selector drawer closed with smooth animation');
+          }, 500);
+          
+          console.log('Adding lens and frame to cart...');
+          console.log('Selected lens variant ID:', selectedLensVariantId);
+          console.log('Main product variant ID:', window.mainProductVariantId);
+          
+          // Log pricing information for debugging
+          const selectedVariantElement = drawer.querySelector('.la-power-item.is-selected');
+          if (selectedVariantElement) {
+            // Try to get price from different possible elements due to new FREE tag structure
+            let displayPrice = '';
+            const regularPriceElement = selectedVariantElement.querySelector('.la-power-item__price');
+            const originalPriceElement = selectedVariantElement.querySelector('.la-power-item__original-price');
+            const currentPriceElement = selectedVariantElement.querySelector('.la-power-item__current-price');
+            const savingsBadgeElement = selectedVariantElement.querySelector('.la-power-item__savings-badge');
+            
+            if (currentPriceElement && currentPriceElement.textContent === 'FREE') {
+              // This is a free lens item
+              displayPrice = originalPriceElement ? originalPriceElement.textContent + ' (FREE)' : 'FREE';
+            } else if (regularPriceElement) {
+              // This is a regular priced item
+              displayPrice = regularPriceElement.textContent;
+            } else {
+              displayPrice = 'Price not found';
+            }
+            
+            console.log('🔍 LENS SELECTOR: Display price shown to user:', displayPrice);
+            console.log('🔍 LENS SELECTOR: Cart will use original Shopify price, free lens logic will apply if SKU is lens02/lens01');
+          }
+    
+          // First, check if we have valid variant IDs
+          if (!selectedLensVariantId) {
+            throw new Error('Please select a lens option');
+          }
+          
+          if (!window.mainProductVariantId) {
+            // Try to get the main product variant ID again
+            const variantSelector = document.querySelector('select[name="id"], input[name="id"]');
+            if (variantSelector) {
+              window.mainProductVariantId = variantSelector.value;
+            } else {
+              // Use URL to extract product ID if needed
+              const matches = window.location.pathname.match(/\/products\/([^\/\?#]+)/);
+              if (matches && matches[1]) {
+                try {
+                  const productData = await fetch(`/products/${matches[1]}.js`).then(res => res.json());
+                  if (productData && productData.variants && productData.variants[0]) {
+                    window.mainProductVariantId = productData.variants[0].id;
+                  }
+                } catch (err) {
+                  console.error('Error fetching product data:', err);
+                }
+              }
+            }
+            
+            if (!window.mainProductVariantId) {
+              throw new Error('Cannot find frame product ID');
+            }
+          }
+    
+          // Get selected lens type and power type
+          const selectedLensTypeEl = drawer.querySelector('.la-lens-type.is-selected');
+          const selectedPowerTypeEl = drawer.querySelector('.la-item[data-step-target="2"].is-selected');
+          const selectedLensEl = drawer.querySelector('.la-lens.is-selected');
+    
+          // Structure lens details for both items
+          const lensType = selectedLensTypeEl ? selectedLensTypeEl.querySelector('.la-item__title').textContent.trim() : '';
+          const powerType = selectedPowerTypeEl ? selectedPowerTypeEl.querySelector('.la-item__title').textContent.trim() : '';
+          const lensName = selectedLensEl ? selectedLensEl.querySelector('.la-lens__title').textContent.trim() : '';
+    
+          // Get main product SKU for lens association
+          let mainProductSku = '';
+          try {
+            // Method 1: Try to get SKU from current product data
+            if (window.product && window.product.selected_or_first_available_variant) {
+              mainProductSku = window.product.selected_or_first_available_variant.sku || '';
+            }
+            
+            // Method 2: Try to get from variant selector if not found
+            if (!mainProductSku) {
+              const variantSelector = document.querySelector('select[name="id"], input[name="id"]');
+              if (variantSelector && variantSelector.value && window.product) {
+                const variant = window.product.variants.find(v => v.id == variantSelector.value);
+                if (variant) {
+                  mainProductSku = variant.sku || '';
+                }
+              }
+            }
+            
+            // Method 3: Fetch from API if still not found
+            if (!mainProductSku) {
+              const matches = window.location.pathname.match(/\/products\/([^\/\?#]+)/);
+              if (matches && matches[1]) {
+                try {
+                  const productData = await fetch(`/products/${matches[1]}.js`).then(res => res.json());
+                  if (productData && productData.variants) {
+                    const currentVariant = productData.variants.find(v => v.id == window.mainProductVariantId) || productData.variants[0];
+                    if (currentVariant) {
+                      mainProductSku = currentVariant.sku || '';
+                    }
+                  }
+                } catch (err) {
+                  console.error('Error fetching product SKU:', err);
+                }
+              }
+            }
+            
+            // Fallback: use variant ID if no SKU found
+            if (!mainProductSku) {
+              mainProductSku = `VAR-${window.mainProductVariantId}`;
+            }
+            
+          } catch (err) {
+            console.error('Error getting main product SKU:', err);
+            mainProductSku = `VAR-${window.mainProductVariantId}`;
+          }
+    
+          console.log('Lens details:', { lensType, powerType, lensName, mainProductSku });
+    
+          // Create items array for cart
+          // Note: Cart uses original Shopify prices - the free lens logic in cart drawer
+          // will automatically make lens02/lens01 SKUs free regardless of original price
+          const items = [
+            {
+              id: selectedLensVariantId,
+              quantity: 1,
+              properties: {
+                '1. Lens Type': lensType,
+                '2. Power Type': powerType,
+                '3. Lens Name': lensName,
+                'Frame SKU': mainProductSku,
+                'Associated Frame': mainProductSku
+              }
+            },
+            {
+              id: window.mainProductVariantId,
+              quantity: 1
+            }
+          ];
+          
+          // Add prescription information
+          if (prescriptionData) {
+            items[0].properties['4. Prescription Type'] = 'File Upload';
+            // We can't handle file uploads with JSON, so we'll use FormData instead
+          } else if (window.prescriptionData) {
+            const rightEye = window.prescriptionData.right_eye;
+            const leftEye = window.prescriptionData.left_eye;
+            
+            items[0].properties['4. Prescription Type'] = 'Manual Entry';
+            items[0].properties['5. Right Eye (OD)'] = 
+              `SPH: ${rightEye.sph || "0.00"}, CYL: ${rightEye.cyl || "0.00"}, AXIS: ${rightEye.axis || "N/A"}`;
+            items[0].properties['6. Left Eye (OS)'] = 
+              `SPH: ${leftEye.sph || "0.00"}, CYL: ${leftEye.cyl || "0.00"}, AXIS: ${leftEye.axis || "N/A"}`;
+          } else {
+            items[0].properties['4. Prescription Type'] = 'Email Later';
+          }
+    
+          let response;
+          
+          // If we have a file upload, use FormData (proper file upload)
+          if (prescriptionData) {
+            const formData = new FormData();
+            
+            // Add lens variant with all properties
+            formData.append('items[0][id]', selectedLensVariantId);
+            formData.append('items[0][quantity]', '1');
+            formData.append('items[0][properties][1. Lens Type]', lensType);
+            formData.append('items[0][properties][2. Power Type]', powerType);
+            formData.append('items[0][properties][3. Lens Name]', lensName);
+            formData.append('items[0][properties][Frame SKU]', mainProductSku);
+            formData.append('items[0][properties][Associated Frame]', mainProductSku);
+            formData.append('items[0][properties][4. Prescription Type]', 'File Upload');
+            formData.append('items[0][properties][_prescription]', prescriptionData);
+            
+            // Add frame variant without any lens properties
+            formData.append('items[1][id]', window.mainProductVariantId);
+            formData.append('items[1][quantity]', '1');
+            
+            console.log('Sending FormData request for file upload');
+            response = await fetch('/cart/add', {
+              method: 'POST',
+              body: formData
+            });
+          } else {
+            // No file upload, use JSON
+            console.log('Sending JSON request');
+            response = await fetch('/cart/add.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ items })
+            });
+          }
+    
+          console.log('Cart response status:', response.status);
+          
+          // Handle response
+          if (!response.ok) {
+            let errorMessage = 'Failed to add items to cart';
+            try {
+              const contentType = response.headers.get('content-type');
+              if (contentType && contentType.includes('application/json')) {
+                const errorData = await response.json();
+                console.error('Cart error response:', errorData);
+                errorMessage = errorData.description || errorMessage;
+              } else {
+                const errorText = await response.text();
+                console.error('Cart error (non-JSON):', errorText);
+                if (errorText.includes('prescription')) {
+                  errorMessage = 'File upload failed. Please try a smaller file or different format.';
+                }
+              }
+            } catch (parseError) {
+              console.error('Error parsing response:', parseError);
+            }
+            throw new Error(errorMessage);
+          }
+          
+          let result;
+          try {
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+              result = await response.json();
+            } else {
+              // For FormData uploads, Shopify often returns HTML on success
+              const responseText = await response.text();
+              console.log('Non-JSON response received (likely HTML from FormData upload)');
+              
+              // Check if it's a successful HTML response (contains cart or success indicators)
+              if (responseText.includes('cart') || responseText.includes('success') || response.status === 200) {
+                result = { success: true, message: 'Items added to cart successfully' };
+                console.log('FormData upload appears successful based on response');
+              } else {
+                result = { success: true };
+                console.log('Assuming success for non-JSON response');
+              }
+            }
+                    console.log('Cart success:', result);
+          } catch (parseError) {
+            console.error('Error parsing success response:', parseError);
+            // Assume success if we can't parse but response was ok
+            result = { success: true };
+          }
+  
+          // Drawer already closed immediately after click - no need to close again
+          console.log('🛒 Cart operations completed in background');
+  
+          // Refresh cart and open the quick cart drawer
+          try {
+            console.log('🔄 Refreshing cart from server...');
+            
+            // Fetch fresh cart data from server
+            const cartResponse = await fetch('/cart.js');
+            const cartData = await cartResponse.json();
+            console.log('✅ Fresh cart data received:', cartData);
+            
+            // Update cart count in header
+            const cartCountElements = document.querySelectorAll('[data-cart-count], .cart-count, .header__cart-count');
+            cartCountElements.forEach(element => {
+              element.textContent = cartData.item_count || 0;
+            });
+            
+            // Refresh the quick cart HTML from server
+            const quickCartResponse = await fetch('/cart?section_id=quick-cart');
+            const quickCartHtml = await quickCartResponse.text();
+            console.log('✅ Quick cart HTML fetched');
+            
+            // Parse and update the quick cart container
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(quickCartHtml, 'text/html');
+            const newCartContainer = doc.querySelector('.quick-cart__container');
+            const currentCartContainer = document.querySelector('.quick-cart__container');
+            
+            if (newCartContainer && currentCartContainer) {
+              currentCartContainer.innerHTML = newCartContainer.innerHTML;
+              console.log('✅ Quick cart content updated with new items');
+            }
+            
+            // Dispatch cart update events
+            document.dispatchEvent(new CustomEvent('cart:refresh', { 
+              bubbles: true,
+              detail: { cart: cartData }
+            }));
+            document.dispatchEvent(new CustomEvent('cart:updated', { 
+              bubbles: true,
+              detail: { cart: cartData }
+            }));
+            document.dispatchEvent(new CustomEvent('quick-cart:updated', { 
+              bubbles: true,
+              detail: { cart: cartData }
+            }));
+            
+            // Small delay to ensure DOM updates are complete
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            // Now open the quick cart drawer
+            console.log('🛒 Opening quick cart drawer...');
+            let cartOpened = false;
+            
+            // Method 1: Find and activate quick cart wrapper
+            const quickCartWrapper = document.querySelector('.quick-cart__wrapper');
+            if (quickCartWrapper) {
+              quickCartWrapper.classList.add('active');
+              console.log('✅ Opened quick cart via wrapper class');
+              cartOpened = true;
+            }
+            
+            // Method 2: Try clicking cart trigger button
+            if (!cartOpened) {
+              const cartTriggers = [
+                '[data-header-cart]',
+                '.header__cart-link',
+                '[data-cart-drawer-trigger]',
+                '.cart-icon'
+              ];
+              
+              for (const selector of cartTriggers) {
+                const trigger = document.querySelector(selector);
+                if (trigger) {
+                  console.log(`🎯 Opening cart via trigger: ${selector}`);
+                  trigger.click();
+                  cartOpened = true;
+                  break;
+                }
+              }
+            }
+            
+            // Method 3: Use theme's cart drawer function if available
+            if (!cartOpened && typeof window.fastCartDrawer?.openWithFreshData === 'function') {
+              console.log('🎯 Opening cart via fastCartDrawer');
+              window.fastCartDrawer.openWithFreshData();
+              cartOpened = true;
+            }
+            
+            if (!cartOpened) {
+              console.warn('⚠️ Could not open quick cart, redirecting to cart page');
+              window.location.href = '/cart';
+            } else {
+              console.log('✅ Quick cart opened successfully with updated items');
+            }
+          } catch (refreshError) {
+            console.error('❌ Error refreshing cart:', refreshError);
+            // Fallback to cart page
+            window.location.href = '/cart';
+          }
+        } catch (err) {
+          console.error('Cart error:', err);
+          alert(err.message || 'Failed to add items to cart. Please try again.');
+          
+          // Re-open drawer if there was an error (since we closed it with delay)
+          setTimeout(() => {
+            open();
+            goToStep(4);
+            console.log('🚪 Lens selector drawer re-opened due to error');
+          }, 300);
+        } finally {
+          addToCartBtn.disabled = false;
+          addToCartBtn.textContent = 'Save and Continue';
+        }
+      });
+    
+      // Attach click handlers to lens cards
+      document.querySelectorAll('.js-lens-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+          // Don't trigger if clicking the details button
+          if (e.target.closest('.js-details-trigger')) {
+            return;
+          }
+          
+          // Remove selected class from all cards
+          document.querySelectorAll('.js-lens-card').forEach(c => c.classList.remove('is-selected'));
+          
+          // Add selected class to clicked card
+          card.classList.add('is-selected');
+          
+          // Navigate to Step 4
+          const drawer = document.getElementById('lens-drawer');
+          const steps = drawer.querySelectorAll('.la-step');
+          const contents = drawer.querySelectorAll('.la-content');
+          const fill = drawer.querySelector('.la-progress__fill');
+          
+          // Update step indicators
+          steps.forEach(s => s.classList.toggle('is-active', s.dataset.step == 4));
+          fill.style.width = '100%';
+          
+          // Show Step 4 content
+          contents.forEach(c => c.hidden = !c.classList.contains('la-content--step-4'));
+        });
+      });
+    });
+    
+    // Add this new code before the closing script tag
+    document.addEventListener('cart:refresh', function(event) {
+      // Find all cart items
+      const cartItems = document.querySelectorAll('.cart__item');
+      
+      cartItems.forEach(item => {
+        const properties = item.querySelector('.cart__item-properties');
+        if (!properties) return;
+    
+        // Get all properties and sort them
+        const props = Array.from(properties.children);
+        props.sort((a, b) => {
+          const aText = a.textContent.trim();
+          const bText = b.textContent.trim();
+          // Extract numbers from property names for sorting
+          const aNum = parseInt(aText.match(/^\d+\./) || [0]);
+          const bNum = parseInt(bText.match(/^\d+\./) || [0]);
+          return aNum - bNum;
+        });
+    
+        // Clear and re-append properties in order
+        properties.innerHTML = '';
+        props.forEach(prop => {
+          if (!prop.textContent.includes('_prescription')) {
+            const propDiv = document.createElement('div');
+            propDiv.className = 'cart__item-property';
+            propDiv.style.fontSize = '12px';
+            propDiv.style.color = '#666';
+            propDiv.style.marginTop = '4px';
+            propDiv.textContent = prop.textContent;
+            properties.appendChild(propDiv);
+          }
+        });
+    
+        // Style the properties container
+        properties.style.marginTop = '8px';
+        properties.style.paddingTop = '8px';
+        properties.style.borderTop = '1px solid #eee';
+      });
+    });
+    
+    // Add styles for cart properties
+    const styles = `
+      .cart__item-properties {
+        font-size: 12px;
+        color: #666;
+        margin-top: 8px;
+      }
+      .cart__item-property {
+        margin-bottom: 4px;
+        line-height: 1.4;
+      }
+      .cart__item-property:last-child {
+        margin-bottom: 0;
+      }
+    `;
+    
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = styles;
+    document.head.appendChild(styleSheet);
+    </script> 
+    

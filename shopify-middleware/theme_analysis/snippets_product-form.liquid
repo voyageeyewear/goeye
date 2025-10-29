@@ -1,0 +1,391 @@
+{%- liquid
+  comment
+    Renders the product form.
+
+    Required parameters:
+      - prod: { Object } The associated product object.
+
+    Optional parameters:
+      - hidden: { Boolean } Whether the form should be hidden.
+      - block: { Object } The associated block (for the "Buy button" block).
+      - blocks: { Object } The parent section's blocks.
+      - current_variant: { Object } The current variant object.
+      - show_dynamic_checkout: { Boolean } Whether dynamic checkout buttons should show.
+      - show_quantity_selector: { Boolean } Whether the quantity selector should show.
+      - show_quantity_in_cart: { Boolean} Whether the quantity selector should show a
+        "Quantity in cart" label.
+      - show_pickup_availability: { Boolean } Whether the pickup availability should show.
+      - is_quick: { Boolean } Whether the content is being rendered inside a quick view.
+      - featured_media: { Object } The initial media shown.
+      - aspect_ratio: { String } The value which determines the aspect ratio of the media.
+  endcomment
+
+  assign product_available_label = 'products.product.add_to_cart' | t
+  assign product_unavailable_label = 'products.product.sold_out' | t
+
+  if template.suffix == 'preorder'
+    assign product_available_label = 'products.product.preorder' | t
+  endif
+
+  assign form_classes = 'product-form product-form-' | append: section.id
+
+  if hidden
+    assign form_classes = form_classes | append: ' visually-hidden'
+  endif
+-%}
+
+{% form 'product',
+  prod,
+  class: form_classes,
+  novalidate: 'novalidate',
+  data-product-form: '',
+  data-product-handle: prod.handle,
+  data-current-product-id: current_variant.id,
+  data-has-quantity-selector: show_quantity_selector
+-%}
+  {% liquid
+    # Custom option fields within the form remain hidden, but will be updated from
+    # outside the form if they're enabled.
+
+    assign custom_option_blocks = blocks | where: 'type', 'custom_option'
+
+    # TODO: Do we need the block.type conditional below if we're already building
+    # an array of blocks based on that type?
+  -%}
+
+  {% for block in custom_option_blocks -%}
+    {% if block.type == 'custom_option' -%}
+      <div class="product-form__custom-option">
+        <label>
+          {{ block.settings.label }}:&nbsp;
+
+          {%- case block.settings.field_type -%}
+            {%- when 'text', 'textarea' -%}
+              <input
+                type="text"
+                class="input"
+                placeholder="{{ block.settings.placeholder }}"
+                name="properties[{{ block.settings.label }}]"
+                data-custom-option-target="{{ block.id }}"
+              >
+            {%- when 'checkbox' -%}
+              <input
+                type="checkbox"
+                value="{{ block.settings.checked_value }}"
+                name="properties[{{ block.settings.label }}]"
+                data-custom-option-target="{{ block.id }}"
+              >
+            {%- when 'list' -%}
+              {%- assign list_options = block.settings.list_options | split: ', ' -%}
+
+              <div class="select-wrapper">
+                <select
+                  class="input"
+                  name="properties[{{ block.settings.label }}]"
+                  data-custom-option-target="{{ block.id }}"
+                >
+                  {% for option in list_options -%}
+                    <option>{{ option }}</option>
+                  {%- endfor %}
+                </select>
+
+                {% render 'icon', icon: 'chevron-small', class: 'select-wrapper--icon' %}
+              </div>
+          {%- endcase -%}
+        </label>
+      </div>
+    {%- endif %}
+  {%- endfor %}
+
+  {% comment %}
+    In order for this form to submit, it needs to contain an input with name="id".
+    ProductForm() will automatically create this input (or make sure it has the
+    right value set if it already exists) on form submit based on the
+    currently selected variant.
+
+    However, if JS is disabled we need a fallback. As such, we include a single <select>
+    element which allows users to select all variants as a fallback and present it only
+    when JS is disabled. In addition, we hide the option inputs declared above, and only
+    show them if JS is enabled.
+  {% endcomment %}
+  <div class="product-form__variants">
+    <select
+      name="id"
+      class="input"
+      id="variant-selector"
+      data-variant-select
+    >
+      {% for variant in prod.variants -%}
+        <option
+          value="{{ variant.id }}"
+          {% if variant == current_variant -%}
+            selected="selected"
+          {%- endif %}
+        >
+          {{ variant.title }}
+          {%- if variant.available == false %} - {{ 'products.product.sold_out' | t }}{% endif %}
+        </option>
+      {%- endfor %}
+    </select>
+  </div>
+
+  <div class="product-form__quantity-and-buy-buttons-wrapper">
+    {% if show_quantity_selector -%}
+      {%- assign id = 'product-form-' | append: prod.id -%}
+
+      {%
+        render 'quantity-input',
+        parent_id: id,
+        prod: prod,
+        initial_value: '1',
+        show_label: show_quantity_in_cart,
+        show_quantity_in_cart: show_quantity_in_cart,
+        show_label: show_quantity_in_cart,
+        use_border: true,
+        wrapper_class: 'quantity-input-wrapper--product-form',
+      -%}
+    {%- endif %}
+
+    {% liquid
+      # The product quantity input remains hidden, but will be updated from outside the form if enabled.
+    -%}
+    <div class="product-form__quantity">
+      <div class="product__label-wrapper">
+        <label class="product__label" for="Quantity-Input-{{ prod.id }}">
+          {{ 'products.product.quantity' | t }}
+        </label>
+      </div>
+
+      <input
+        type="number"
+        id="Quantity-{{ prod.id }}"
+        name="quantity"
+        value="1"
+        min="1"
+        pattern="[0-9]*"
+        class="input product-form__input product-form__input--quantity"
+        aria-label="{{ 'general.accessibility.quantity' | t }}"
+      >
+    </div>
+
+    {% liquid
+      # With JS enabled, this form will always be hidden, but updated from an outside form.
+      # With JS disabled, the outside form is hidden, and this form will be visible.
+
+      if section.settings.enable_gift_card_recipient and prod.gift_card?
+        render 'gift-card-recipient-form', source: 'product-form', prod: prod, form: form
+      endif
+    %}
+
+    <div
+      class="product-form__controls-group product-form__controls-group--submit"
+      {% if block -%}
+        {{ block.shopify_attributes }}
+      {%- endif %}
+    >
+      {% liquid
+        # TODO: Do we still need these modifiers? If we do, should we transition to data attributes?
+        assign submit_wrapper_class = 'product-form__item product-form__item--submit'
+
+        if show_dynamic_checkout
+          assign submit_wrapper_class = submit_wrapper_class | append: ' product-form__item--payment-button'
+        endif
+
+        if prod.has_only_default_variant
+          assign submit_wrapper_class = submit_wrapper_class | append: ' product-form__item--no-variants'
+        endif
+
+        assign submit_button_class = 'product-form__cart-submit btn btn--medium btn--full'
+
+        if show_dynamic_checkout
+          assign submit_button_class = submit_button_class | append: ' btn--secondary'
+        else
+          assign submit_button_class = submit_button_class | append: ' btn--primary'
+        endif
+
+        assign add_to_cart_text = product_unavailable_label
+
+        if current_variant.available
+          assign add_to_cart_text = product_available_label
+        endif
+      -%}
+
+      <div class="{{ submit_wrapper_class }} product-form__add-to-cart-wrapper">
+        <button
+          type="submit"
+          name="add"
+          class="{{ submit_button_class }}"
+          {% unless current_variant.available -%}
+            aria-disabled="true"
+            disabled
+          {%- endunless %}
+          aria-label="{{ add_to_cart_text }}"
+          data-add-to-cart
+          data-lang-available="{{ product_available_label }}"
+          data-lang-unavailable="{{ 'product.unavailable' | t }}"
+          data-lang-sold-out="{{ 'product.sold_out' | t }}"
+        >
+          <span data-add-to-cart-text>{{ add_to_cart_text }}</span>
+
+          <div class="btn__loading-wrap">
+            <div class="btn__loading-bar"></div>
+          </div>
+
+          {% render 'icon', icon: 'checkmark' %}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {% comment %} Select Lens Button - Desktop Only {% endcomment %}
+  {% unless prod.tags contains 'no-power' %}
+    <div class="product-form__select-lens-wrapper" style="margin-top: 12px;">
+      <button 
+        type="button" 
+        class="btn btn--secondary btn--full product-form__select-lens-btn" 
+        id="product-select-lens-btn"
+        onclick="openLensSelector(event)"
+      >
+        <span>Select Lens</span>
+      </button>
+    </div>
+    
+    <style>
+      .product-form__select-lens-wrapper {
+        width: 100%;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+      }
+      
+      .product-form__select-lens-btn {
+        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
+        color: #8B1874 !important;
+        border: 2px solid #8B1874 !important;
+        font-weight: 700 !important;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+        box-shadow: 0 3px 10px rgba(139, 24, 116, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.5) !important;
+        transition: all 0.2s ease !important;
+        width: 100% !important;
+        padding: 12px 24px !important;
+        font-size: 16px !important;
+      }
+      
+      .product-form__select-lens-btn:hover {
+        background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%) !important;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6), inset 0 1px 3px rgba(255, 255, 255, 0.5) !important;
+        transform: translateY(-1px);
+      }
+      
+      .product-form__select-lens-btn span {
+        color: #8B1874 !important;
+        font-weight: 700 !important;
+      }
+      
+      /* Mobile: Hide Add to Cart, Show Select Lens ONLY */
+      @media screen and (max-width: 767px) {
+        /* Hide Add to Cart button and its container on mobile */
+        .product-form__add-to-cart-wrapper,
+        .product-form__controls-group--submit {
+          display: none !important;
+          visibility: hidden !important;
+          height: 0 !important;
+          overflow: hidden !important;
+        }
+        
+        /* Force Show Select Lens button on mobile */
+        .product-form__select-lens-wrapper {
+          display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          position: relative !important;
+          height: auto !important;
+          margin-top: 16px !important;
+        }
+        
+        .product-form__select-lens-btn {
+          display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+        }
+      }
+      
+      /* Desktop: Show both buttons */
+      @media screen and (min-width: 768px) {
+        .product-form__add-to-cart-wrapper,
+        .product-form__controls-group--submit {
+          display: block !important;
+          visibility: visible !important;
+          height: auto !important;
+        }
+        
+        .product-form__select-lens-wrapper {
+          display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+        }
+      }
+    </style>
+    
+    <script>
+      function openLensSelector(event) {
+        event.preventDefault();
+        console.log('🔍 Select Lens button clicked from product page');
+        
+        // Find and click the hidden lens selector trigger button
+        const lensSelectorTrigger = document.getElementById('lens-selector-button');
+        if (lensSelectorTrigger) {
+          console.log('✅ Found lens selector trigger, opening drawer...');
+          lensSelectorTrigger.click();
+        } else {
+          console.warn('⚠️ Lens selector trigger button not found');
+          
+          // Fallback: Try to open the lens drawer directly
+          const lensDrawer = document.getElementById('lens-drawer');
+          if (lensDrawer) {
+            lensDrawer.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            console.log('✅ Opened lens drawer directly');
+          } else {
+            console.error('❌ Could not find lens drawer');
+          }
+        }
+      }
+    </script>
+  {% endunless %}
+
+  <!-- <div id="simpl-checkout-product-v2" class="simpl-button-container"></div> -->
+  {% if show_dynamic_checkout -%}
+<!-- <div class="shiprocket-headless" data-type="product" style="margin-top:5px"></div> -->
+<input type="hidden" value="true" id="fastrrCollectionPage" />
+<input type="hidden" value={{ product.url }} name="productUrl" />
+    
+    <!-- {{ form | payment_button }} -->
+        <div class="shopify-payment-button">
+            {% render 'gokwik-buy-now' %}
+          </div>
+  {%- endif %}
+
+  {% unless is_quick -%}
+    {% comment %} Surface pick-up {% endcomment %}
+    {% if show_pickup_availability %}
+      <div
+        data-store-availability-container
+        data-base-url="{{ shop.url }}{{ routes.root_url }}"
+      ></div>
+      
+    {%- endif %}
+  {%- endunless %}
+
+  {%- if block.settings.enable_sticky_atc_bar_desktop or block.settings.enable_sticky_atc_bar_mobile -%}
+    {%
+      render 'sticky-atc-bar',
+      local_settings: block.settings,
+      prod: prod,
+      current_variant: current_variant,
+      featured_media: featured_media,
+      aspect_ratio: aspect_ratio,
+    %}
+  {%- endif -%}
+{%- endform %}

@@ -1,0 +1,1507 @@
+{% comment %}
+  Sticky Add To Cart Component - Three Distinct Sections
+  Usage: {% render 'sticky-add-to-cart', product: product %}
+{% endcomment %}
+
+<style>
+  .sticky-cart {
+    display: none; 
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    justify-content: center;
+    width: 100%;
+    max-width: 100vw; /* Prevent horizontal overflow */
+    pointer-events: none;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    box-sizing: border-box; /* Include padding/border in width calculation */
+    transition: all 0.3s ease; /* Smooth transitions for menu interactions */
+  }
+
+  /* MOBILE ONLY - show on small screens only */
+  @media screen and (max-width: 767px) {
+    .sticky-cart { 
+      display: flex !important; 
+      visibility: visible !important;
+      opacity: 1 !important;
+      left: 0;
+      right: 0;
+      position: fixed !important;
+      bottom: 0 !important;
+    }
+
+    body.menu-open .sticky-cart {
+      display: flex !important; /* Keep sticky cart visible */
+      width: 60%; /* Reduce width when menu is open */
+      left: auto;
+      right: 0; /* Align to right side */
+      transform: translateX(0);
+      max-width: 60vw; /* Prevent overflow */
+      z-index: 800 !important; /* Much lower to ensure menu appears above */
+      opacity: 0.9; /* Slightly fade when menu is open */
+      transition: all 0.3s ease; /* Smooth transition */
+    }
+
+    /* Adjust sticky cart content when menu is open */
+    body.menu-open .sticky-cart .sticky-section-2 {
+      padding: 4px 8px; /* Reduce padding to fit smaller width */
+      gap: 4px; /* Reduce gap between buttons */
+    }
+
+    body.menu-open .sticky-cart .cart-button {
+      font-size: 13px; /* Slightly smaller font */
+    }
+
+    body.menu-open .sticky-cart .sticky-section-3 {
+      padding: 4px 8px 4px 0; /* Reduce padding */
+    }
+
+    body.menu-open .sticky-cart .promo-text {
+      font-size: 12px; /* Smaller promo text */
+    }
+  }
+
+  /* Hide completely on tablet and desktop - MOBILE ONLY */
+  @media screen and (min-width: 768px) {
+    .sticky-cart {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+    }
+  }
+
+
+
+  /* Desktop menu handling - cart should stay below menu */
+  @media screen and (min-width: 768px) {
+    body.menu-open .sticky-cart {
+      z-index: 800; /* Ensure below menu on desktop too */
+    }
+  }
+
+  /* Ensure z-index hierarchy - below menu */
+  .sticky-cart {
+    z-index: 800; /* Much lower to ensure menu appears above */
+  }
+
+  .sticky-cart-content {
+    width: 100%;
+    max-width: 100vw; /* Prevent horizontal overflow */
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    box-shadow: none;
+    box-sizing: border-box; /* Include padding/border in width calculation */
+  }
+
+  /* Prevent horizontal overflow in all sticky sections */
+  .sticky-section-1,
+  .sticky-section-2,
+  .sticky-section-3 {
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+
+
+
+  /* SECTION 1: Diwali Price Section with Festive Theme */
+  .sticky-section-1 {
+    {% comment %} background: linear-gradient(135deg, #B95432 0%, #8B2F69 50%, #9E6058 100%); {% endcomment %}
+    {% comment %} background-image: url('https://cdn.shopify.com/s/files/1/0583/8831/6208/files/eyejack_frames_diwali_slider_website_1299_copy_3.png?v=1759733118'); {% endcomment %}
+    {% comment %} background-repeat: no-repeat; {% endcomment %}
+    background-size: contain;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    {% comment %} border-bottom: 2px solid #8B1874; {% endcomment %}
+    height: 44px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 15px rgba(255, 215, 0, 0.4);
+    background: #3a9ccf;
+    
+  }
+
+  /* Animated shimmer effect */
+  .sticky-section-1::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.3) 50%, 
+      transparent 100%);
+    animation: shimmerPrice 3s infinite;
+  }
+
+  {% comment %} Dhruv animation {% endcomment %}
+{% comment %} 
+  @keyframes shimmerPrice {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  } {% endcomment %}
+
+  /* Pale rounded shape on LEFT side - matching Section 3 style */
+  .sticky-section-1::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 75px;
+    {% comment %} background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 100%); {% endcomment %}
+    border-radius: 0 40px 40px 0;
+    z-index: 0;
+    {% comment %} box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.2); {% endcomment %}
+  }
+
+  .price-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+    margin-left: 10px;
+  }
+
+  .price-container {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .current-price {
+    font-size: 18px;
+    font-weight: 900;
+    color:rgb(255, 255, 255);
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+  }
+
+  .original-price {
+    font-size: 11px;
+    color:rgb(255, 255, 255);
+    text-decoration: line-through;
+    font-weight: 600;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tax-note {
+    font-size: 9px;
+    color:rgb(255, 255, 255);
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+    opacity: 0.85;
+    position: relative;
+    z-index: 1;
+  }
+
+  .discount-badge {
+    background: linear-gradient(135deg,rgb(255, 255, 255) 0%, #FFD700 100%);
+    {% comment %} color: #8B1874; {% endcomment %}
+    padding: 4px 6px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 0.9;
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translate(50%, -50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 215, 0, 0.5);
+    {% comment %} border: 2px solid #8B1874; {% endcomment %}
+  }
+
+  .discount-line-1 {
+    display: flex;
+    align-items: baseline;
+    line-height: 0.9;
+    margin-bottom: 0;
+  }
+
+  .discount-number {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 0.8;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .percent-and-off {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 1px;
+  }
+
+  .discount-percent {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 0.8;
+    margin-bottom: 1px;
+  }
+
+  .discount-off {
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 0.9;
+    margin-top: 0;
+  }
+
+  /* SECTION 2: Diwali Buttons Section */
+  .sticky-section-2 {
+    display: flex;
+    gap: 8px;
+    padding: 6px 12px;
+    {% comment %} border-bottom: 2px solid #8B1874; {% endcomment %}
+    background: linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 100%);
+    box-shadow: 0 2px 10px rgba(139, 24, 116, 0.2);
+  }
+
+  .sticky-section-2 .quantity-selector {
+    display: flex;
+    align-items: center;
+    border: 1px solid #000;
+    border-radius: 22px;
+    height: 44px;
+    margin-right: 10px;
+  }
+
+  .sticky-section-2 .quantity-btn {
+    background: none;
+    border: none;
+    width: 40px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .sticky-section-2 .quantity-input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sticky-section-2 .dynamic-checkout-buttons {
+    display: none !important;
+  }
+
+  .sticky-section-2 .cart-button {
+    flex: 1;
+    height: 44px;
+    border-radius: 22px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transform: scale(1);
+  }
+
+  /* Clean appearance - no transitions */
+
+  /* Buy Now button - NO transitions at all */
+  .sticky-section-2 .buy-now-btn {
+    transition: none !important;
+  }
+
+  /* Simple button styling - no hover effects */
+
+  /* Buy Now button - NO animations, NO transforms, NO transitions */
+  .sticky-section-2 .buy-now-btn:hover,
+  .sticky-section-2 .buy-now-btn:active,
+  .sticky-section-2 .buy-now-btn:focus {
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Clean button styling - no effects */
+
+  /* Buy Now button - NO ripple effect */
+  .sticky-section-2 .buy-now-btn::before {
+    display: none !important;
+  }
+
+  .sticky-section-2 .add-to-cart-btn {
+    border: 1px solid rgb(0, 0, 0);
+    background: white !important;
+    color: rgb(0, 0, 0);
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 3px 10px rgba(139, 24, 116, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.5);
+  }
+
+  .sticky-section-2 .add-to-cart-btn:hover {
+    background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%) !important;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6), inset 0 1px 3px rgba(255, 255, 255, 0.5);
+  }
+
+  .sticky-section-2 .buy-now-btn {
+    border: none;
+    background: linear-gradient(135deg, #8B1874 0%, #5C0E4A 100%) !important;
+    color:rgb(255, 255, 255) !important;
+    font-weight: 700;
+    box-shadow: 0 3px 15px rgba(139, 24, 116, 0.5), inset 0 1px 3px rgba(255, 215, 0, 0.3);
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+  }
+
+  .sticky-section-2 .buy-now-btn:hover {
+    background: linear-gradient(135deg, #5C0E4A 0%, #8B1874 100%) !important;
+    box-shadow: 0 4px 20px rgba(139, 24, 116, 0.7), inset 0 1px 3px rgba(255, 215, 0, 0.3);
+  }
+
+  /* Force button text to always be visible with Diwali colors */
+  .sticky-section-2 .buy-now-btn [data-buy-now-text],
+  .sticky-section-2 .buy-now-btn span {
+    color:rgb(255, 255, 255) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.6) !important;
+  }
+
+  .sticky-section-2 .add-to-cart-btn [data-add-to-cart-text],
+  .sticky-section-2 .add-to-cart-btn span {
+    color: rgb(0, 0, 0) !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+  }
+
+  /* Lock Buy Now button color - NO changes on any interaction */
+  .sticky-section-2 .buy-now-btn:hover,
+  .sticky-section-2 .buy-now-btn:focus,
+  .sticky-section-2 .buy-now-btn:active,
+  .sticky-section-2 .buy-now-btn:visited,
+  .sticky-section-2 .buy-now-btn.active,
+  .sticky-section-2 .buy-now-btn[aria-pressed="true"],
+  .sticky-section-2 .buy-now-btn:link,
+  .sticky-section-2 .buy-now-btn:target,
+  .sticky-section-2 .buy-now-btn:focus-visible,
+  .sticky-section-2 .buy-now-btn:focus-within,
+  .sticky-section-2 .buy-now-btn.clicked,
+  .sticky-section-2 .buy-now-btn.pressed,
+  .sticky-section-2 .buy-now-btn[data-clicked="true"] {
+    background: #000 !important;
+    background-color: #000 !important;
+    color: #fff !important;
+    border: none !important;
+    border-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+  }
+
+  /* Force override any theme or browser styles */
+  .sticky-section-2 .buy-now-btn,
+  .sticky-section-2 .buy-now-btn * {
+    background: #000 !important;
+    background-color: #000 !important;
+    color: #fff !important;
+  }
+
+  /* Prevent any color transitions or changes */
+  .sticky-section-2 .buy-now-btn {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Override any possible button or link styling */
+  button.buy-now-btn,
+  a.buy-now-btn,
+  .sticky-section-2 button.buy-now-btn,
+  .sticky-section-2 a.buy-now-btn {
+    background: #000 !important;
+    background-color: #000 !important;
+    color: #fff !important;
+    border: none !important;
+  }
+
+  /* Force button text to stay visible on all interactions */
+  .sticky-section-2 .buy-now-btn:hover [data-buy-now-text],
+  .sticky-section-2 .buy-now-btn:focus [data-buy-now-text],
+  .sticky-section-2 .buy-now-btn:active [data-buy-now-text],
+  .sticky-section-2 .buy-now-btn:hover span,
+  .sticky-section-2 .buy-now-btn:focus span,
+  .sticky-section-2 .buy-now-btn:active span {
+    color: #fff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline !important;
+  }
+
+  /* Loading state - ONLY for Add to Cart button, NEVER for Buy Now */
+  .sticky-section-2 .add-to-cart-btn.btn--loading {
+    cursor: wait;
+    pointer-events: none;
+    position: relative;
+  }
+
+  .sticky-section-2 .add-to-cart-btn .btn__loading-wrap {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sticky-section-2 .add-to-cart-btn.btn--loading .btn__loading-wrap {
+    display: flex;
+  }
+
+  /* Ensure Buy Now button NEVER shows loading state */
+  .sticky-section-2 .buy-now-btn.btn--loading {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+  }
+
+  .sticky-section-2 .buy-now-btn .btn__loading-wrap {
+    display: none !important;
+  }
+
+  /* Loading bar - ONLY for Add to Cart button */
+  .sticky-section-2 .add-to-cart-btn .btn__loading-bar {
+    width: 30px;
+    height: 3px;
+    background: currentColor;
+    position: relative;
+    overflow: hidden;
+    opacity: 0.5;
+  }
+
+  .sticky-section-2 .add-to-cart-btn .btn__loading-bar::before {
+    content: '';
+    position: absolute;
+    left: -30px;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    background: currentColor;
+    animation: loading-bar 1s infinite linear;
+  }
+
+  @keyframes loading-bar {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(60px); }
+  }
+
+  /* Ensure Buy Now button has NO loading bar effects */
+  .sticky-section-2 .buy-now-btn .btn__loading-bar,
+  .sticky-section-2 .buy-now-btn .btn__loading-bar::before {
+    display: none !important;
+    animation: none !important;
+  }
+
+  /* Disabled state */
+  .sticky-section-2 .cart-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* Ensure no other buttons or elements can appear */
+  .sticky-section-2 > *:not(.cart-button):not(.quantity-selector):not(.dynamic-checkout-buttons):not(.shopify-payment-button) {
+    display: none !important;
+  }
+
+  /* SECTION 3: Diwali Festive Promo Banner with Marquee Lights */
+  .sticky-section-3 {
+    background: linear-gradient(135deg, #8B1874 0%, #5C0E4A 50%, #8B1874 100%);
+    padding: 6px 12px 6px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+    min-height: 44px;
+    position: relative;
+    overflow: hidden;
+    border-top: 3px solid #FFD700;
+    box-shadow: 0 -3px 20px rgba(255, 215, 0, 0.4);
+    display: none;
+  }
+
+    /* Static festive lights border - No animation */
+    .sticky-section-3::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, 
+        #FFD700 0%, #FFA500 25%, #FF6B6B 50%, #FFA500 75%, #FFD700 100%);
+      z-index: 2;
+    }
+
+  .sticky-section-3::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 75px;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+    border-radius: 0 40px 40px 0;
+    z-index: 0;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.7), inset 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+
+  .promo-icon {
+    width: 85px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: transparent;
+    border-radius: 40px 0 0 40px;
+    margin-left: 0;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.5));
+  }
+
+  .promo-icon img {
+    width: 28px;
+    height: 28px;
+    display: block;
+    margin: auto;
+    filter: brightness(1.2) contrast(1.1);
+  }
+
+  .promo-text {
+    font-size: 17px;
+    font-weight: 900;
+    color: #FFD700;
+    line-height: 1.1;
+    flex: 1;
+    text-align: center;
+    margin-right: 0;
+    margin-left: 0;
+    text-shadow: 
+      0 0 10px rgba(255, 215, 0, 0.8),
+      0 0 20px rgba(255, 165, 0, 0.6),
+      2px 2px 4px rgba(0, 0, 0, 0.8);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    animation: textGlow 2s ease-in-out infinite;
+  }
+
+  @keyframes textGlow {
+    0%, 100% { 
+      text-shadow: 
+        0 0 10px rgba(255, 215, 0, 0.8),
+        0 0 20px rgba(255, 165, 0, 0.6),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+    50% { 
+      text-shadow: 
+        0 0 15px rgba(255, 215, 0, 1),
+        0 0 30px rgba(255, 165, 0, 0.8),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+  }
+
+  .promo-bold {
+    font-weight: 900;
+    color: #FFFFFF;
+    text-shadow: 
+      0 0 15px rgba(255, 255, 255, 1),
+      0 0 25px rgba(255, 215, 0, 0.9),
+      2px 2px 4px rgba(0, 0, 0, 0.9);
+  }
+
+  @media screen and (max-width: 768px) {
+    .sticky-section-1 {
+      padding: 10px 16px;
+    }
+    
+    .current-price {
+      font-size: 22px;
+    }
+    
+    .original-price {
+      font-size: 14px;
+    }
+    
+    .discount-badge {
+      font-size: 11px;
+      padding: 3px 8px;
+    }
+    
+    .tax-note {
+      font-size: 10px;
+    }
+    
+    .sticky-section-2 {
+      padding: 10px 16px;
+    }
+    
+    .cart-button {
+      height: 44px;
+      border-radius: 22px;
+      font-size: 15px;
+    }
+    
+    .sticky-section-3 {
+      padding: 10px 16px;
+      min-height: 40px;
+    }
+    
+    .promo-icon {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .promo-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    .promo-text {
+      font-size: 14px;
+      margin-right: 34px;
+    }
+  }
+
+  /* Cart drawer styling removed - using theme's original styles for authentic experience */
+
+  /* Duplicate Section 3 styles removed - see above for Diwali theme */
+
+  @media screen and (max-width: 768px) {
+    .sticky-section-1 {
+      padding: 10px 16px;
+    }
+    
+    .current-price {
+      font-size: 22px;
+    }
+    
+    .original-price {
+      font-size: 14px;
+    }
+    
+    .discount-badge {
+      font-size: 11px;
+      padding: 3px 8px;
+    }
+    
+    .tax-note {
+      font-size: 10px;
+    }
+    
+    .sticky-section-2 {
+      padding: 10px 16px;
+    }
+    
+    .cart-button {
+      height: 44px;
+      border-radius: 22px;
+      font-size: 15px;
+    }
+    
+    .sticky-section-3 {
+      padding: 10px 16px;
+      min-height: 40px;
+    }
+    
+    .promo-icon {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .promo-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    .promo-text {
+      font-size: 14px;
+      margin-right: 34px;
+    }
+  }
+
+  /* Clean and simple appearance - no animations */
+</style>
+
+<div class="sticky-cart">
+  <div class="sticky-cart-content">
+    <!-- SECTION 1: Price Section -->
+    <div class="sticky-section-1">
+      <div class="price-info">
+        <div class="price-container">
+        <div class="current-price">₹{{ product.price | money_without_currency }}</div>
+          {% if product.compare_at_price > product.price %}
+            <div class="original-price">₹{{ product.compare_at_price | money_without_currency }}</div>
+          {% endif %}
+        </div>
+        <div class="tax-note">(Inclusive of all taxes)</div>
+      </div>
+      
+      {% if product.compare_at_price > product.price %}
+        <div class="discount-badge">
+          <span class="discount-number">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}</span>
+          <div class="percent-and-off">
+            <span class="discount-percent">%</span>
+            <span class="discount-off">Off</span>
+      </div>
+    </div>
+      {% endif %}
+    </div>
+
+    <!-- Add before the sticky-section-2 div -->
+    <div 
+      class="product__quantity-error product__block product__block--medium hidden" 
+      data-quantity-error 
+      data-fallback-error-message="{{ 'products.product.quantity_error' | t }}"
+    >
+      {{ 'products.product.quantity_error' | t }}
+    </div>
+
+    <!-- Modify the sticky-section-2 div to include quantity selector -->
+    <div class="sticky-section-2">
+      {% if section.settings.show_quantity_selector %}
+        <div class="quantity-selector">
+          <button type="button" class="quantity-btn quantity-minus" aria-label="Decrease quantity">-</button>
+          <input 
+            type="number" 
+            name="quantity" 
+            value="1" 
+            min="1" 
+            max="{{ product.selected_or_first_available_variant.inventory_quantity }}" 
+            class="quantity-input"
+          >
+          <button type="button" class="quantity-btn quantity-plus" aria-label="Increase quantity">+</button>
+        </div>
+      {% endif %}
+
+      <button 
+        type="button" 
+        class="cart-button add-to-cart-btn" 
+        id="sticky-add-to-cart-btn"
+        name="add"
+      >
+        <span data-add-to-cart-text>Add to Cart</span>
+        <div class="btn__loading-wrap" style="display: none;">
+          <div class="btn__loading-bar"></div>
+        </div>
+      </button>
+
+      {% if settings.goBuynowEnable %}
+        <div class="shopify-payment-button" style="display: none !important;">
+          {% render 'gokwik-buy-now' %}
+        </div>
+      {% endif %}
+
+      <button 
+        type="button" 
+        class="cart-button buy-now-btn" 
+        name="checkout"
+        data-header-cart
+        data-cart-drawer-trigger
+      >
+        <span data-buy-now-text>Buy Now</span>
+      </button>
+    </div>
+
+
+
+
+    <!-- SECTION 3: Promo Banner -->
+    <div class="sticky-section-3">
+      <div class="pill-container">
+        <div class="pill-bg"></div>
+      <div class="promo-icon">
+          <img src="https://cdn.shopify.com/s/files/1/0570/8120/0663/files/price-tag_2977921.svg?v=1749471723" alt="Price Tag" style="width: 20px; height: 20px;">
+        </div>
+      </div>
+      
+      <div class="promo-text">
+        <strong class="promo-bold">BUY 1 GET 1 FREE!</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Price Range Configuration with Collection-Specific Logic
+const PRICE_RANGES = [
+  {
+    name: 'Budget',
+    min: 0,
+    max: 400,
+    offer: 599,
+    label: 'Buy 2 at flat ₹599'
+  },
+  {
+    name: 'Standard',
+    min: 401,
+    max: 600,
+    offer: 800,
+    label: 'Buy 2 at flat ₹800'
+  },
+  {
+    name: 'Mid-Range',
+    min: 601,
+    max: 700,
+    offer: 999,
+    label: 'Buy 2 at flat ₹999'
+  },
+  {
+    name: 'Premium',
+    min: 701,
+    max: 950,
+    offer: 1299,
+    label: 'Buy 2 at flat ₹1299'
+  },
+  {
+    name: 'Luxury',
+    min: 951,
+    max: Infinity,
+    offer: 1499,
+    label: 'Buy 2 at flat ₹1499'
+  }
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+  const addToCartBtn = document.querySelector('.sticky-cart .add-to-cart-btn');
+  const buyNowBtn = document.querySelector('.sticky-cart .buy-now-btn');
+  const stickyCart = document.querySelector('.sticky-cart');
+
+  // Force sticky cart to be permanently visible on mobile
+  function initStickyCartVisibility() {
+    // Only run on mobile devices
+    if (window.innerWidth > 767) {
+      console.log('📱 Desktop detected - sticky cart disabled');
+      if (stickyCart) {
+        stickyCart.style.display = 'none';
+      }
+      return;
+    }
+
+    console.log('📱 Mobile detected - sticky cart permanently enabled');
+    
+    // Force sticky cart to be permanently visible on mobile
+    if (stickyCart) {
+      stickyCart.style.cssText = 'display: flex !important; visibility: visible !important; opacity: 1 !important; position: fixed !important; bottom: 0 !important;';
+      
+      // Prevent any future style changes to display property
+      const originalSetAttribute = stickyCart.setAttribute;
+      stickyCart.setAttribute = function(name, value) {
+        if (name === 'style' && value.includes('display: none')) {
+          console.log('🚫 Blocked attempt to hide sticky cart');
+          return;
+        }
+        originalSetAttribute.call(this, name, value);
+      };
+
+      // Override style.display setter
+      Object.defineProperty(stickyCart.style, 'display', {
+        set: function(value) {
+          if (value === 'none') {
+            console.log('🚫 Blocked attempt to hide sticky cart via style.display');
+            return;
+          }
+          this._display = value;
+        },
+        get: function() {
+          return this._display || 'flex';
+        }
+      });
+    }
+  }
+
+
+  
+  // Initialize sticky cart visibility logic
+  initStickyCartVisibility();
+
+  // Comprehensive Cart Opening Strategy
+  function openCartDrawer() {
+    console.log('🛒 Attempting to Open Cart Drawer');
+
+    // First, try to trigger theme's quick cart update and open events
+    try {
+      // Dispatch quick cart events that the theme listens for
+      const quickCartEvents = [
+        new CustomEvent('quick-cart:open'),
+        new CustomEvent('quick-cart:updated'),
+        new CustomEvent('cart:open')
+              ];
+              
+      quickCartEvents.forEach(event => {
+                document.dispatchEvent(event);
+                window.dispatchEvent(event);
+              });
+
+      console.log('📡 Dispatched theme cart events');
+            } catch (error) {
+      console.warn('⚠️ Failed to dispatch cart events:', error);
+            }
+
+    // Find and activate the quick cart wrapper
+    const quickCartWrapper = document.querySelector('.quick-cart__wrapper');
+    if (quickCartWrapper) {
+      quickCartWrapper.classList.add('active');
+      console.log('✅ Added active class to quick cart wrapper');
+      
+      return true;
+    }
+
+    // Fallback: try clicking cart trigger buttons
+    const cartTriggers = [
+      '[data-header-cart]',
+      '.header__cart-link',
+      '[data-cart-drawer-trigger]',
+      '.cart-icon',
+      '.cart-trigger'
+        ];
+
+    for (const selector of cartTriggers) {
+      const trigger = document.querySelector(selector);
+      if (trigger) {
+        console.log(`🎯 Found and clicking cart trigger: ${selector}`);
+        trigger.click();
+                return true;
+              }
+            }
+
+    console.error('🚫 Could not open cart drawer');
+        return false;
+      }
+
+  // Simple and reliable cart refresh by fetching from server
+  function refreshCartFromServer() {
+    console.log('🌐 Refreshing cart from server...');
+    
+    return fetch('/cart?section_id=quick-cart')
+      .then(response => response.text())
+      .then(html => {
+        console.log('📥 Received cart HTML from server');
+
+        // Parse the HTML
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Find the cart container in the response
+        const newCartContainer = doc.querySelector('.quick-cart__container');
+        const currentCartContainer = document.querySelector('.quick-cart__container');
+        
+        if (newCartContainer && currentCartContainer) {
+          // Replace the entire cart content
+          currentCartContainer.innerHTML = newCartContainer.innerHTML;
+          console.log('✅ Cart container updated with server content');
+          
+          // Dispatch update event for theme
+          document.dispatchEvent(new CustomEvent('quick-cart:updated'));
+          
+          return true;
+        } else {
+          console.warn('⚠️ Could not find cart containers for update');
+          return false;
+        }
+      })
+      .catch(error => {
+        console.error('❌ Failed to refresh cart from server:', error);
+        return false;
+      });
+  }
+
+  function updateCartDrawer(cartData) {
+    console.log('🛒 Cart update via server refresh only - maintaining original theme aesthetic');
+    
+    // We'll rely entirely on refreshCartFromServer() for updates
+    // This ensures 100% theme-consistent styling and functionality
+    return true;
+    }
+
+  // Function to reset sticky cart Buy Now button
+  function resetStickyCartBuyNowButton() {
+    console.log('🔄 Resetting Sticky Cart Buy Now button state');
+    
+    const stickyBuyNowBtn = document.querySelector('.sticky-cart .buy-now-btn');
+    
+    if (stickyBuyNowBtn) {
+      // Remove loading state
+      stickyBuyNowBtn.classList.remove('btn--loading');
+      
+      // Restore button text
+      const buttonTextSpan = stickyBuyNowBtn.querySelector('[data-buy-now-text]');
+      if (buttonTextSpan) {
+        buttonTextSpan.textContent = 'Buy Now';
+        buttonTextSpan.style.display = '';
+      }
+      
+      // Hide loading wrapper
+      const loadingWrap = stickyBuyNowBtn.querySelector('.btn__loading-wrap');
+      if (loadingWrap) {
+        loadingWrap.style.display = 'none';
+      }
+      
+      console.log('✅ Sticky Cart Buy Now button text and state restored');
+    }
+  }
+
+  // GoKwik Initialization Function
+  function initializeGoKwik() {
+    // Check for existing GoKwik script
+    if (typeof window.GoKwik === 'undefined') {
+      console.warn('GoKwik script not loaded. Adding script dynamically.');
+      
+      const script = document.createElement('script');
+      script.src = 'https://cdn.gokwik.co/widget/gokwik-widget.js';
+      script.async = true;
+      script.onload = () => {
+        console.log('GoKwik script loaded successfully');
+
+        // Enable GoKwik button when script loads
+        const gokwikBuyNowBtn = document.getElementById('gokwik-buy-now');
+        if (gokwikBuyNowBtn) {
+          gokwikBuyNowBtn.classList.remove('disabled');
+          gokwikBuyNowBtn.removeAttribute('disabled');
+        }
+        
+        // Initialize GoKwik with theme settings
+        if (window.GoKwik && typeof window.GoKwik.init === 'function') {
+          window.GoKwik.init({
+            merchant_id: "{{ settings.gokwik_merchant_id }}", // Use theme setting for merchant ID
+            env: "{{ settings.gokwik_environment | default: 'prod' }}", // Allow environment selection
+            
+            // Optional: Additional configuration
+            onSuccess: (orderDetails) => {
+              console.log('GoKwik Checkout Success:', orderDetails);
+              // Reset button state on success
+              if (typeof resetGoKwikButton === 'function') {
+                resetGoKwikButton();
+              }
+              // Also reset sticky cart buy now button
+              resetStickyCartBuyNowButton();
+            },
+            onFailure: (error) => {
+              console.error('GoKwik Checkout Failure:', error);
+              // Reset button state on failure
+              if (typeof resetGoKwikButton === 'function') {
+                resetGoKwikButton();
+              }
+              // Also reset sticky cart buy now button
+              resetStickyCartBuyNowButton();
+            },
+            onClose: () => {
+              console.log('GoKwik Checkout Closed');
+              // Reset button state when checkout is closed
+              if (typeof resetGoKwikButton === 'function') {
+                resetGoKwikButton();
+              }
+              // Also reset sticky cart buy now button
+              resetStickyCartBuyNowButton();
+            }
+          });
+        }
+      };
+      script.onerror = () => {
+        console.error('Failed to load GoKwik script');
+        // Keep the button with its original text instead of showing error message
+      };
+      
+      document.head.appendChild(script);
+    }
+  }
+
+  // Modify buy now button click handler to use GoKwik
+  function handleAddToCartClick(button, redirectToCheckout = false) {
+    const variantId = "{{ product.selected_or_first_available_variant.id }}";
+    const quantity = document.querySelector('.quantity-input') ? 
+      document.querySelector('.quantity-input').value : 1;
+    
+    console.log('🚀 Starting add to cart process', {
+      variantId,
+      quantity,
+      redirectToCheckout
+    });
+    
+    // If this is Buy Now (redirectToCheckout = true), use GoKwik checkout immediately
+    if (redirectToCheckout) {
+      console.log('🛒 Buy Now clicked - triggering GoKwik checkout immediately');
+      
+      // NO LOADING STATE - button stays exactly the same
+      
+      // Try GoKwik buy now function first
+      if (typeof onBuyNowClick === 'function') {
+        console.log('🚀 Using theme GoKwik function');
+        onBuyNowClick(button);
+        return;
+      }
+      
+      // Try direct GoKwik checkout
+      if (window.GoKwik && typeof window.GoKwik.checkout === 'function') {
+        try {
+          const productData = {
+            variant_id: variantId,
+            quantity: parseInt(quantity),
+            product_id: "{{ product.id }}",
+            title: "{{ product.title | escape }}",
+            price: {{ product.price | money_without_currency | remove: ',' }},
+            image: "{{ product.featured_media.src | img_url: 'medium' }}"
+          };
+          
+          console.log('🚀 Direct GoKwik Checkout', productData);
+          window.GoKwik.checkout(productData);
+          return;
+        } catch (error) {
+          console.error('❌ GoKwik Direct Checkout Error:', error);
+        }
+      }
+      
+      // Fallback to regular checkout if GoKwik fails
+      console.log('🔄 GoKwik not available - falling back to regular checkout');
+      window.location.href = '/checkout';
+      return;
+    }
+    
+    // Regular Add to Cart process
+    const formData = new FormData();
+    formData.append('id', variantId);
+    formData.append('quantity', quantity);
+
+    // Add loading state only for Add to Cart (not Buy Now)
+    button.classList.add('btn--loading');
+
+    // Add to cart with immediate cart drawer opening
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: new URLSearchParams(formData)
+    })
+    .then(response => {
+      console.log('📦 Add to cart response status:', response.status);
+      if (!response.ok) throw new Error('Cart addition failed');
+      
+      // Open cart drawer immediately on successful response
+      openCartDrawer();
+      
+      return response.json();
+    })
+    .then(addedItem => {
+      console.log('✅ Item added to cart:', addedItem);
+      
+      // Update cart in background without waiting
+      refreshCartFromServer().catch(error => {
+        console.warn('⚠️ Background cart refresh failed:', error);
+      });
+    })
+    .catch(error => {
+      console.error('❌ Cart Addition Error:', error);
+      alert('Failed to add product to cart. Please try again.');
+    })
+    .finally(() => {
+      button.classList.remove('btn--loading');
+      console.log('🏁 Add to cart process completed');
+    });
+  }
+
+  // Attach event listeners
+  if (addToCartBtn) {
+    addToCartBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('🛒 Add to Cart button clicked from sticky cart');
+      
+      // Use the existing handleAddToCartClick function (redirectToCheckout = false)
+      handleAddToCartClick(addToCartBtn, false);
+    });
+  }
+
+  if (buyNowBtn) {
+    buyNowBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Buy Now triggers GoKwik checkout (redirectToCheckout = true)
+      handleAddToCartClick(buyNowBtn, true);
+      
+      // Reset button to original state after a short delay
+      setTimeout(() => {
+        resetBuyNowButtonToOriginalState();
+      }, 100);
+    });
+  }
+
+  // Function to reset Buy Now button to exact original state
+  function resetBuyNowButtonToOriginalState() {
+    const buyNowButton = document.querySelector('.sticky-cart .buy-now-btn');
+    if (buyNowButton) {
+      console.log('🔄 Resetting Buy Now button to original state');
+      
+      // Remove any classes that might have been added
+      buyNowButton.classList.remove('btn--loading', 'active', 'pressed', 'clicked');
+      
+      // Reset all inline styles to original state
+      buyNowButton.style.cssText = '';
+      
+      // Force original styling
+      buyNowButton.style.background = '#000';
+      buyNowButton.style.color = '#fff';
+      buyNowButton.style.border = 'none';
+      buyNowButton.style.transform = 'scale(1)';
+      buyNowButton.style.transition = 'none';
+      buyNowButton.style.animation = 'none';
+      buyNowButton.style.boxShadow = 'none';
+      buyNowButton.style.outline = 'none';
+      
+      // Ensure button is enabled and clickable
+      buyNowButton.disabled = false;
+      buyNowButton.style.pointerEvents = 'auto';
+      buyNowButton.style.cursor = 'pointer';
+      
+      // FORCE RESTORE BUTTON TEXT - most important fix
+      const buttonText = buyNowButton.querySelector('[data-buy-now-text]') || buyNowButton.querySelector('span');
+      if (buttonText) {
+        buttonText.textContent = 'Buy Now';
+        buttonText.style.color = '#fff';
+        buttonText.style.opacity = '1';
+        buttonText.style.visibility = 'visible';
+        buttonText.style.display = 'inline';
+        buttonText.style.fontSize = '15px';
+        buttonText.style.fontWeight = '600';
+        console.log('✅ Button text restored:', buttonText.textContent);
+      } else {
+        // If no text element found, create one
+        buyNowButton.innerHTML = '<span data-buy-now-text style="color: #fff; opacity: 1; visibility: visible; display: inline; font-size: 15px; font-weight: 600;">Buy Now</span>';
+        console.log('✅ Button text recreated');
+      }
+      
+      // Remove any loading overlays that might be covering the text
+      const loadingOverlays = buyNowButton.querySelectorAll('.btn__loading-wrap, .loading-overlay, .spinner, .loader');
+      loadingOverlays.forEach(overlay => {
+        overlay.style.display = 'none';
+        overlay.remove();
+      });
+      
+      // Remove focus if it has it
+      if (document.activeElement === buyNowButton) {
+        buyNowButton.blur();
+      }
+      
+      console.log('✅ Buy Now button completely reset with visible text');
+    }
+  }
+
+  // Optional: Add remove item functionality
+  document.addEventListener('click', (event) => {
+    const removeButton = event.target.closest('.cart-drawer-item-remove');
+    if (removeButton) {
+      event.preventDefault();
+      const lineItemId = removeButton.dataset.lineItemId;
+
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: `line=${lineItemId}&quantity=0`
+      })
+      .then(response => response.json())
+      .then(updateCartDrawer)
+      .catch(error => {
+        console.error('Remove Item Error:', error);
+        alert('Failed to remove item. Please try again.');
+      });
+    }
+  });
+
+  // Initialize GoKwik when DOM is ready
+  initializeGoKwik();
+
+  // Simple cleanup on page load - ensure buttons are in correct state
+  document.addEventListener('DOMContentLoaded', () => {
+    // Reset Buy Now button to original state on page load
+    setTimeout(() => {
+      resetBuyNowButtonToOriginalState();
+    }, 500);
+  });
+
+  // Additional reset triggers for Buy Now button
+  
+  // Reset when page becomes visible (user returns to tab)
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      setTimeout(() => {
+        resetBuyNowButtonToOriginalState();
+      }, 200);
+    }
+  });
+
+  // Reset when window gains focus
+  window.addEventListener('focus', () => {
+    setTimeout(() => {
+      resetBuyNowButtonToOriginalState();
+    }, 200);
+  });
+
+  // Reset when user navigates back to page
+  window.addEventListener('pageshow', () => {
+    setTimeout(() => {
+      resetBuyNowButtonToOriginalState();
+    }, 200);
+  });
+
+  // Listen for GoKwik-specific events to reset button
+  document.addEventListener('gokwik:checkout:close', () => {
+    resetBuyNowButtonToOriginalState();
+  });
+
+  document.addEventListener('gokwik:modal:close', () => {
+    resetBuyNowButtonToOriginalState();
+  });
+
+  // Aggressive monitoring to prevent button from becoming blank
+  setInterval(() => {
+    const buyNowBtn = document.querySelector('.sticky-cart .buy-now-btn');
+    if (buyNowBtn) {
+      // Check if button text is missing or hidden
+      const buttonText = buyNowBtn.querySelector('[data-buy-now-text]') || buyNowBtn.querySelector('span');
+      const hasVisibleText = buttonText && 
+        buttonText.textContent && 
+        buttonText.textContent.trim() !== '' &&
+        buttonText.style.display !== 'none' &&
+        buttonText.style.visibility !== 'hidden' &&
+        buttonText.style.opacity !== '0';
+      
+      if (!hasVisibleText) {
+        console.log('🚨 Buy Now button text missing or hidden - restoring immediately');
+        resetBuyNowButtonToOriginalState();
+      }
+      
+      // Also check background color
+      const currentBg = window.getComputedStyle(buyNowBtn).backgroundColor;
+      const expectedBg = 'rgb(0, 0, 0)'; // #000 in RGB
+      
+      if (currentBg !== expectedBg) {
+        console.log('🔄 Buy Now button color changed, resetting...');
+        resetBuyNowButtonToOriginalState();
+      }
+    }
+  }, 1000); // Check every 1 second for faster response
+
+  // Immediate intervention when button is clicked
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('.sticky-cart .buy-now-btn')) {
+      console.log('🎯 Buy Now button clicked - ensuring text stays visible');
+      
+      // Small delay then check and restore text
+      setTimeout(() => {
+        resetBuyNowButtonToOriginalState();
+      }, 50);
+      
+      // Also check after a bit longer delay
+      setTimeout(() => {
+        resetBuyNowButtonToOriginalState();
+      }, 300);
+    }
+  }, true); // Use capture phase to catch early
+});
+
+// Side Menu Interaction Handler
+(function() {
+  // More comprehensive menu detection
+  const menuSelectors = [
+    '.mobile-menu', 
+    '.side-menu', 
+    '.menu-drawer', 
+    '#mobile-menu', 
+    '#side-menu',
+    '.shopify-menu-drawer'
+  ];
+
+  const menuToggleSelectors = [
+    '.menu-toggle', 
+    '.hamburger-menu', 
+    '.mobile-menu-trigger', 
+    '#menu-toggle', 
+    '.drawer-toggle'
+  ];
+
+  function findFirstMatchingElement(selectors) {
+    for (const selector of selectors) {
+      const element = document.querySelector(selector);
+      if (element) return element;
+    }
+    return null;
+  }
+
+  const menu = findFirstMatchingElement(menuSelectors);
+  const menuToggle = findFirstMatchingElement(menuToggleSelectors);
+
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      document.body.classList.toggle('menu-open');
+    });
+  }
+
+  // Fallback click-outside detection
+  document.addEventListener('click', (event) => {
+    const isMenuOpen = document.body.classList.contains('menu-open');
+    const isMenuOrTrigger = event.target.closest(
+      menuSelectors.concat(menuToggleSelectors).join(', ')
+    );
+    
+    if (isMenuOpen && !isMenuOrTrigger) {
+      document.body.classList.remove('menu-open');
+    }
+  });
+
+  // Optional: Ensure menu state on resize
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      document.body.classList.remove('menu-open');
+    }
+  });
+})();
+</script>

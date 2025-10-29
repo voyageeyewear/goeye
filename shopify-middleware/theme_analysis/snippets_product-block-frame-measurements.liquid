@@ -1,0 +1,266 @@
+{% liquid
+  comment
+    Renders frame measurements block for eyeglass products.
+
+    Required parameters:
+      - block: { Object } The block object containing settings
+
+    Optional parameters:
+      - prod: { Object } The product object for accessing metafields
+  endcomment
+
+  assign lens_width = block.settings.lens_width
+  assign bridge_width = block.settings.bridge_width
+  assign temple_length = block.settings.temple_length
+
+  # Try to extract measurements from product description first
+  if prod.description != blank
+    assign description_text = prod.description | strip_html | downcase
+    
+    # Extract Lens Width
+    if description_text contains 'lens width (mm):'
+      assign lens_width_line = description_text | split: 'lens width (mm):' | last | split: '\n' | first | strip
+      assign lens_width_value = lens_width_line | split: 'mm' | first | strip
+      if lens_width_value != blank and lens_width_value != '0'
+        assign lens_width = lens_width_value
+      endif
+    endif
+    
+    # Extract Bridge Width (from Nose Length)
+    if description_text contains 'nose length (mm):'
+      assign bridge_width_line = description_text | split: 'nose length (mm):' | last | split: '\n' | first | strip
+      assign bridge_width_value = bridge_width_line | split: 'mm' | first | strip
+      if bridge_width_value != blank and bridge_width_value != '0'
+        assign bridge_width = bridge_width_value
+      endif
+    endif
+    
+    # Extract Temple Length
+    if description_text contains 'temple length (mm):'
+      assign temple_length_line = description_text | split: 'temple length (mm):' | last | split: '\n' | first | strip
+      assign temple_length_value = temple_length_line | split: 'mm' | first | strip
+      if temple_length_value != blank and temple_length_value != '0'
+        assign temple_length = temple_length_value
+      endif
+    endif
+  endif
+
+  # Try to get measurements from product metafields if not found in description
+  if prod.metafields.custom.lens_width != blank and lens_width == block.settings.lens_width
+    assign lens_width = prod.metafields.custom.lens_width
+  endif
+  if prod.metafields.custom.bridge_width != blank and bridge_width == block.settings.bridge_width
+    assign bridge_width = prod.metafields.custom.bridge_width
+  endif
+  if prod.metafields.custom.temple_length != blank and temple_length == block.settings.temple_length
+    assign temple_length = prod.metafields.custom.temple_length
+  endif
+
+  # Determine size based on lens width
+  assign frame_size = 'Medium'
+  if lens_width != blank
+    assign lens_width_num = lens_width | times: 1
+    if lens_width_num <= 50
+      assign frame_size = 'Small'
+    elsif lens_width_num >= 58
+      assign frame_size = 'Large'
+    else
+      assign frame_size = 'Medium'
+    endif
+  endif
+-%}
+
+<div class="product-block-frame-measurements product__block product__block--medium" {{ block.shopify_attributes }}>
+  {% if lens_width != blank -%}
+    <div class="frame-size-section">
+      <div class="frame-size-display">
+        <span class="frame-size-text">SIZE:- {{ frame_size | upcase }}</span>
+      </div>
+    </div>
+  {%- endif %}
+
+  <div class="frame-measurements">
+    {% if lens_width != blank -%}
+      <div class="frame-measurements__item">
+                          <div class="frame-measurements__icon">
+           <img src="https://cdn.shopify.com/s/files/1/0583/8831/6208/files/lens.png?v=1750768567" 
+                alt="Lens Width Measurement" 
+                class="measurement-icon-image"
+                loading="lazy">
+         </div>
+        <div class="frame-measurements__details">
+          <span class="frame-measurements__label">Lens Width</span>
+          <span class="frame-measurements__value">{{ lens_width }}mm</span>
+        </div>
+      </div>
+    {%- endif %}
+
+    {% if bridge_width != blank -%}
+      <div class="frame-measurements__item">
+                          <div class="frame-measurements__icon">
+           <img src="https://cdn.shopify.com/s/files/1/0583/8831/6208/files/bridge.png?v=1750768566" 
+                alt="Bridge Width Measurement" 
+                class="measurement-icon-image"
+                loading="lazy">
+         </div>
+        <div class="frame-measurements__details">
+          <span class="frame-measurements__label">Bridge Width</span>
+          <span class="frame-measurements__value">{{ bridge_width }}mm</span>
+        </div>
+      </div>
+    {%- endif %}
+
+    {% if temple_length != blank -%}
+      <div class="frame-measurements__item">
+                          <div class="frame-measurements__icon">
+           <img src="https://cdn.shopify.com/s/files/1/0583/8831/6208/files/temple.png?v=1750768566" 
+                alt="Temple Length Measurement" 
+                class="measurement-icon-image"
+                loading="lazy">
+         </div>
+        <div class="frame-measurements__details">
+          <span class="frame-measurements__label">Temple Length</span>
+          <span class="frame-measurements__value">{{ temple_length }}mm</span>
+        </div>
+      </div>
+    {%- endif %}
+  </div>
+
+  {% unless block.settings.size_guide_text == blank or block.settings.size_guide_page == blank -%}
+    <div class="frame-measurements__size-guide">
+      <a href="{{ pages[block.settings.size_guide_page].url }}" class="frame-measurements__size-guide-link">
+        {{ block.settings.size_guide_text }}
+      </a>
+    </div>
+  {%- endunless %}
+</div>
+
+<style>
+  .product-block-frame-measurements {
+    padding: 12px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    background: #fafafa;
+  }
+
+  .frame-size-section {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .frame-size-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #444;
+    letter-spacing: 0.3px;
+  }
+
+
+
+  .frame-measurements {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .frame-measurements__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    background: white;
+    border-radius: 6px;
+    padding: 8px 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .frame-measurements__icon {
+    width: 50px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    flex-shrink: 0;
+  }
+
+  .measurement-icon-image {
+    width: 100%;
+    height: auto;
+    max-width: 50px;
+    object-fit: contain;
+    opacity: 0.8;
+  }
+
+  .frame-measurements__details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+  }
+
+  .frame-measurements__label {
+    font-size: 11px;
+    color: #777;
+    font-weight: 500;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .frame-measurements__value {
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .frame-measurements__size-guide {
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .frame-measurements__size-guide-link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .frame-measurements__size-guide-link:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 767px) {
+    .frame-measurements {
+      gap: 4px;
+      padding: 6px;
+    }
+
+    .frame-measurements__item {
+      padding: 6px 2px;
+    }
+
+    .frame-measurements__icon {
+      width: 40px;
+      height: 28px;
+    }
+
+    .measurement-icon-image {
+      max-width: 40px;
+    }
+
+    .frame-measurements__label {
+      font-size: 10px;
+    }
+
+    .frame-measurements__value {
+      font-size: 12px;
+    }
+
+    .frame-size-text {
+      font-size: 13px;
+    }
+  }
+</style> 

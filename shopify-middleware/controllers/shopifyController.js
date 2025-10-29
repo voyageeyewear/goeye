@@ -13,6 +13,32 @@ exports.getThemeSections = async (req, res, next) => {
   }
 };
 
+// Get theme files (product page templates and snippets)
+exports.getThemeFiles = async (req, res, next) => {
+  try {
+    const themeFiles = await shopifyService.fetchThemeFiles();
+    res.json({
+      success: true,
+      data: themeFiles
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get all theme assets list
+exports.getAllThemeAssets = async (req, res, next) => {
+  try {
+    const assets = await shopifyService.fetchAllThemeAssets();
+    res.json({
+      success: true,
+      data: assets
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Get all products
 exports.getProducts = async (req, res, next) => {
   try {
@@ -110,6 +136,177 @@ exports.searchProducts = async (req, res, next) => {
     res.json({
       success: true,
       data: results
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Cart operations
+exports.addToCart = async (req, res, next) => {
+  try {
+    const { variantId, quantity = 1, properties = {} } = req.body;
+    if (!variantId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Variant ID is required'
+      });
+    }
+    const cart = await shopifyService.addToCart(variantId, quantity, properties);
+    res.json({
+      success: true,
+      data: cart
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Add multiple items to cart
+exports.addMultipleToCart = async (req, res, next) => {
+  try {
+    const { items } = req.body;
+    
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ 
+        success: false,
+        error: 'Items array is required' 
+      });
+    }
+    
+    const cart = await shopifyService.addMultipleToCart(items);
+    res.json({
+      success: true,
+      data: cart
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateCart = async (req, res, next) => {
+  try {
+    const { variantId, quantity, lineItemId } = req.body;
+    
+    // Accept either variantId or lineItemId
+    let itemId = lineItemId;
+    
+    if (!itemId && variantId) {
+      // Get current cart to find line item by variant ID
+      const currentCart = await shopifyService.getCart();
+      const item = currentCart.items.find(item => item.variantId === variantId);
+      if (!item) {
+        return res.status(404).json({
+          success: false,
+          error: 'Item not found in cart'
+        });
+      }
+      itemId = item.id;
+    }
+    
+    if (!itemId || quantity === undefined) {
+      return res.status(400).json({
+        success: false,
+        error: 'Variant ID or Line item ID, and quantity are required'
+      });
+    }
+    
+    const cart = await shopifyService.updateCart(itemId, quantity);
+    res.json({
+      success: true,
+      data: cart
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.removeFromCart = async (req, res, next) => {
+  try {
+    const { variantId, lineItemId } = req.body;
+    
+    // Accept either variantId or lineItemId
+    let itemId = lineItemId;
+    
+    if (!itemId && variantId) {
+      // Get current cart to find line item by variant ID
+      const currentCart = await shopifyService.getCart();
+      const item = currentCart.items.find(item => item.variantId === variantId);
+      if (!item) {
+        return res.status(404).json({
+          success: false,
+          error: 'Item not found in cart'
+        });
+      }
+      itemId = item.id;
+    }
+    
+    if (!itemId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Variant ID or Line item ID is required'
+      });
+    }
+    
+    const cart = await shopifyService.removeFromCart(itemId);
+    res.json({
+      success: true,
+      data: cart
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getCart = async (req, res, next) => {
+  try {
+    const cart = await shopifyService.getCart();
+    res.json({
+      success: true,
+      data: cart
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.clearCart = async (req, res, next) => {
+  try {
+    const cart = await shopifyService.clearCart();
+    res.json({
+      success: true,
+      data: cart
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.createCheckout = async (req, res, next) => {
+  try {
+    const { lineItems } = req.body;
+    if (!lineItems || !Array.isArray(lineItems)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Line items array is required'
+      });
+    }
+    const checkout = await shopifyService.createCheckout(lineItems);
+    res.json({
+      success: true,
+      data: checkout
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getLensOptions = async (req, res, next) => {
+  try {
+    const lensOptions = await shopifyService.fetchLensOptions();
+    res.json({
+      success: true,
+      data: lensOptions
     });
   } catch (error) {
     next(error);
