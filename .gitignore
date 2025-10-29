@@ -37,3 +37,22 @@ Thumbs.db
 # Temporary files
 eyejack_new_theme.html
 
+# Test/Debug scripts with credentials
+check_*.js
+fetch_*.js
+test_*.sh
+*_test.js
+railway.env.json
+
+# Documentation (temporary)
+*_COMPLETE.md
+*_FIXED.md
+*_STATUS.md
+*_GUIDE.md
+*_CHECKLIST.md
+*_INSTRUCTIONS.md
+
+# Screenshots
+*.png
+emulator_screenshot.png
+
