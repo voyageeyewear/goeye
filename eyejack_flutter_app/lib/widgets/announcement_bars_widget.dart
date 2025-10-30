@@ -10,20 +10,25 @@ class AnnouncementBarsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final bars = settings['bars'] as List<dynamic>? ?? [];
     
+    // Debug: Print announcement bar colors
+    for (var bar in bars) {
+      debugPrint('📢 Announcement: "${bar['text']}" - BG: ${bar['backgroundColor']}');
+    }
+    
     if (bars.isEmpty) return const SizedBox.shrink();
 
     return Container(
-      height: 40,
+      height: 32,
       child: FlutterCarousel(
         options: CarouselOptions(
-          height: 40,
+          height: 32,
           viewportFraction: 1.0,
           autoPlay: true,
           autoPlayInterval: const Duration(seconds: 3),
           showIndicator: false,
         ),
         items: bars.map((bar) {
-          final backgroundColor = _parseColor(bar['backgroundColor'] ?? '#008060');
+          final backgroundColor = _parseColor(bar['backgroundColor'] ?? '#52b1e2');
           final textColor = _parseColor(bar['textColor'] ?? '#FFFFFF');
           
           return Container(
@@ -34,7 +39,7 @@ class AnnouncementBarsWidget extends StatelessWidget {
               bar['text'] ?? '',
               style: TextStyle(
                 color: textColor,
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: FontWeight.w600,
               ),
             ),

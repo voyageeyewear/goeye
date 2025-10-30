@@ -45,9 +45,6 @@ class StickyCartWidget extends StatelessWidget {
 
             // Section 2: Action Buttons
             _buildSection2ActionButtons(),
-
-            // Section 3: Info Text
-            _buildSection3InfoText(),
           ],
         ),
       ),
@@ -218,68 +215,6 @@ class StickyCartWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  /// SECTION 3: Info/Promo Text
-  Widget _buildSection3InfoText() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFF9E6),
-        border: Border(
-          top: BorderSide(color: Colors.grey[200]!),
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFC107),
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: const Icon(
-              Icons.info_outline,
-              color: Colors.white,
-              size: 14,
-            ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              selectedLensOptions != null
-                  ? 'Lens selected: ${_getLensSelectionSummary()}'
-                  : '✨ Free shipping on prepaid orders • Easy returns',
-              style: TextStyle(
-                color: Colors.grey[800],
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _getLensSelectionSummary() {
-    if (selectedLensOptions == null) return '';
-    
-    if (selectedLensOptions!['isFrameOnly'] == true) {
-      return 'Frame Only';
-    }
-
-    final lensType = selectedLensOptions!['lensType'] ?? '';
-    final powerType = selectedLensOptions!['powerType'] ?? '';
-    
-    if (lensType == 'zero-power') {
-      return 'Zero Power${powerType.isNotEmpty ? " - $powerType" : ""}';
-    }
-    
-    return 'With Power${powerType.isNotEmpty ? " - $powerType" : ""}';
   }
 }
 

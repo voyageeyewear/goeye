@@ -14,6 +14,7 @@ import 'special_collection_widget.dart';
 import 'eyewear_collection_cards_widget.dart';
 import 'offers_grid_widget.dart';
 import 'trust_badges_widget.dart';
+import 'instagram_stories_widget.dart';
 
 class SectionRenderer extends StatelessWidget {
   final Section section;
@@ -51,7 +52,8 @@ class SectionRenderer extends StatelessWidget {
         return HeroSliderWidget(settings: section.settings);
       
       case 'category_grid':
-        return CategoryGridWidget(settings: section.settings);
+        // Hide category grid (4 boxes) - per user request
+        return const SizedBox.shrink();
       
       case 'gender_categories':
         return GenderCategoriesWidget(settings: section.settings);
@@ -67,6 +69,9 @@ class SectionRenderer extends StatelessWidget {
       
       case 'trust_badges':
         return TrustBadgesWidget(settings: section.settings);
+      
+      case 'instagram_stories':
+        return InstagramStoriesWidget(settings: section.settings);
       
       default:
         // Fallback for unknown section types

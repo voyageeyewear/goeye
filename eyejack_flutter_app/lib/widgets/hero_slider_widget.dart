@@ -3,6 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
+import '../models/collection_model.dart';
+import '../screens/collection_screen.dart';
 
 class HeroSliderWidget extends StatefulWidget {
   final Map<String, dynamic> settings;
@@ -210,9 +212,9 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
     final isCurrentVideo = _currentVideoIndex == index;
     final controller = isCurrentVideo ? _currentVideoController : null;
     final chewie = isCurrentVideo ? _currentChewieController : null;
-    final posterImage = slide['posterImage'] ?? '';
+    final linkUrl = slide['link'] ?? '';
     
-    return Container(
+    Widget videoWidget = Container(
       color: Colors.black,
       width: double.infinity,
       height: double.infinity,
@@ -221,7 +223,7 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
         children: [
           if (chewie != null && (controller?.value.isInitialized ?? false))
             FittedBox(
-              fit: BoxFit.cover,
+              fit: BoxFit.contain, // Changed from cover to contain - prevents side cropping
               child: SizedBox(
                 width: controller!.value.size.width,
                 height: controller.value.size.height,
@@ -229,31 +231,53 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
               ),
             )
           else
-            // Show poster image as fallback when video fails to load or is loading
-            posterImage.isNotEmpty
-                ? CachedNetworkImage(
-                    imageUrl: posterImage,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: Colors.black,
-                      child: const Center(
-                        child: CircularProgressIndicator(color: Colors.white),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      color: Colors.black,
-                      child: const Icon(Icons.image, size: 80, color: Colors.grey),
-                    ),
-                  )
-                : Container(
-                    color: Colors.black,
-                    child: const Center(
-                      child: CircularProgressIndicator(color: Colors.white),
-                    ),
-                  ),
+            // Show loading indicator without thumbnail/poster
+            Container(
+              color: Colors.black,
+              child: const Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              ),
+            ),
         ],
       ),
     );
+
+    // Wrap with GestureDetector if link is provided
+    if (linkUrl.isNotEmpty) {
+      return GestureDetector(
+        onTap: () => _handleSlideLink(linkUrl),
+        child: videoWidget,
+      );
+    }
+    
+    return videoWidget;
+  }
+
+  void _handleSlideLink(String url) {
+    if (url.isEmpty) return;
+    
+    debugPrint('🔗 Slide link tapped: $url');
+    
+    // Extract collection handle from URL
+    // e.g., https://eyejack.in/collections/sunglasses -> sunglasses
+    if (url.contains('/collections/')) {
+      final handle = url.split('/collections/').last;
+      final collectionName = handle.split('-').map((s) => s[0].toUpperCase() + s.substring(1)).join(' ');
+      
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => CollectionScreen(
+            collection: Collection(
+              id: handle,
+              title: collectionName,
+              handle: handle,
+              description: null,
+              image: null,
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildImageSlide(Map<String, dynamic> slide, bool isMobile) {
@@ -263,8 +287,9 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
     final heading = slide['heading'] ?? '';
     final subheading = slide['subheading'] ?? '';
     final ctaText = slide['ctaText'] ?? '';
+    final linkUrl = slide['link'] ?? '';
 
-    return Stack(
+    Widget imageWidget = Stack(
       fit: StackFit.expand,
       children: [
         // Background Image
@@ -323,9 +348,7 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
                   if (ctaText.isNotEmpty) ...[
                     const SizedBox(height: 24),
                     ElevatedButton(
-                      onPressed: () {
-                        // Navigate to link
-                      },
+                      onPressed: () => _handleSlideLink(linkUrl),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: Colors.black,
@@ -353,5 +376,15 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
           ),
       ],
     );
+
+    // Wrap with GestureDetector if link is provided and no CTA button
+    if (linkUrl.isNotEmpty && ctaText.isEmpty) {
+      return GestureDetector(
+        onTap: () => _handleSlideLink(linkUrl),
+        child: imageWidget,
+      );
+    }
+    
+    return imageWidget;
   }
 }

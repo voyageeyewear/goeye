@@ -117,25 +117,41 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         elevation: 0,
         leading: Builder(
           builder: (context) => IconButton(
-            icon: const Icon(Icons.menu, color: Colors.black),
+            icon: const Icon(Icons.menu, color: Colors.white),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
-        title: const Text(
-          'Eyejack Eyewear',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+        title: Center(
+          child: Image.network(
+            'https://eyejack.in/cdn/shop/files/colored-logo.png',
+            height: 32,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return const Text(
+                'Eyejack',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            },
           ),
         ),
+        centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
+            icon: const Icon(Icons.search, color: Colors.white),
+            onPressed: () {
+              Navigator.pushNamed(context, '/search');
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
             onPressed: _showCartDrawer,
           ),
         ],

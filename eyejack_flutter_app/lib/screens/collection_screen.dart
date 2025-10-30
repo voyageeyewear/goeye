@@ -64,18 +64,59 @@ class _CollectionScreenState extends State<CollectionScreen> {
 
     if (_error != null) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline, size: 60, color: Colors.red),
-            const SizedBox(height: 16),
-            Text('Error: $_error'),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadProducts,
-              child: const Text('Retry'),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, size: 60, color: Colors.red),
+              const SizedBox(height: 16),
+              const Text(
+                'Collection Not Found',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'The collection "${widget.collection.title}" could not be loaded.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.grey[600],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Error details: $_error',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[500],
+                ),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: _loadProducts,
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Retry'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF27916D),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  OutlinedButton.icon(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.arrow_back),
+                    label: const Text('Go Back'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       );
     }

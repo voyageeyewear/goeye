@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import '../models/product_model.dart';
+import '../models/collection_model.dart';
 import '../services/api_service.dart';
 import '../services/gokwik_service.dart';
 import '../widgets/lens_selector_drawer.dart';
 import '../widgets/sticky_cart_widget.dart';
 import '../widgets/cart_drawer.dart';
+import 'collection_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
@@ -23,6 +25,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Map<String, dynamic>? _selectedLensOptions;
   final ScrollController _scrollController = ScrollController();
   bool _showStickyCart = false;
+  bool _isDescriptionExpanded = false;
 
   @override
   void initState() {
@@ -46,6 +49,26 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _handleBreadcrumbNavigation(String category) {
+    // Navigate to collection in-app
+    final handle = category.toLowerCase().replaceAll(' ', '-');
+    debugPrint('🔗 Breadcrumb tapped: $handle');
+    
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CollectionScreen(
+          collection: Collection(
+            id: handle,
+            title: category,
+            handle: handle,
+            description: null,
+            image: null,
+          ),
+        ),
+      ),
+    );
   }
 
   void _showCartDrawer() {
@@ -145,33 +168,33 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           widget.product.title,
           style: const TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
+            icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
             onPressed: _showCartDrawer,
           ),
           IconButton(
-            icon: const Icon(Icons.favorite_border, color: Colors.black),
+            icon: const Icon(Icons.favorite_border, color: Colors.white),
             onPressed: () {
               // TODO: Add to favorites
             },
           ),
           IconButton(
-            icon: const Icon(Icons.share_outlined, color: Colors.black),
+            icon: const Icon(Icons.share_outlined, color: Colors.white),
             onPressed: () {
               // TODO: Share product
             },
@@ -185,6 +208,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Breadcrumbs
+                _buildBreadcrumbs(),
+                
                 // Image Gallery
                 _buildImageGallery(),
                 
@@ -194,11 +220,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Product Title
+                      // Product Title (made smaller)
                       Text(
                         widget.product.title,
                         style: const TextStyle(
-                          fontSize: 24,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                           height: 1.3,
@@ -256,12 +282,71 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
+  Widget _buildBreadcrumbs() {
+    // Extract collection/category from product tags or type
+    final productType = widget.product.productType ?? '';
+    final category = productType.isNotEmpty 
+        ? productType 
+        : (widget.product.tags.isNotEmpty ? widget.product.tags.first : 'Products');
+    
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Text(
+              'Home',
+              style: TextStyle(
+                fontSize: 11,
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            child: Icon(Icons.chevron_right, size: 12, color: Colors.grey[400]),
+          ),
+          GestureDetector(
+            onTap: () => _handleBreadcrumbNavigation(category),
+            child: Text(
+              category,
+              style: TextStyle(
+                fontSize: 11,
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w300,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            child: Icon(Icons.chevron_right, size: 12, color: Colors.grey[400]),
+          ),
+          Flexible(
+            child: Text(
+              widget.product.title,
+              style: TextStyle(
+                fontSize: 11,
+                color: Colors.grey[800],
+                fontWeight: FontWeight.w400,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildImageGallery() {
     final images = widget.product.images;
     
     if (images.isEmpty) {
       return Container(
-        height: 500,
+        height: 450,
         color: Colors.grey[100],
         child: const Center(
           child: Icon(Icons.image_outlined, size: 100, color: Colors.grey),
@@ -274,7 +359,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         // Main Image Carousel
         FlutterCarousel(
           options: CarouselOptions(
-            height: 500,
+            height: 450, // Reduced from 500 to reduce margins
             viewportFraction: 1.0,
             enableInfiniteScroll: images.length > 1,
             showIndicator: false,
@@ -288,17 +373,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           items: images.map((image) {
             return Hero(
               tag: 'product_${widget.product.id}_$image.src}',
-              child: CachedNetworkImage(
-                imageUrl: image.src,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                placeholder: (context, url) => Container(
-                  color: Colors.grey[100],
-                  child: const Center(child: CircularProgressIndicator()),
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: Colors.grey[100],
-                  child: const Icon(Icons.broken_image, size: 80, color: Colors.grey),
+              child: Container(
+                color: Colors.white,
+                child: CachedNetworkImage(
+                  imageUrl: image.src,
+                  fit: BoxFit.contain, // Changed from cover to contain - no cropping
+                  width: double.infinity,
+                  placeholder: (context, url) => Container(
+                    color: Colors.grey[100],
+                    child: const Center(child: CircularProgressIndicator()),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.grey[100],
+                    child: const Icon(Icons.broken_image, size: 80, color: Colors.grey),
+                  ),
                 ),
               ),
             );
@@ -498,27 +586,77 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   Widget _buildDescriptionSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Description',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+    final description = widget.product.description;
+    final isLongDescription = description.length > 200;
+    
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[200]!),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            onTap: isLongDescription
+                ? () {
+                    setState(() {
+                      _isDescriptionExpanded = !_isDescriptionExpanded;
+                    });
+                  }
+                : null,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Description',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  if (isLongDescription)
+                    Icon(
+                      _isDescriptionExpanded
+                          ? Icons.keyboard_arrow_up
+                          : Icons.keyboard_arrow_down,
+                      color: Colors.grey[600],
+                    ),
+                ],
+              ),
+            ),
           ),
-        ),
-        const SizedBox(height: 12),
-        Text(
-          widget.product.description,
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey[700],
-            height: 1.6,
-          ),
-        ),
-      ],
+          if (_isDescriptionExpanded || !isLongDescription)
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+              child: Text(
+                description,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                  height: 1.6,
+                ),
+              ),
+            )
+          else
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+              child: Text(
+                description.length > 200
+                    ? '${description.substring(0, 200)}...'
+                    : description,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                  height: 1.6,
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 
@@ -590,6 +728,37 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   Widget _buildFrameMeasurements() {
+    // Extract measurements from description
+    final description = widget.product.description;
+    String lensWidth = '--';
+    String bridge = '--';
+    String temple = '--';
+    
+    // Try to extract measurements from description
+    // Pattern: "Lens Width (mm): 52mm" or "52mm"
+    final lensMatch = RegExp(r'Lens Width[^\d]*(\d+)\s*mm', caseSensitive: false).firstMatch(description);
+    if (lensMatch != null) {
+      lensWidth = '${lensMatch.group(1)}mm';
+    }
+    
+    final bridgeMatch = RegExp(r'Bridge[^\d]*(\d+)\s*mm', caseSensitive: false).firstMatch(description);
+    if (bridgeMatch != null) {
+      bridge = '${bridgeMatch.group(1)}mm';
+    }
+    
+    final templeMatch = RegExp(r'Temple[^\d]*(\d+)\s*mm', caseSensitive: false).firstMatch(description);
+    if (templeMatch != null) {
+      temple = '${templeMatch.group(1)}mm';
+    }
+    
+    // Also try alternative patterns like "52-18-145"
+    final compactMatch = RegExp(r'(\d{2})-(\d{2})-(\d{3})').firstMatch(description);
+    if (compactMatch != null && lensWidth == '--') {
+      lensWidth = '${compactMatch.group(1)}mm';
+      bridge = '${compactMatch.group(2)}mm';
+      temple = '${compactMatch.group(3)}mm';
+    }
+    
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -618,9 +787,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildMeasurement('Lens Width', '52mm'),
-              _buildMeasurement('Bridge', '18mm'),
-              _buildMeasurement('Temple', '145mm'),
+              _buildMeasurement('Lens Width', lensWidth),
+              _buildMeasurement('Bridge', bridge),
+              _buildMeasurement('Temple', temple),
             ],
           ),
         ],
@@ -680,27 +849,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     }
 
     try {
-      // Show loading indicator
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Row(
-            children: [
-              SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              ),
-              SizedBox(width: 12),
-              Text('Adding to cart...'),
-            ],
-          ),
-          duration: Duration(seconds: 2),
-        ),
-      );
-
       // Prepare line items with lens options as properties
       final variantId = _selectedVariant!.id;
       

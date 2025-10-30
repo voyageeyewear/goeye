@@ -9,12 +9,16 @@ class ApiService {
   // Fetch theme sections
   Future<ThemeData> fetchThemeSections() async {
     try {
+      // Add cache-busting timestamp to force fresh data
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
       final response = await http
-          .get(Uri.parse('${ApiConfig.baseUrl}${ApiConfig.themeSections}'))
+          .get(Uri.parse('${ApiConfig.baseUrl}${ApiConfig.themeSections}?t=$timestamp'))
           .timeout(ApiConfig.timeout);
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        print('✅ Theme sections loaded successfully');
+        print('   Total sections: ${data['data']['layout']?.length ?? 0}');
         return ThemeData.fromJson(data['data']);
       } else {
         throw Exception('Failed to load theme sections: ${response.statusCode}');

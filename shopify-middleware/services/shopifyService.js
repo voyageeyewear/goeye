@@ -37,16 +37,16 @@ exports.fetchThemeSections = async () => {
     const diwaliProducts = allProducts.slice(0, 20); // Featured products for Diwali section
 
     // Create homepage layout matching eyejack.in (New BOGO Theme)
-    // Order: Announcement bars → Header → USP Strip → Slideshow → Rest
+    // Order: Announcement bars → Header (Flutter AppBar) → USP Strip → Instagram → Slideshow → Rest
     const sections = [
       {
         id: 'announcement-bars',
         type: 'announcement_bars',
         settings: {
           bars: [
-            { text: 'BUY 2 AT FLAT 1299/-', backgroundColor: '#FF6B6B', textColor: '#FFFFFF' },
-            { text: 'BUY 2 AT FLAT 999/-', backgroundColor: '#4ECDC4', textColor: '#FFFFFF' },
-            { text: 'BUY 2 AT FLAT 799/-', backgroundColor: '#45B7D1', textColor: '#FFFFFF' }
+            { text: 'BUY 2 AT FLAT 1299/-', backgroundColor: '#52b1e2', textColor: '#FFFFFF' },
+            { text: 'BUY 2 AT FLAT 999/-', backgroundColor: '#52b1e2', textColor: '#FFFFFF' },
+            { text: 'BUY 2 AT FLAT 799/-', backgroundColor: '#52b1e2', textColor: '#FFFFFF' }
           ]
         }
       },
@@ -76,6 +76,22 @@ exports.fetchThemeSections = async () => {
         }
       },
       {
+        id: 'instagram-stories',
+        type: 'instagram_stories',
+        settings: {
+          title: 'Follow Us on Instagram',
+          subtitle: '@eyejack.in',
+          stories: [
+            { image: 'https://eyejack.in/cdn/shop/files/insta1.jpg', link: 'https://instagram.com/eyejack.in' },
+            { image: 'https://eyejack.in/cdn/shop/files/insta2.jpg', link: 'https://instagram.com/eyejack.in' },
+            { image: 'https://eyejack.in/cdn/shop/files/insta3.jpg', link: 'https://instagram.com/eyejack.in' },
+            { image: 'https://eyejack.in/cdn/shop/files/insta4.jpg', link: 'https://instagram.com/eyejack.in' },
+            { image: 'https://eyejack.in/cdn/shop/files/insta5.jpg', link: 'https://instagram.com/eyejack.in' },
+            { image: 'https://eyejack.in/cdn/shop/files/insta6.jpg', link: 'https://instagram.com/eyejack.in' }
+          ]
+        }
+      },
+      {
         id: 'hero-slider',
         type: 'hero_slider',
         settings: {
@@ -90,25 +106,23 @@ exports.fetchThemeSections = async () => {
               desktopImage: 'https://eyejack.in/cdn/shop/files/diwali_eyejack_copy_2.jpg',
               mobileImage: 'https://eyejack.in/cdn/shop/files/Artboard_2_copy_4.png',
               ctaText: '',
-              ctaLink: '/collections/all'
+              link: 'https://eyejack.in/collections/all'
             },
             {
               type: 'video',
               heading: '',
               subheading: '',
               videoUrl: 'https://cdn.shopify.com/videos/c/o/v/7efdcf899c844767b8731446460d3bca.mp4',
-              posterImage: 'https://eyejack.in/cdn/shop/files/preview_images/9b52c2e2c4a5484f83e48e0f225d227a.thumbnail.0000000000_1800x.jpg',
               ctaText: '',
-              ctaLink: '/collections/sunglasses'
+              link: 'https://eyejack.in/collections/sunglasses'
             },
             {
               type: 'video',
               heading: '',
               subheading: '',
               videoUrl: 'https://cdn.shopify.com/videos/c/o/v/3f15c9a81cd04925874a15cff12c3dc1.mp4',
-              posterImage: 'https://eyejack.in/cdn/shop/files/preview_images/9b0d6c8890234236b35903c5a2bfc1b9.thumbnail.0000000000_1800x.jpg',
               ctaText: '',
-              ctaLink: '/collections/eyeglasses'
+              link: 'https://eyejack.in/collections/eyeglasses'
             }
           ]
         }
@@ -132,10 +146,30 @@ exports.fetchThemeSections = async () => {
         settings: {
           title: 'Eyeglasses',
           categories: [
-            { name: 'Men Eyeglasses', label: 'Men', handle: 'men-eyeglasses' },
-            { name: 'Women Eyeglasses', label: 'Women', handle: 'women-eyeglasses' },
-            { name: 'Sale Eyeglasses', label: 'Sale', handle: 'sale-eyeglasses' },
-            { name: 'Unisex Eyeglasses', label: 'Unisex', handle: 'unisex-eyeglasses' }
+            { 
+              name: 'Men Eyeglasses', 
+              label: 'Men', 
+              handle: 'eyeglasses',
+              image: allProducts.find(p => p.tags && p.tags.some(t => t.toLowerCase().includes('eyeglass')))?.images[0]?.src || allProducts[0]?.images[0]?.src || ''
+            },
+            { 
+              name: 'Women Eyeglasses', 
+              label: 'Women', 
+              handle: 'eyeglasses',
+              image: allProducts.find(p => p.tags && p.tags.some(t => t.toLowerCase().includes('eyeglass')))?.images[1]?.src || allProducts[1]?.images[0]?.src || ''
+            },
+            { 
+              name: 'Sale Eyeglasses', 
+              label: 'Sale', 
+              handle: 'sale',
+              image: allProducts.find(p => p.tags && p.tags.some(t => t.toLowerCase().includes('sale')))?.images[0]?.src || allProducts[2]?.images[0]?.src || ''
+            },
+            { 
+              name: 'Unisex Eyeglasses', 
+              label: 'Unisex', 
+              handle: 'eyeglasses',
+              image: allProducts.find(p => p.tags && p.tags.some(t => t.toLowerCase().includes('eyeglass')))?.images[2]?.src || allProducts[3]?.images[0]?.src || ''
+            }
           ]
         }
       },
@@ -145,10 +179,30 @@ exports.fetchThemeSections = async () => {
         settings: {
           title: 'Sunglasses',
           categories: [
-            { name: 'Men Eyeglasses', label: 'Men', handle: 'men-sunglasses' },
-            { name: 'Women Eyeglasses', label: 'Women', handle: 'women-sunglasses' },
-            { name: 'Sale Eyeglasses', label: 'Sale', handle: 'sale-sunglasses' },
-            { name: 'Unisex Eyeglasses', label: 'Unisex', handle: 'unisex-sunglasses' }
+            { 
+              name: 'Men Sunglasses', 
+              label: 'Men', 
+              handle: 'sunglasses',
+              image: allProducts.find(p => p.tags && p.tags.some(t => t.toLowerCase().includes('sunglass')))?.images[0]?.src || allProducts[4]?.images[0]?.src || ''
+            },
+            { 
+              name: 'Women Sunglasses', 
+              label: 'Women', 
+              handle: 'sunglasses',
+              image: allProducts.find(p => p.tags && p.tags.some(t => t.toLowerCase().includes('sunglass')))?.images[1]?.src || allProducts[5]?.images[0]?.src || ''
+            },
+            { 
+              name: 'Sale Sunglasses', 
+              label: 'Sale', 
+              handle: 'sale',
+              image: allProducts.find(p => p.tags && p.tags.some(t => t.toLowerCase().includes('sale')))?.images[1]?.src || allProducts[6]?.images[0]?.src || ''
+            },
+            { 
+              name: 'Unisex Sunglasses', 
+              label: 'Unisex', 
+              handle: 'sunglasses',
+              image: allProducts.find(p => p.tags && p.tags.some(t => t.toLowerCase().includes('sunglass')))?.images[2]?.src || allProducts[7]?.images[0]?.src || ''
+            }
           ]
         }
       },
