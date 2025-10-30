@@ -93,22 +93,22 @@ exports.fetchThemeSections = async () => {
               ctaLink: '/collections/all'
             },
             {
-              type: 'video',
+              type: 'image',
               heading: '',
               subheading: '',
-              // Video 2 - Shopify CDN MP4
-              videoUrl: 'https://cdn.shopify.com/videos/c/o/v/604cffed10e0435bad06b64c814c3b3d.mp4',
-              posterImage: 'https://eyejack.in/cdn/shop/files/preview_images/9b52c2e2c4a5484f83e48e0f225d227a.thumbnail.0000000000_1800x.jpg',
+              // Using poster images for slides 2 & 3 (videos causing loading issues)
+              desktopImage: 'https://eyejack.in/cdn/shop/files/preview_images/9b52c2e2c4a5484f83e48e0f225d227a.thumbnail.0000000000_1800x.jpg',
+              mobileImage: 'https://eyejack.in/cdn/shop/files/preview_images/9b52c2e2c4a5484f83e48e0f225d227a.thumbnail.0000000000_1800x.jpg',
               ctaText: '',
               ctaLink: '/collections/sunglasses'
             },
             {
-              type: 'video',
+              type: 'image',
               heading: '',
               subheading: '',
-              // Video 3 - Shopify CDN MP4
-              videoUrl: 'https://cdn.shopify.com/videos/c/o/v/acd4483b96bb40429e9cb0b413cfa616.mp4',
-              posterImage: 'https://eyejack.in/cdn/shop/files/preview_images/9b0d6c8890234236b35903c5a2bfc1b9.thumbnail.0000000000_1800x.jpg',
+              // Using poster images for slides 2 & 3 (videos causing loading issues)
+              desktopImage: 'https://eyejack.in/cdn/shop/files/preview_images/9b0d6c8890234236b35903c5a2bfc1b9.thumbnail.0000000000_1800x.jpg',
+              mobileImage: 'https://eyejack.in/cdn/shop/files/preview_images/9b0d6c8890234236b35903c5a2bfc1b9.thumbnail.0000000000_1800x.jpg',
               ctaText: '',
               ctaLink: '/collections/eyeglasses'
             }
@@ -1165,6 +1165,10 @@ exports.getCart = async () => {
             node {
               id
               quantity
+              attributes {
+                key
+                value
+              }
               merchandise {
                 ... on ProductVariant {
                   id
@@ -1405,7 +1409,8 @@ function formatCart(cart) {
     quantity: edge.node.quantity,
     price: edge.node.merchandise.price.amount,
     currency: edge.node.merchandise.price.currencyCode,
-    image: edge.node.merchandise.product.images?.edges?.[0]?.node?.url || ''
+    image: edge.node.merchandise.product.images?.edges?.[0]?.node?.url || '',
+    properties: edge.node.attributes || []
   })) || [];
 
   return {
@@ -1418,4 +1423,64 @@ function formatCart(cart) {
     checkoutUrl: cart.checkoutUrl
   };
 }
+
+// Gokwik Checkout Integration
+exports.createGokwikCheckout = async () => {
+  try {
+    console.log('🛒 Creating Gokwik checkout...');
+    console.log('Current cart ID:', currentCartId);
+    
+    // Check if cart exists
+    if (!currentCartId) {
+      console.error('❌ No cart ID found');
+      throw new Error('No cart found. Please add items to cart first.');
+    }
+
+    // Get current cart
+    const cart = await exports.getCart();
+    
+    console.log('Cart retrieved:', {
+      id: cart.id,
+      itemCount: cart.itemCount,
+      total: cart.total,
+      hasCheckoutUrl: !!cart.checkoutUrl
+    });
+    
+    if (!cart || !cart.items || cart.items.length === 0) {
+      console.error('❌ Cart is empty');
+      throw new Error('Cart is empty. Please add items to cart first.');
+    }
+
+    console.log('✅ Cart has', cart.items.length, 'items');
+
+    // Build Gokwik checkout URL
+    const GOKWIK_MERCHANT_ID = '19g6iluwldmy4';
+    const GOKWIK_ENV = 'prod'; // or 'staging'
+    
+    // IMPORTANT: Use Shopify's checkout URL directly in WebView
+    // This URL has all cart data embedded and Gokwik will intercept it
+    const shopifyCheckoutUrl = cart.checkoutUrl;
+    
+    if (!shopifyCheckoutUrl) {
+      console.error('❌ Checkout URL not available in cart');
+      throw new Error('Checkout URL not available. Please try again.');
+    }
+    
+    console.log('✅ Using Shopify checkout URL (Gokwik will intercept):', shopifyCheckoutUrl);
+
+    return {
+      checkoutUrl: shopifyCheckoutUrl, // Direct Shopify checkout URL with cart data
+      merchantId: GOKWIK_MERCHANT_ID,
+      environment: GOKWIK_ENV,
+      cartId: cart.id,
+      totalAmount: cart.total,
+      currency: cart.currency,
+      itemCount: cart.itemCount
+    };
+  } catch (error) {
+    console.error('❌ Error creating Gokwik checkout:', error.message);
+    console.error('Stack:', error.stack);
+    throw error;
+  }
+};
 

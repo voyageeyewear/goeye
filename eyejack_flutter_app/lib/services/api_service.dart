@@ -216,6 +216,27 @@ class ApiService {
     }
   }
 
+  // Create Gokwik checkout
+  Future<Map<String, dynamic>> createGokwikCheckout() async {
+    try {
+      final response = await http
+          .post(
+            Uri.parse('${ApiConfig.baseUrl}/api/shopify/checkout/gokwik'),
+            headers: {'Content-Type': 'application/json'},
+          )
+          .timeout(ApiConfig.timeout);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data'] as Map<String, dynamic>;
+      } else {
+        throw Exception('Failed to create Gokwik checkout: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error creating Gokwik checkout: $e');
+    }
+  }
+
   // Get current cart
   Future<Map<String, dynamic>> getCart() async {
     try {

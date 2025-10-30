@@ -30,8 +30,9 @@ router.post('/cart/remove', shopifyController.removeFromCart);
 router.get('/cart', shopifyController.getCart);
 router.post('/cart/clear', shopifyController.clearCart);
 
-// Checkout endpoint
+// Checkout endpoints
 router.post('/checkout/create', shopifyController.createCheckout);
+router.post('/checkout/gokwik', shopifyController.createGokwikCheckout);
 
 // Lens options endpoint (fetch lens data from product metafields)
 router.get('/lens-options', shopifyController.getLensOptions);

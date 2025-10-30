@@ -301,6 +301,19 @@ exports.createCheckout = async (req, res, next) => {
   }
 };
 
+exports.createGokwikCheckout = async (req, res, next) => {
+  try {
+    const checkoutData = await shopifyService.createGokwikCheckout();
+    res.json({
+      success: true,
+      data: checkoutData
+    });
+  } catch (error) {
+    console.error('Gokwik checkout error:', error);
+    next(error);
+  }
+};
+
 exports.getLensOptions = async (req, res, next) => {
   try {
     const lensOptions = await shopifyService.fetchLensOptions();

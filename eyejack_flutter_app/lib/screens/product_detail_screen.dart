@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../models/product_model.dart';
 import '../services/api_service.dart';
+import '../services/gokwik_service.dart';
 import '../widgets/lens_selector_drawer.dart';
 import '../widgets/sticky_cart_widget.dart';
 import '../widgets/cart_drawer.dart';
@@ -56,13 +56,83 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       builder: (context) => CartDrawer(
         onCheckout: () async {
           Navigator.pop(context); // Close cart drawer
-          // TODO: Navigate to checkout
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Redirecting to checkout...'),
-              backgroundColor: Color(0xFF27916D),
-            ),
-          );
+          
+          try {
+            debugPrint('🛒 Opening GoKwik checkout...');
+            
+            // Show loading indicator
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Row(
+                    children: [
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Text('Opening GoKwik checkout...'),
+                    ],
+                  ),
+                  backgroundColor: Color(0xFF27916D),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            }
+            
+            // Create GoKwik checkout
+            final checkoutData = await ApiService().createGokwikCheckout();
+            final checkoutUrl = checkoutData['checkoutUrl'] as String;
+            
+            debugPrint('✅ GoKwik checkout URL: $checkoutUrl');
+            debugPrint('✅ Cart data: $checkoutData');
+            
+            // Open GoKwik native checkout
+            if (mounted) {
+              final success = await GokwikService.openCheckout(
+                context: context,
+                checkoutUrl: checkoutUrl,
+                cartData: checkoutData,
+              );
+
+              // Handle checkout result
+              if (mounted) {
+                if (success) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('✅ Order placed successfully!'),
+                      backgroundColor: Color(0xFF27916D),
+                      duration: Duration(seconds: 3),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('❌ Checkout was not completed'),
+                      backgroundColor: Colors.red,
+                      duration: Duration(seconds: 3),
+                    ),
+                  );
+                }
+              }
+            }
+          } catch (e) {
+            debugPrint('❌ Error opening GoKwik checkout: $e');
+            
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Error: ${e.toString()}'),
+                  backgroundColor: Colors.red,
+                  duration: const Duration(seconds: 3),
+                ),
+              );
+            }
+          }
         },
       ),
     );

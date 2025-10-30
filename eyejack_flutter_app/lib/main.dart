@@ -7,8 +7,19 @@ import 'screens/collection_screen.dart';
 import 'screens/search_screen.dart';
 import 'models/product_model.dart';
 import 'models/collection_model.dart';
+import 'services/gokwik_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize GoKwik SDK
+  try {
+    await GokwikService.initialize();
+  } catch (e) {
+    debugPrint('⚠️ GoKwik initialization failed: $e');
+    // Continue app startup even if GoKwik fails
+  }
+  
   runApp(const MyApp());
 }
 

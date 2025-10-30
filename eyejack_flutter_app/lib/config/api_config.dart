@@ -1,12 +1,9 @@
 class ApiConfig {
-  // Change this to your middleware API URL
-  // For Android Emulator: 'http://10.0.2.2:3000'
-  // For iOS Simulator: 'http://localhost:3000'
-  // For Physical Device: 'http://YOUR_IP:3000'
-  // For production: 'https://your-deployed-api.com'
-  // Using local middleware for development (Android emulator uses 10.0.2.2 to access host)
-  static const String baseUrl = 'http://10.0.2.2:3000';
-  // For production, use: 'https://motivated-intuition-production.up.railway.app'
+  // Using Railway production URL (works on emulator AND real devices)
+  static const String baseUrl = 'https://motivated-intuition-production.up.railway.app';
+  
+  // For local development only (emulator):
+  // static const String baseUrl = 'http://10.0.2.2:3000';
   
   // API Endpoints
   static const String themeSections = '/api/shopify/theme-sections';

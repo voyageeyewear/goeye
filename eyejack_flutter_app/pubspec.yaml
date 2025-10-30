@@ -48,6 +48,12 @@ dependencies:
   # URL Launcher for external links
   url_launcher: ^6.2.3
   
+  # WebView for in-app checkout (fallback)
+  webview_flutter: ^4.4.2
+  
+  # GoKwik native SDK for checkout
+  gokwik: ^1.0.7
+  
   # Carousel for hero banners
   flutter_carousel_widget: ^2.2.0
   
