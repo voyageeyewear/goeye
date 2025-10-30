@@ -210,6 +210,7 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
     final isCurrentVideo = _currentVideoIndex == index;
     final controller = isCurrentVideo ? _currentVideoController : null;
     final chewie = isCurrentVideo ? _currentChewieController : null;
+    final posterImage = slide['posterImage'] ?? '';
     
     return Container(
       color: Colors.black,
@@ -228,15 +229,28 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
               ),
             )
           else
-            // Show loading indicator while video initializes
-            Container(
-              color: Colors.black,
-              child: const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            // Show poster image as fallback when video fails to load or is loading
+            posterImage.isNotEmpty
+                ? CachedNetworkImage(
+                    imageUrl: posterImage,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: Colors.black,
+                      child: const Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.black,
+                      child: const Icon(Icons.image, size: 80, color: Colors.grey),
+                    ),
+                  )
+                : Container(
+                    color: Colors.black,
+                    child: const Center(
+                      child: CircularProgressIndicator(color: Colors.white),
+                    ),
+                  ),
         ],
       ),
     );
