@@ -239,6 +239,38 @@ exports.fetchThemeSections = async () => {
             { icon: 'secure', text: 'Secure payments' }
           ]
         }
+      },
+      // NEW FIRELENS-STYLE SECTIONS
+      {
+        id: 'homepage-features',
+        type: 'homepage_features',
+        settings: {
+          title: 'Why Choose Eyejack?',
+          subtitle: 'Premium eyewear designed for modern living'
+        }
+      },
+      {
+        id: 'homepage-stats',
+        type: 'homepage_stats',
+        settings: {
+          title: 'Trusted by Thousands'
+        }
+      },
+      {
+        id: 'homepage-video',
+        type: 'homepage_video',
+        settings: {
+          title: 'See How It Works',
+          subtitle: 'Discover how easy it is to find your perfect eyewear'
+        }
+      },
+      {
+        id: 'homepage-faq',
+        type: 'homepage_faq',
+        settings: {
+          title: 'Frequently Asked Questions',
+          subtitle: 'Everything you need to know about Eyejack'
+        }
       }
     ];
 
