@@ -75,6 +75,41 @@ exports.fetchThemeSections = async () => {
           ]
         }
       },
+      // NEW: 5 Circular Categories Section (from www.eyejack.in)
+      {
+        id: 'circular-categories',
+        type: 'circular_categories',
+        settings: {
+          categories: [
+            {
+              name: 'Sunglasses',
+              handle: 'sunglasses',
+              image: 'https://eyejack.in/cdn/shop/files/2502PCL1474-women_2.jpg?v=1748241296'
+            },
+            {
+              name: 'Eyeglasses',
+              handle: 'eyeglasses',
+              image: 'https://eyejack.in/cdn/shop/files/im-02.jpg?v=1759574105'
+            },
+            {
+              name: 'New Arrivals',
+              handle: 'new-arrivals',
+              image: 'https://eyejack.in/cdn/shop/files/im-01.jpg?v=1759574084'
+            },
+            {
+              name: 'View all',
+              handle: 'all',
+              image: 'https://eyejack.in/cdn/shop/files/im-07.jpg?v=1759574222'
+            },
+            {
+              name: 'BOGO',
+              handle: 'bogo-sale',
+              image: 'https://eyejack.in/cdn/shop/files/wolf.webp?v=1759572749',
+              badge: 'SALE LIVE'
+            }
+          ]
+        }
+      },
       {
         id: 'hero-slider',
         type: 'hero_slider',
@@ -106,6 +141,29 @@ exports.fetchThemeSections = async () => {
               subheading: '',
               videoUrl: 'https://cdn.shopify.com/videos/c/o/v/3f15c9a81cd04925874a15cff12c3dc1.mp4',
               ctaText: '',
+              link: 'https://eyejack.in/collections/eyeglasses'
+            }
+          ]
+        }
+      },
+      // NEW: Video Slider Section (from www.eyejack.in)
+      {
+        id: 'video-slider',
+        type: 'video_slider',
+        settings: {
+          title: 'Shop By Video',
+          autoplay: true,
+          videos: [
+            {
+              videoUrl: 'https://cdn.shopify.com/videos/c/o/v/7efdcf899c844767b8731446460d3bca.mp4',
+              thumbnail: 'https://eyejack.in/cdn/shop/files/2502PCL1474-women_2.jpg?v=1748241296',
+              title: 'Sunglasses Collection',
+              link: 'https://eyejack.in/collections/sunglasses'
+            },
+            {
+              videoUrl: 'https://cdn.shopify.com/videos/c/o/v/3f15c9a81cd04925874a15cff12c3dc1.mp4',
+              thumbnail: 'https://eyejack.in/cdn/shop/files/im-02.jpg?v=1759574105',
+              title: 'Eyeglasses Collection',
               link: 'https://eyejack.in/collections/eyeglasses'
             }
           ]

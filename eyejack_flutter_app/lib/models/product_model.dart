@@ -11,6 +11,7 @@ class Product {
   final List<ProductImage> images;
   final PriceRange priceRange;
   final List<ProductVariant> variants;
+  final ProductReviews? reviews;
 
   Product({
     required this.id,
@@ -25,6 +26,7 @@ class Product {
     required this.images,
     required this.priceRange,
     required this.variants,
+    this.reviews,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -49,6 +51,26 @@ class Product {
               .map((v) => ProductVariant.fromJson(v))
               .toList()
           : [],
+      reviews: json['reviews'] != null
+          ? ProductReviews.fromJson(json['reviews'])
+          : null,
+    );
+  }
+}
+
+class ProductReviews {
+  final int count;
+  final double rating;
+
+  ProductReviews({
+    required this.count,
+    required this.rating,
+  });
+
+  factory ProductReviews.fromJson(Map<String, dynamic> json) {
+    return ProductReviews(
+      count: json['count'] ?? 1,
+      rating: (json['rating'] ?? 5.0).toDouble(),
     );
   }
 }

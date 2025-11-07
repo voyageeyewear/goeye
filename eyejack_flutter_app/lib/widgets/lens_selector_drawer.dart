@@ -25,6 +25,11 @@ class _LensSelectorDrawerState extends State<LensSelectorDrawer>
   final Map<String, String> _powerValues = {};
   bool _isAddingToCart = false; // Track cart addition state
   
+  // Prescription entry method
+  String? _prescriptionMethod; // 'upload', 'manual', 'email'
+  String? _uploadedFileUrl; // CDN URL of uploaded prescription
+  String? _uploadedFileName;
+  
   // Real lens data from Shopify - categorized
   List<Map<String, dynamic>> _antiGlareLenses = [];
   List<Map<String, dynamic>> _blueBlockLenses = [];
@@ -94,33 +99,82 @@ class _LensSelectorDrawerState extends State<LensSelectorDrawer>
         end: Offset.zero,
       ).animate(_slideAnimation),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.9,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+        height: MediaQuery.of(context).size.height * 0.92,
+        decoration: BoxDecoration(
+          color: const Color(0xFFFAFAFA),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 20,
+              offset: const Offset(0, -5),
+            ),
+          ],
         ),
         child: Column(
           children: [
-            // Handle
+            // Modern Handle Bar
             Container(
               margin: const EdgeInsets.only(top: 12),
-              width: 40,
-              height: 4,
+              width: 48,
+              height: 5,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
+                color: Colors.grey[400],
+                borderRadius: BorderRadius.circular(3),
               ),
             ),
             
-            // Close Button
-            Align(
-              alignment: Alignment.topRight,
-              child: IconButton(
-                icon: const Icon(Icons.close, size: 28),
-                onPressed: () => Navigator.pop(context),
+            // Header with Title and Close
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey[200]!),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Select Your Lens',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            letterSpacing: -0.5,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Step $_currentStep of 4',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.close, size: 24),
+                      color: Colors.black87,
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                ],
               ),
             ),
 
@@ -141,16 +195,33 @@ class _LensSelectorDrawerState extends State<LensSelectorDrawer>
   }
 
   Widget _buildStepIndicators() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildStepIndicator(1, 'Lens\nType'),
+          _buildConnector(1),
           _buildStepIndicator(2, 'Power\nType'),
+          _buildConnector(2),
           _buildStepIndicator(3, 'Select\nLens'),
+          _buildConnector(3),
           _buildStepIndicator(4, 'Add\nPower'),
         ],
+      ),
+    );
+  }
+
+  Widget _buildConnector(int afterStep) {
+    final isCompleted = _currentStep > afterStep;
+    return Container(
+      width: 30,
+      height: 2,
+      margin: const EdgeInsets.only(bottom: 40),
+      decoration: BoxDecoration(
+        color: isCompleted ? const Color(0xFF27916D) : Colors.grey[300],
+        borderRadius: BorderRadius.circular(1),
       ),
     );
   }
@@ -162,36 +233,54 @@ class _LensSelectorDrawerState extends State<LensSelectorDrawer>
     return Column(
       children: [
         Container(
-          width: 40,
-          height: 40,
+          width: 44,
+          height: 44,
           decoration: BoxDecoration(
             color: isActive || isCompleted
                 ? const Color(0xFF27916D)
-                : Colors.grey[200],
+                : Colors.white,
             shape: BoxShape.circle,
+            border: Border.all(
+              color: isActive || isCompleted
+                  ? const Color(0xFF27916D)
+                  : Colors.grey[300]!,
+              width: 2,
+            ),
+            boxShadow: isActive
+                ? [
+                    BoxShadow(
+                      color: const Color(0xFF27916D).withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : null,
           ),
           child: Center(
             child: isCompleted
-                ? const Icon(Icons.check, color: Colors.white, size: 20)
+                ? const Icon(Icons.check, color: Colors.white, size: 22)
                 : Text(
                     '$step',
                     style: TextStyle(
                       color: isActive ? Colors.white : Colors.grey[600],
-                      fontSize: 16,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
           ),
         ),
         const SizedBox(height: 8),
-        Text(
-          label,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 11,
-            color: isActive ? const Color(0xFF27916D) : Colors.grey[600],
-            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-            height: 1.2,
+        SizedBox(
+          width: 60,
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 11,
+              color: isActive ? const Color(0xFF27916D) : Colors.grey[600],
+              fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
+              height: 1.2,
+            ),
           ),
         ),
       ],
@@ -909,8 +998,28 @@ class _LensSelectorDrawerState extends State<LensSelectorDrawer>
     );
   }
 
-  // STEP 4: Add Power (Optional Prescription)
+  // STEP 4: Add Your Prescription
   Widget _buildStep4AddPower() {
+    // If no method selected, show options
+    if (_prescriptionMethod == null) {
+      return _buildPrescriptionOptions();
+    }
+    
+    // If method selected, show relevant content
+    switch (_prescriptionMethod) {
+      case 'manual':
+        return _buildManualPrescriptionForm();
+      case 'upload':
+        return _buildUploadPrescription();
+      case 'email':
+        return _buildEmailLaterOption();
+      default:
+        return _buildPrescriptionOptions();
+    }
+  }
+
+  // Prescription method selection screen
+  Widget _buildPrescriptionOptions() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -923,6 +1032,129 @@ class _LensSelectorDrawerState extends State<LensSelectorDrawer>
                 onPressed: () {
                   setState(() {
                     _currentStep = 3; // Back to lens selection
+                  });
+                },
+              ),
+              const Text(
+                'Add Your Prescription',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1a2332),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 32),
+
+          // Upload File Option
+          _buildPrescriptionOptionCard(
+            icon: Icons.upload_file,
+            title: 'Upload File',
+            isSelected: false,
+            onTap: () {
+              setState(() {
+                _prescriptionMethod = 'upload';
+              });
+            },
+          ),
+          const SizedBox(height: 16),
+
+          // Enter Manually Option (Highlighted)
+          _buildPrescriptionOptionCard(
+            icon: Icons.edit,
+            title: 'Enter Manually',
+            isSelected: false,
+            onTap: () {
+              setState(() {
+                _prescriptionMethod = 'manual';
+              });
+            },
+          ),
+          const SizedBox(height: 16),
+
+          // Email Later Option
+          _buildPrescriptionOptionCard(
+            icon: Icons.email,
+            title: 'Email Later',
+            isSelected: false,
+            onTap: () {
+              setState(() {
+                _prescriptionMethod = 'email';
+              });
+              // Proceed to save
+              _saveAndAddToCart();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Prescription option card widget
+  Widget _buildPrescriptionOptionCard({
+    required IconData icon,
+    required String title,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFe8f5e9) : Colors.white,
+          border: Border.all(
+            color: isSelected ? const Color(0xFF4caf50) : const Color(0xFFe0e0e0),
+            width: isSelected ? 2 : 1,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isSelected ? const Color(0xFF4caf50) : const Color(0xFFf5f5f5),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                icon,
+                color: isSelected ? Colors.white : const Color(0xFF424242),
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: isSelected ? const Color(0xFF1a2332) : const Color(0xFF424242),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Manual prescription entry form
+  Widget _buildManualPrescriptionForm() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  setState(() {
+                    _prescriptionMethod = null; // Back to options
                   });
                 },
               ),
@@ -972,13 +1204,13 @@ class _LensSelectorDrawerState extends State<LensSelectorDrawer>
           _buildPowerInput('Right Axis', 'right_axis'),
           const SizedBox(height: 32),
 
-          // Save and Continue Button (adds to cart automatically)
+          // Save and Continue Button
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               onPressed: _isAddingToCart ? null : _saveAndAddToCart,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFF5722), // ORANGE!
+                backgroundColor: const Color(0xFFFF5722),
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -1006,6 +1238,237 @@ class _LensSelectorDrawerState extends State<LensSelectorDrawer>
         ],
       ),
     );
+  }
+
+  // Upload prescription file
+  Widget _buildUploadPrescription() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  setState(() {
+                    _prescriptionMethod = null; // Back to options
+                    _uploadedFileUrl = null;
+                    _uploadedFileName = null;
+                  });
+                },
+              ),
+              const Text(
+                'Upload Prescription',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 32),
+
+          // Upload area
+          GestureDetector(
+            onTap: _pickAndUploadFile,
+            child: Container(
+              width: double.infinity,
+              height: 200,
+              decoration: BoxDecoration(
+                color: const Color(0xFFf5f5f5),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: const Color(0xFFe0e0e0),
+                  width: 2,
+                  style: BorderStyle.solid,
+                ),
+              ),
+              child: _uploadedFileName == null
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.cloud_upload,
+                          size: 64,
+                          color: Colors.grey[400],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Tap to upload prescription',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'PDF, JPG, PNG (Max 5MB)',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.check_circle,
+                          size: 48,
+                          color: Color(0xFF4caf50),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          _uploadedFileName!,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        TextButton(
+                          onPressed: _pickAndUploadFile,
+                          child: const Text('Change file'),
+                        ),
+                      ],
+                    ),
+            ),
+          ),
+          const SizedBox(height: 32),
+
+          // Save and Continue Button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: _uploadedFileName != null && !_isAddingToCart
+                  ? _saveAndAddToCart
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFFF5722),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                disabledBackgroundColor: Colors.grey[300],
+              ),
+              child: _isAddingToCart
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : const Text(
+                      'Save and Continue',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Email later option
+  Widget _buildEmailLaterOption() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 60),
+          Icon(
+            Icons.email_outlined,
+            size: 80,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'Email Later',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'We\'ll send you an email to upload your prescription after your purchase.',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[600],
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 48),
+          const Text(
+            'Proceeding to cart...',
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xFF4caf50),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Pick and upload file to Shopify
+  Future<void> _pickAndUploadFile() async {
+    try {
+      // Note: file_picker package needs to be added to pubspec.yaml
+      // For now, showing a message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('📎 File picker will be implemented with file_picker package'),
+          backgroundColor: Color(0xFF2196F3),
+        ),
+      );
+
+      // TODO: Implement actual file picker and upload
+      // final result = await FilePicker.platform.pickFiles(
+      //   type: FileType.custom,
+      //   allowedExtensions: ['pdf', 'jpg', 'jpeg', 'png'],
+      // );
+      
+      // if (result != null) {
+      //   final file = result.files.first;
+      //   // Upload to Shopify Files API
+      //   final url = await _uploadToShopify(file);
+      //   setState(() {
+      //     _uploadedFileUrl = url;
+      //     _uploadedFileName = file.name;
+      //   });
+      // }
+
+      // For demonstration, simulate file upload
+      setState(() {
+        _uploadedFileName = 'prescription_demo.pdf';
+        _uploadedFileUrl = 'https://eyejack.in/cdn/shop/files/prescription.pdf';
+      });
+    } catch (e) {
+      debugPrint('Error picking file: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    }
   }
 
   Widget _buildPowerInput(String label, String key) {
@@ -1047,16 +1510,28 @@ class _LensSelectorDrawerState extends State<LensSelectorDrawer>
         '2. Power Type': _selectedPowerType ?? '',
         '3. Lens Name': _selectedPowerType ?? '',
         'Associated Frame': widget.product.id,
-        '4. Prescription Type': 'manual', // Mark as manual entry
+        '4. Prescription Type': _prescriptionMethod ?? 'manual',
       };
 
-      // Add power values if entered
-      if (_powerValues.isNotEmpty) {
-        _powerValues.forEach((key, value) {
-          if (value.isNotEmpty) {
-            lensProperties[key] = value;
-          }
-        });
+      // Add prescription details based on method
+      if (_prescriptionMethod == 'manual') {
+        // Add power values if entered
+        if (_powerValues.isNotEmpty) {
+          _powerValues.forEach((key, value) {
+            if (value.isNotEmpty) {
+              lensProperties[key] = value;
+            }
+          });
+        }
+      } else if (_prescriptionMethod == 'upload') {
+        // Add uploaded file info
+        if (_uploadedFileUrl != null) {
+          lensProperties['Prescription File'] = _uploadedFileUrl!;
+          lensProperties['File Name'] = _uploadedFileName ?? 'prescription';
+        }
+      } else if (_prescriptionMethod == 'email') {
+        // Mark as email later
+        lensProperties['Prescription Note'] = 'Customer will email prescription later';
       }
 
       // Get frame variant ID (first variant or selected variant)

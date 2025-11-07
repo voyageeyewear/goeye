@@ -15,6 +15,14 @@ import 'eyewear_collection_cards_widget.dart';
 import 'offers_grid_widget.dart';
 import 'trust_badges_widget.dart';
 import 'instagram_stories_widget.dart';
+// FIRELENS-STYLE SECTIONS
+import 'homepage_feature_section.dart';
+import 'homepage_stats_section.dart';
+import 'homepage_video_section.dart';
+import 'homepage_faq_section.dart';
+// NEW SECTIONS FROM EYEJACK.IN
+import 'circular_categories_widget.dart';
+import 'video_slider_widget.dart';
 
 class SectionRenderer extends StatelessWidget {
   final Section section;
@@ -48,8 +56,16 @@ class SectionRenderer extends StatelessWidget {
       case 'moving_usp_strip':
         return MovingUspStripWidget(settings: section.settings);
       
+      // NEW: Circular Categories Section (5 circles)
+      case 'circular_categories':
+        return CircularCategoriesWidget(settings: section.settings);
+      
       case 'hero_slider':
         return HeroSliderWidget(settings: section.settings);
+      
+      // NEW: Video Slider Section
+      case 'video_slider':
+        return VideoSliderWidget(settings: section.settings);
       
       case 'category_grid':
         // Hide category grid (4 boxes) - per user request
@@ -72,6 +88,19 @@ class SectionRenderer extends StatelessWidget {
       
       case 'instagram_stories':
         return InstagramStoriesWidget(settings: section.settings);
+      
+      // NEW FIRELENS-STYLE SECTIONS
+      case 'homepage_features':
+        return const HomepageFeatureSection();
+      
+      case 'homepage_stats':
+        return const HomepageStatsSection();
+      
+      case 'homepage_video':
+        return const HomepageVideoSection();
+      
+      case 'homepage_faq':
+        return const HomepageFAQSection();
       
       default:
         // Fallback for unknown section types
