@@ -12,6 +12,7 @@ import 'category_grid_widget.dart';
 import 'gender_categories_widget.dart';
 import 'special_collection_widget.dart';
 import 'eyewear_collection_cards_widget.dart';
+import 'featured_products_widget.dart';
 import 'offers_grid_widget.dart';
 import 'trust_badges_widget.dart';
 import 'instagram_stories_widget.dart';
@@ -80,6 +81,9 @@ class SectionRenderer extends StatelessWidget {
       
       case 'eyewear_collection_cards':
         return EyewearCollectionCardsWidget(settings: section.settings);
+      
+      case 'featured_products':
+        return FeaturedProductsWidget(settings: section.settings);
       
       case 'offers_grid':
         return OffersGridWidget(settings: section.settings);

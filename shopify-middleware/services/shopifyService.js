@@ -285,13 +285,61 @@ exports.fetchThemeSections = async () => {
         settings: {
           title: 'Exclusive Eyewear Collection',
           collections: [
-            { name: 'Work Essentials', subtitle: 'Buy 1 Get 1 Free', handle: 'work-essentials' },
-            { name: 'Student Styles', subtitle: 'Buy 1 Get 1 Free', handle: 'student-styles' },
-            { name: 'Premium Collection', subtitle: 'Buy 1 Get 1 Free', handle: 'premium-collection' },
-            { name: 'Minimal Classics', subtitle: 'Buy 1 Get 1 Free', handle: 'minimal-classics' },
-            { name: 'Fashion Forward', subtitle: 'Buy 1 Get 1 Free', handle: 'fashion-forward' },
-            { name: 'Reading Glasses', subtitle: 'Buy 1 Get 1 Free', handle: 'reading-glasses' }
+            { 
+              name: 'Work Essentials', 
+              subtitle: 'Buy 1 Get 1 Free', 
+              handle: 'work-essentials',
+              backgroundType: 'video',
+              backgroundUrl: 'https://eyejack.in/cdn/shop/videos/c/vp/c0b3c15c6b1c4275b745e3c1c6df6ae2/c0b3c15c6b1c4275b745e3c1c6df6ae2.HD-720p-4.5Mbps-61053410.mp4?v=0'
+            },
+            { 
+              name: 'Student Styles', 
+              subtitle: 'Buy 1 Get 1 Free', 
+              handle: 'student-styles',
+              backgroundType: 'video',
+              backgroundUrl: 'https://eyejack.in/cdn/shop/videos/c/vp/c0b3c15c6b1c4275b745e3c1c6df6ae2/c0b3c15c6b1c4275b745e3c1c6df6ae2.HD-720p-4.5Mbps-61053410.mp4?v=0'
+            },
+            { 
+              name: 'Premium Collection', 
+              subtitle: 'Buy 1 Get 1 Free', 
+              handle: 'premium-collection',
+              backgroundType: 'video',
+              backgroundUrl: 'https://eyejack.in/cdn/shop/videos/c/vp/c0b3c15c6b1c4275b745e3c1c6df6ae2/c0b3c15c6b1c4275b745e3c1c6df6ae2.HD-720p-4.5Mbps-61053410.mp4?v=0'
+            },
+            { 
+              name: 'Minimal Classics', 
+              subtitle: 'Buy 1 Get 1 Free', 
+              handle: 'minimal-classics',
+              backgroundType: 'video',
+              backgroundUrl: 'https://eyejack.in/cdn/shop/videos/c/vp/c0b3c15c6b1c4275b745e3c1c6df6ae2/c0b3c15c6b1c4275b745e3c1c6df6ae2.HD-720p-4.5Mbps-61053410.mp4?v=0'
+            },
+            { 
+              name: 'Fashion Forward', 
+              subtitle: 'Buy 1 Get 1 Free', 
+              handle: 'fashion-forward',
+              backgroundType: 'image',
+              backgroundUrl: 'https://eyejack.in/cdn/shop/files/CherryShotAi-gallery-0d197933-ddd5-43db-9c78-54e89e427d3e.png?v=1759579707&width=600'
+            },
+            { 
+              name: 'Reading Glasses', 
+              subtitle: 'Buy 1 Get 1 Free', 
+              handle: 'reading-glasses',
+              backgroundType: 'image',
+              backgroundUrl: 'https://eyejack.in/cdn/shop/files/CherryShotAi-generated-1759579501634.jpg?v=1759579705&width=600'
+            }
           ]
+        }
+      },
+      // NEW: Featured Products with Countdown
+      {
+        id: 'featured-products-countdown',
+        type: 'featured_products',
+        settings: {
+          title: 'Limited Time Offer',
+          subtitle: 'Grab these deals before they expire!',
+          countdownEndTime: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
+          products: allProducts.slice(0, 8),
+          backgroundColor: '#FFF5E6'
         }
       },
       {
