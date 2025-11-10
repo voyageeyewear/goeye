@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/shop_provider.dart';
 import '../widgets/section_renderer.dart';
 import '../widgets/cart_drawer.dart';
+import '../widgets/footer_widget.dart';
 import '../services/api_service.dart';
 import '../services/gokwik_service.dart';
 
@@ -113,6 +114,98 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildDrawer() {
+    return Drawer(
+      child: Consumer<ShopProvider>(
+        builder: (context, shopProvider, child) {
+          // Get collections from provider
+          final collections = shopProvider.collections ?? [];
+          
+          return ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Eyejack Eyewear',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'Premium Eyewear Collection',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.home),
+                title: const Text('Home'),
+                onTap: () => Navigator.pop(context),
+              ),
+              const Divider(),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Text(
+                  'Collections',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              ...collections.map((collection) {
+                return ListTile(
+                  leading: const Icon(Icons.category, size: 20),
+                  title: Text(collection.title),
+                  dense: true,
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(
+                      context,
+                      '/collection',
+                      arguments: collection,
+                    );
+                  },
+                );
+              }).toList(),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.local_offer),
+                title: const Text('Offers'),
+                onTap: () => Navigator.pop(context),
+              ),
+              ListTile(
+                leading: const Icon(Icons.info_outline),
+                title: const Text('About Us'),
+                onTap: () => Navigator.pop(context),
+              ),
+              ListTile(
+                leading: const Icon(Icons.contact_mail),
+                title: const Text('Contact'),
+                onTap: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
   Widget _buildCustomAppBar(BuildContext context) {
     return Container(
       color: Colors.black,
@@ -160,51 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.black,
-              ),
-              child: Text(
-                'Eyejack Eyewear',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () => Navigator.pop(context),
-            ),
-            ListTile(
-              leading: const Icon(Icons.sunny),
-              title: const Text('Sunglasses'),
-              onTap: () => Navigator.pop(context),
-            ),
-            ListTile(
-              leading: const Icon(Icons.visibility),
-              title: const Text('Eyeglasses'),
-              onTap: () => Navigator.pop(context),
-            ),
-            ListTile(
-              leading: const Icon(Icons.new_releases),
-              title: const Text('New Arrivals'),
-              onTap: () => Navigator.pop(context),
-            ),
-            ListTile(
-              leading: const Icon(Icons.local_offer),
-              title: const Text('Offers'),
-              onTap: () => Navigator.pop(context),
-            ),
-          ],
-        ),
-      ),
+      drawer: _buildDrawer(),
       body: Consumer<ShopProvider>(
         builder: (context, shopProvider, child) {
           if (shopProvider.isLoading) {
@@ -290,6 +339,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     childCount: otherSections.length,
                   ),
+                ),
+                
+                // 4. Footer at the bottom
+                const SliverToBoxAdapter(
+                  child: FooterWidget(),
                 ),
               ],
             ),

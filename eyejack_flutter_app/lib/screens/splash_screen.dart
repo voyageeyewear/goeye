@@ -18,9 +18,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   // Beautiful eyewear images for splash screen
   final List<String> _splashImages = [
-    'https://eyejack.in/cdn/shop/files/homepage-banner-min.jpg',
-    'https://cdn.shopify.com/s/files/1/0806/9108/9383/files/banner-1.jpg',
-    'https://cdn.shopify.com/s/files/1/0806/9108/9383/files/banner-2.jpg',
+    'https://eyejack.in/cdn/shop/files/homepage-banner-min.jpg?v=1731068527',
+    'https://eyejack.in/cdn/shop/files/CherryShotAi-gallery-0d197933-ddd5-43db-9c78-54e89e427d3e.png?v=1759579707&width=1200',
+    'https://eyejack.in/cdn/shop/files/CherryShotAi-generated-1759579501634.jpg?v=1759579705&width=1200',
   ];
 
   @override

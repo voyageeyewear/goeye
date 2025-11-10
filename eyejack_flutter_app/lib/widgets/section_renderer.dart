@@ -15,6 +15,7 @@ import 'eyewear_collection_cards_widget.dart';
 import 'offers_grid_widget.dart';
 import 'trust_badges_widget.dart';
 import 'instagram_stories_widget.dart';
+import 'footer_widget.dart';
 // FIRELENS-STYLE SECTIONS
 import 'homepage_feature_section.dart';
 import 'homepage_stats_section.dart';
@@ -101,6 +102,9 @@ class SectionRenderer extends StatelessWidget {
       
       case 'homepage_faq':
         return const HomepageFAQSection();
+      
+      case 'footer':
+        return const FooterWidget();
       
       default:
         // Fallback for unknown section types

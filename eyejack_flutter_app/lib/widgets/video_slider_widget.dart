@@ -168,11 +168,11 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title
+          // Title - "Shop By Video" (not uppercase)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              title,
+              'Shop By Video',
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -188,6 +188,7 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
             height: 255,
             child: PageView.builder(
               controller: _pageController,
+              padEnds: false,  // Remove space before first video
               onPageChanged: (index) {
                 setState(() {
                   _currentPage = index;
@@ -292,9 +293,16 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              // Video only - no thumbnail
+              // Video only - no thumbnail, no stretching
               if (isInitialized && isCurrentPage && _chewieControllers[index] != null)
-                Chewie(controller: _chewieControllers[index]!)
+                FittedBox(
+                  fit: BoxFit.cover,  // Cover to prevent stretching
+                  child: SizedBox(
+                    width: _videoControllers[index]!.value.size.width,
+                    height: _videoControllers[index]!.value.size.height,
+                    child: Chewie(controller: _chewieControllers[index]!),
+                  ),
+                )
               else
                 Container(
                   color: Colors.black,

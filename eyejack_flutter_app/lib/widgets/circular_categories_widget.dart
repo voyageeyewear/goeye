@@ -16,7 +16,7 @@ class CircularCategoriesWidget extends StatelessWidget {
 
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),  // More vertical padding for full circles
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: categories.map((category) {
@@ -94,13 +94,7 @@ class CircularCategoriesWidget extends StatelessWidget {
                           imageUrl: imageUrl,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Container(
-                            color: Colors.grey[200],
-                            child: const Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Color(0xFF52b1e2),
-                              ),
-                            ),
+                            color: Colors.grey[200],  // No loading icon
                           ),
                           errorWidget: (context, url, error) => Container(
                             color: Colors.grey[200],
