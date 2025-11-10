@@ -27,8 +27,6 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
   @override
   void initState() {
     super.initState();
-    // Always enable auto-scroll with 10 second interval
-    _startAutoScroll();
     // Pre-initialize first video for autoplay
     final videos = widget.settings['videos'] as List<dynamic>? ?? [];
     if (videos.isNotEmpty) {
@@ -36,21 +34,36 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
     }
   }
 
-  void _startAutoScroll() {
-    // Auto-scroll every 10 seconds (10000 milliseconds)
-    _autoScrollTimer = Timer.periodic(const Duration(milliseconds: 10000), (timer) {
-      if (!mounted || !_isAutoScrolling) return;
+  void _startAutoScrollAfterFirstVideo() {
+    // Start auto-scroll only after first video completes
+    if (_videoControllers[0] != null) {
+      final firstController = _videoControllers[0]!;
       
-      final videos = widget.settings['videos'] as List<dynamic>? ?? [];
-      if (videos.isEmpty) return;
+      // Add listener to detect first video completion
+      firstController.addListener(() {
+        if (firstController.value.position >= firstController.value.duration - const Duration(milliseconds: 500)) {
+          // First video almost complete, start auto-scroll
+          if (_autoScrollTimer == null && mounted) {
+            _autoScrollTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+              if (!mounted || !_isAutoScrolling) {
+                timer.cancel();
+                return;
+              }
+              
+              final videos = widget.settings['videos'] as List<dynamic>? ?? [];
+              if (videos.isEmpty) return;
 
-      final nextPage = (_currentPage + 1) % videos.length;
-      _pageController.animateToPage(
-        nextPage,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.easeInOut,
-      );
-    });
+              final nextPage = (_currentPage + 1) % videos.length;
+              _pageController.animateToPage(
+                nextPage,
+                duration: const Duration(milliseconds: 800),
+                curve: Curves.easeInOut,
+              );
+            });
+          }
+        }
+      });
+    }
   }
 
   @override
@@ -100,6 +113,9 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
   Future<void> _initializeAndPlayVideo(int index, String videoUrl) async {
     if (_videoControllers[index] != null) {
       _videoControllers[index]?.play();
+      if (index == 0 && _autoScrollTimer == null) {
+        _startAutoScrollAfterFirstVideo();
+      }
       return;
     }
 

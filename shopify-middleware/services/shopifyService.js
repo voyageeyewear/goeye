@@ -303,29 +303,29 @@ exports.fetchThemeSections = async () => {
               name: 'Premium Collection', 
               subtitle: 'Buy 1 Get 1 Free', 
               handle: 'premium-collection',
-              backgroundType: 'video',
-              backgroundUrl: 'https://eyejack.in/cdn/shop/videos/c/vp/c0b3c15c6b1c4275b745e3c1c6df6ae2/c0b3c15c6b1c4275b745e3c1c6df6ae2.HD-720p-4.5Mbps-61053410.mp4?v=0'
+              backgroundType: 'image',
+              backgroundUrl: 'https://eyejack.in/cdn/shop/files/homepage-banner-min.jpg?v=1731068527&width=600'
             },
             { 
               name: 'Minimal Classics', 
               subtitle: 'Buy 1 Get 1 Free', 
               handle: 'minimal-classics',
-              backgroundType: 'video',
-              backgroundUrl: 'https://eyejack.in/cdn/shop/videos/c/vp/c0b3c15c6b1c4275b745e3c1c6df6ae2/c0b3c15c6b1c4275b745e3c1c6df6ae2.HD-720p-4.5Mbps-61053410.mp4?v=0'
+              backgroundType: 'image',
+              backgroundUrl: 'https://eyejack.in/cdn/shop/files/CherryShotAi-gallery-0d197933-ddd5-43db-9c78-54e89e427d3e.png?v=1759579707&width=600'
             },
             { 
               name: 'Fashion Forward', 
               subtitle: 'Buy 1 Get 1 Free', 
               handle: 'fashion-forward',
               backgroundType: 'image',
-              backgroundUrl: 'https://eyejack.in/cdn/shop/files/CherryShotAi-gallery-0d197933-ddd5-43db-9c78-54e89e427d3e.png?v=1759579707&width=600'
+              backgroundUrl: 'https://eyejack.in/cdn/shop/files/CherryShotAi-generated-1759579501634.jpg?v=1759579705&width=600'
             },
             { 
               name: 'Reading Glasses', 
               subtitle: 'Buy 1 Get 1 Free', 
               handle: 'reading-glasses',
               backgroundType: 'image',
-              backgroundUrl: 'https://eyejack.in/cdn/shop/files/CherryShotAi-generated-1759579501634.jpg?v=1759579705&width=600'
+              backgroundUrl: 'https://eyejack.in/cdn/shop/files/homepage-banner-2-min.jpg?v=1731068527&width=600'
             }
           ]
         }

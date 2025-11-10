@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:video_player/video_player.dart';
 import 'dart:async';
 
 class SplashScreen extends StatefulWidget {
@@ -12,60 +12,72 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
-  Timer? _autoScrollTimer;
-
-  // Beautiful eyewear images for splash screen
-  final List<String> _splashImages = [
-    'https://eyejack.in/cdn/shop/files/homepage-banner-min.jpg?v=1731068527',
-    'https://eyejack.in/cdn/shop/files/CherryShotAi-gallery-0d197933-ddd5-43db-9c78-54e89e427d3e.png?v=1759579707&width=1200',
-    'https://eyejack.in/cdn/shop/files/CherryShotAi-generated-1759579501634.jpg?v=1759579705&width=1200',
-  ];
+  VideoPlayerController? _videoController;
+  bool _videoInitialized = false;
+  
+  // Splash video URL
+  final String _splashVideoUrl = 'https://cdn.shopify.com/videos/c/o/v/6bab26bb066640ee88e75fbdcde5d938.mp4';
 
   @override
   void initState() {
     super.initState();
-    
-    // Start auto-scroll for images
-    _startAutoScroll();
-    
-    // Navigate to home screen after 4 seconds
-    Timer(const Duration(milliseconds: 4000), () {
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => widget.nextScreen,
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-            transitionDuration: const Duration(milliseconds: 500),
-          ),
-        );
-      }
-    });
+    _initializeVideo();
   }
-
-  void _startAutoScroll() {
-    _autoScrollTimer = Timer.periodic(const Duration(milliseconds: 1500), (timer) {
-      if (!mounted) return;
+  
+  Future<void> _initializeVideo() async {
+    _videoController = VideoPlayerController.networkUrl(Uri.parse(_splashVideoUrl));
+    
+    try {
+      await _videoController!.initialize();
+      await _videoController!.setLooping(false);
+      await _videoController!.setVolume(0.0); // Muted
+      await _videoController!.play();
       
-      final nextPage = (_currentPage + 1) % _splashImages.length;
-      _pageController.animateToPage(
-        nextPage,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.easeInOut,
-      );
-    });
+      if (mounted) {
+        setState(() {
+          _videoInitialized = true;
+        });
+      }
+      
+      // Listen for video completion
+      _videoController!.addListener(() {
+        if (_videoController!.value.position >= _videoController!.value.duration) {
+          // Video finished, navigate to home
+          if (mounted) {
+            Navigator.of(context).pushReplacement(
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => widget.nextScreen,
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+                transitionDuration: const Duration(milliseconds: 500),
+              ),
+            );
+          }
+        }
+      });
+    } catch (e) {
+      debugPrint('Error initializing splash video: $e');
+      // If video fails, navigate after 3 seconds
+      Timer(const Duration(seconds: 3), () {
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => widget.nextScreen,
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+              transitionDuration: const Duration(milliseconds: 500),
+            ),
+          );
+        }
+      });
+    }
   }
 
   @override
   void dispose() {
-    _autoScrollTimer?.cancel();
-    _pageController.dispose();
+    _videoController?.dispose();
     super.dispose();
   }
 
@@ -74,154 +86,54 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
+        fit: StackFit.expand,
         children: [
-          // Image slider
-          PageView.builder(
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _currentPage = index;
-              });
-            },
-            itemCount: _splashImages.length,
-            itemBuilder: (context, index) {
-              return CachedNetworkImage(
-                imageUrl: _splashImages[index],
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-                fadeInDuration: const Duration(milliseconds: 300),
-                fadeOutDuration: const Duration(milliseconds: 300),
-                placeholder: (context, url) => Container(
-                  color: Colors.black,
-                  child: const Center(
-                    child: SizedBox.shrink(),  // No loading icon
-                  ),
-                ),
-                errorWidget: (context, url, error) {
-                  debugPrint('Error loading splash image: $error');
-                  return Container(
-                    color: Colors.black,
-                    child: Center(
-                      child: Image.asset(
-                        'assets/images/splash_fallback.png',
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.black,
-                            child: const Center(
-                              child: Icon(
-                                Icons.photo_library,
-                                size: 80,
-                                color: Colors.white54,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                },
-                httpHeaders: const {
-                  'User-Agent': 'Mozilla/5.0',
-                },
-              );
-            },
-          ),
-          
-          // Gradient overlay
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                ],
+          // Background video - no overlay/opacity
+          if (_videoInitialized && _videoController != null)
+            FittedBox(
+              fit: BoxFit.cover,
+              child: SizedBox(
+                width: _videoController!.value.size.width,
+                height: _videoController!.value.size.height,
+                child: VideoPlayer(_videoController!),
               ),
+            )
+          else
+            Container(
+              color: Colors.black,
             ),
-          ),
           
-          // Logo and branding
-          SafeArea(
+          // Logo and tagline at bottom
+          Positioned(
+            bottom: 60,
+            left: 0,
+            right: 0,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(height: 60),
-                
-                // Logo
-                Column(
-                  children: [
-                    Image.network(
-                      'https://eyejack.in/cdn/shop/files/colored-logo.png',
-                      height: 100,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          height: 100,
-                          padding: const EdgeInsets.all(20),
-                          child: const Text(
-                            'EYEJACK',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 3,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Premium Eyewear',
+                // Eyejack logo
+                Image.network(
+                  'https://eyejack.in/cdn/shop/files/colored-logo.png',
+                  height: 80,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Text(
+                      'EYEJACK',
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
                         color: Colors.white,
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
                         letterSpacing: 2,
                       ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
-                
-                // Page indicators and loading
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 60),
-                  child: Column(
-                    children: [
-                      // Page indicators
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          _splashImages.length,
-                          (index) => Container(
-                            width: _currentPage == index ? 24 : 8,
-                            height: 8,
-                            margin: const EdgeInsets.symmetric(horizontal: 4),
-                            decoration: BoxDecoration(
-                              color: _currentPage == index
-                                  ? Colors.white
-                                  : Colors.white.withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          ),
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 24),
-                      
-                      // Loading indicator
-                      const SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 3,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                        ),
-                      ),
-                    ],
+                const SizedBox(height: 16),
+                const Text(
+                  'Your Vision, Our Passion',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300,
+                    letterSpacing: 1,
                   ),
                 ),
               ],
@@ -232,4 +144,3 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-
