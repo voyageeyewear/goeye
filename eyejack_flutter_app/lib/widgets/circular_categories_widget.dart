@@ -1,16 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:video_player/video_player.dart';
 import '../models/collection_model.dart';
 import '../screens/collection_screen.dart';
 
-class CircularCategoriesWidget extends StatelessWidget {
+class CircularCategoriesWidget extends StatefulWidget {
   final Map<String, dynamic> settings;
 
   const CircularCategoriesWidget({super.key, required this.settings});
 
   @override
+  State<CircularCategoriesWidget> createState() => _CircularCategoriesWidgetState();
+}
+
+class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> {
+  final Map<String, VideoPlayerController> _videoControllers = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeVideos();
+  }
+
+  void _initializeVideos() {
+    final categories = widget.settings['categories'] as List<dynamic>? ?? [];
+    
+    for (var i = 0; i < categories.length; i++) {
+      final category = categories[i];
+      final type = category['type'] as String? ?? 'image';
+      final videoUrl = category['video'] as String? ?? '';
+      
+      if (type == 'video' && videoUrl.isNotEmpty) {
+        final controller = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
+        controller.initialize().then((_) {
+          if (mounted) {
+            controller.setLooping(true);
+            controller.setVolume(0.0); // Muted
+            controller.play();
+            setState(() {});
+          }
+        }).catchError((error) {
+          debugPrint('Error initializing video for category $i: $error');
+        });
+        _videoControllers[category['handle']] = controller;
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _videoControllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final categories = settings['categories'] as List<dynamic>? ?? [];
+    final categories = widget.settings['categories'] as List<dynamic>? ?? [];
     
     if (categories.isEmpty) return const SizedBox.shrink();
 
@@ -27,7 +74,9 @@ class CircularCategoriesWidget extends StatelessWidget {
                 context,
                 category['name'] ?? '',
                 category['handle'] ?? '',
+                category['type'] as String? ?? 'image',
                 category['image'] ?? '',
+                category['video'] as String? ?? '',
                 category['badge'] as String?,
               ),
             ),
@@ -41,7 +90,9 @@ class CircularCategoriesWidget extends StatelessWidget {
     BuildContext context,
     String name,
     String handle,
+    String type,
     String imageUrl,
+    String videoUrl,
     String? badge,
   ) {
     return GestureDetector(
@@ -67,7 +118,7 @@ class CircularCategoriesWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Circular image with border
+          // Circular image/video with border
           Stack(
             clipBehavior: Clip.none,
             children: [
@@ -91,32 +142,7 @@ class CircularCategoriesWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(3),  // Padding between border and image
                   child: ClipOval(
-                    child: imageUrl.isNotEmpty
-                        ? CachedNetworkImage(
-                            imageUrl: imageUrl,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => Container(
-                              color: Colors.grey[200],  // No loading icon
-                            ),
-                            errorWidget: (context, url, error) => Container(
-                              color: Colors.grey[200],
-                              child: const Icon(
-                                Icons.image_outlined,
-                                size: 30,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            memCacheWidth: 200,  // Optimize image loading
-                            memCacheHeight: 200,
-                          )
-                        : Container(
-                            color: Colors.grey[200],
-                            child: const Icon(
-                              Icons.category_outlined,
-                              size: 30,
-                              color: Colors.grey,
-                            ),
-                          ),
+                    child: _buildContent(type, imageUrl, videoUrl, handle),
                   ),
                 ),
               ),
@@ -157,21 +183,94 @@ class CircularCategoriesWidget extends StatelessWidget {
           
           const SizedBox(height: 4),
           
-          // Category name (single line, no wrap)
+          // Category name - allow 2 lines for longer text like "New Arrivals"
           Text(
             name,
             textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.visible,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
+              height: 1.1,
             ),
           ),
         ],
       ),
     );
   }
-}
 
+  Widget _buildContent(String type, String imageUrl, String videoUrl, String handle) {
+    if (type == 'video' && videoUrl.isNotEmpty) {
+      final controller = _videoControllers[handle];
+      
+      if (controller != null && controller.value.isInitialized) {
+        return FittedBox(
+          fit: BoxFit.cover,
+          child: SizedBox(
+            width: controller.value.size.width,
+            height: controller.value.size.height,
+            child: VideoPlayer(controller),
+          ),
+        );
+      } else {
+        // Show placeholder image while video loads
+        return imageUrl.isNotEmpty
+            ? CachedNetworkImage(
+                imageUrl: imageUrl,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Container(
+                  color: Colors.grey[200],
+                ),
+                errorWidget: (context, url, error) => Container(
+                  color: Colors.grey[200],
+                  child: const Icon(
+                    Icons.video_library,
+                    size: 30,
+                    color: Colors.grey,
+                  ),
+                ),
+                memCacheWidth: 200,
+                memCacheHeight: 200,
+              )
+            : Container(
+                color: Colors.grey[200],
+                child: const Icon(
+                  Icons.video_library,
+                  size: 30,
+                  color: Colors.grey,
+                ),
+              );
+      }
+    } else {
+      // Regular image
+      return imageUrl.isNotEmpty
+          ? CachedNetworkImage(
+              imageUrl: imageUrl,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Container(
+                color: Colors.grey[200],
+              ),
+              errorWidget: (context, url, error) => Container(
+                color: Colors.grey[200],
+                child: const Icon(
+                  Icons.image_outlined,
+                  size: 30,
+                  color: Colors.grey,
+                ),
+              ),
+              memCacheWidth: 200,
+              memCacheHeight: 200,
+            )
+          : Container(
+              color: Colors.grey[200],
+              child: const Icon(
+                Icons.category_outlined,
+                size: 30,
+                color: Colors.grey,
+              ),
+            );
+    }
+  }
+}

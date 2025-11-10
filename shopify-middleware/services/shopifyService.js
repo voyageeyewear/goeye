@@ -84,26 +84,33 @@ exports.fetchThemeSections = async () => {
             {
               name: 'Sunglasses',
               handle: 'sunglasses',
+              type: 'image',
               image: 'https://eyejack.in/cdn/shop/files/female.png?v=1761800301&width=200'
             },
             {
               name: 'Eyeglasses',
               handle: 'eyeglasses',
+              type: 'image',
               image: 'https://eyejack.in/cdn/shop/files/male-04.png?v=1761800323&width=200'
             },
             {
-              name: 'New',
+              name: 'New Arrivals',
               handle: 'new-arrivals',
+              type: 'video',
+              video: 'https://eyejack.in/cdn/shop/videos/c/vp/4adbfe1a16244dbbb0d89805a901bfdc/4adbfe1a16244dbbb0d89805a901bfdc.HD-1080p-7.2Mbps-61208466.mp4?v=0',
               image: 'https://eyejack.in/cdn/shop/files/new_arrival-03.png?v=1761800347&width=200'
             },
             {
               name: 'View all',
               handle: 'all',
+              type: 'image',
               image: 'https://eyejack.in/cdn/shop/files/view_all-02.png?v=1761800398&width=200'
             },
             {
               name: 'BOGO',
               handle: 'bogo-sale',
+              type: 'video',
+              video: 'https://eyejack.in/cdn/shop/videos/c/vp/4f471d46b36f41388dad48760935d743/4f471d46b36f41388dad48760935d743.HD-1080p-7.2Mbps-61208515.mp4?v=0',
               image: 'https://eyejack.in/cdn/shop/files/bogo-01.png?v=1761800260&width=200',
               badge: 'SALE LIVE'
             }
