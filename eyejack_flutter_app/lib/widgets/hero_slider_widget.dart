@@ -231,12 +231,9 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
               ),
             )
           else
-            // Show loading indicator without thumbnail/poster
+            // Show black screen without loading indicator
             Container(
               color: Colors.black,
-              child: const Center(
-                child: CircularProgressIndicator(color: Colors.white),
-              ),
             ),
         ],
       ),
@@ -298,7 +295,6 @@ class _HeroSliderWidgetState extends State<HeroSliderWidget> {
           fit: BoxFit.cover,
           placeholder: (context, url) => Container(
             color: Colors.black,
-            child: const Center(child: CircularProgressIndicator()),
           ),
           errorWidget: (context, url, error) => Container(
             color: Colors.black,

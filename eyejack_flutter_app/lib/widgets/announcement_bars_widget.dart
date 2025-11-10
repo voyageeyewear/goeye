@@ -17,9 +17,23 @@ class AnnouncementBarsWidget extends StatelessWidget {
     
     if (bars.isEmpty) return const SizedBox.shrink();
 
-    return Container(
-      height: 32,
-      child: FlutterCarousel(
+    // Get the background color of the first bar for safe area
+    final backgroundColor = _parseColor(bars[0]['backgroundColor'] ?? '#52b1e2');
+
+    return Column(
+      children: [
+        // Safe area with matching color
+        Container(
+          color: backgroundColor,
+          child: SafeArea(
+            bottom: false,
+            child: Container(height: 0),
+          ),
+        ),
+        // Announcement bar carousel
+        Container(
+          height: 32,
+          child: FlutterCarousel(
         options: CarouselOptions(
           height: 32,
           viewportFraction: 1.0,
@@ -45,7 +59,9 @@ class AnnouncementBarsWidget extends StatelessWidget {
             ),
           );
         }).toList(),
-      ),
+          ),
+        ),
+      ],
     );
   }
 

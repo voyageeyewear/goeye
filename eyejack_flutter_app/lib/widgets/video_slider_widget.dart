@@ -16,7 +16,8 @@ class VideoSliderWidget extends StatefulWidget {
 }
 
 class _VideoSliderWidgetState extends State<VideoSliderWidget> {
-  final PageController _pageController = PageController(viewportFraction: 0.9);
+  // Adjusted viewport fraction to better fit 150px width videos
+  final PageController _pageController = PageController(viewportFraction: 0.45);
   int _currentPage = 0;
   Map<int, VideoPlayerController?> _videoControllers = {};
   Map<int, ChewieController?> _chewieControllers = {};
@@ -26,10 +27,8 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
   @override
   void initState() {
     super.initState();
-    final autoScroll = widget.settings['autoScroll'] as bool? ?? false;
-    if (autoScroll) {
-      _startAutoScroll();
-    }
+    // Always enable auto-scroll with 10 second interval
+    _startAutoScroll();
     // Pre-initialize first video for autoplay
     final videos = widget.settings['videos'] as List<dynamic>? ?? [];
     if (videos.isNotEmpty) {
@@ -38,8 +37,8 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
   }
 
   void _startAutoScroll() {
-    final scrollDuration = widget.settings['scrollDuration'] as int? ?? 5000;
-    _autoScrollTimer = Timer.periodic(Duration(milliseconds: scrollDuration), (timer) {
+    // Auto-scroll every 10 seconds (10000 milliseconds)
+    _autoScrollTimer = Timer.periodic(const Duration(milliseconds: 10000), (timer) {
       if (!mounted || !_isAutoScrolling) return;
       
       final videos = widget.settings['videos'] as List<dynamic>? ?? [];
@@ -82,7 +81,7 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
         videoPlayerController: controller,
         autoPlay: false,
         looping: true,
-        aspectRatio: 9 / 16,
+        aspectRatio: 150 / 255,  // width/height = 150/255
         showControls: false,
         placeholder: Container(
           color: Colors.black,
@@ -117,7 +116,7 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
         videoPlayerController: controller,
         autoPlay: true,
         looping: true,
-        aspectRatio: 9 / 16,
+        aspectRatio: 150 / 255,  // width/height = 150/255
         showControls: false,
         placeholder: Container(
           color: Colors.black,
@@ -188,9 +187,9 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
           
           const SizedBox(height: 16),
           
-          // Video slider (horizontal scrolling)
+          // Video slider (horizontal scrolling) with fixed height of 255px
           SizedBox(
-            height: 450,
+            height: 255,
             child: PageView.builder(
               controller: _pageController,
               onPageChanged: (index) {
@@ -221,12 +220,16 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
                 final video = videos[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: _buildVideoCard(
-                    index,
-                    video['videoUrl'] ?? '',
-                    video['thumbnail'] ?? '',
-                    video['title'] ?? '',
-                    video['link'] ?? '',
+                  child: SizedBox(
+                    width: 150,  // Fixed width
+                    height: 255,  // Fixed height
+                    child: _buildVideoCard(
+                      index,
+                      video['videoUrl'] ?? '',
+                      video['thumbnail'] ?? '',
+                      video['title'] ?? '',
+                      video['link'] ?? '',
+                    ),
                   ),
                 );
               },
