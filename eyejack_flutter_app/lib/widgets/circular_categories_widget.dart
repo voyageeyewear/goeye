@@ -31,26 +31,17 @@ class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> {
       final videoUrl = category['video'] as String? ?? '';
       final handle = category['handle'] as String? ?? '';
       
-      debugPrint('🎥 Category $i: name=${category['name']}, type=$type, video=$videoUrl');
-      
       if (type == 'video' && videoUrl.isNotEmpty && handle.isNotEmpty) {
-        debugPrint('🎬 Initializing video for: $handle');
         final controller = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
-        
-        // Store controller immediately so it can be accessed
         _videoControllers[handle] = controller;
         
         controller.initialize().then((_) {
-          debugPrint('✅ Video initialized successfully for: $handle');
           if (mounted) {
             controller.setLooping(true);
-            controller.setVolume(0.0); // Muted
+            controller.setVolume(0.0);
             controller.play();
-            debugPrint('▶️ Video playing for: $handle');
             setState(() {});
           }
-        }).catchError((error) {
-          debugPrint('❌ Error initializing video for $handle: $error');
         });
       }
     }
@@ -72,9 +63,9 @@ class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> {
 
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 12),  // Minimal padding
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 12, bottom: 12),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: categories.map((category) {
           return Expanded(
             child: Padding(
@@ -106,8 +97,6 @@ class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> {
   ) {
     return GestureDetector(
       onTap: () {
-        debugPrint('🔗 Circular category tapped: $handle');
-        
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => CollectionScreen(
@@ -127,61 +116,53 @@ class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Circular image/video with border
+          // Circular container with FIXED size for perfect circle
           Stack(
             clipBehavior: Clip.none,
             children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: const Color(0xFF52b1e2),
-                    width: 3,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+              // Circle container - MUST maintain aspect ratio
+              AspectRatio(
+                aspectRatio: 1.0,  // Perfect circle
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color(0xFF52b1e2),
+                      width: 2.5,
                     ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(3),  // Padding between border and image
-                  child: ClipOval(
-                    child: _buildContent(type, imageUrl, videoUrl, handle),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.5),
+                    child: ClipOval(
+                      child: _buildContent(type, imageUrl, videoUrl, handle),
+                    ),
                   ),
                 ),
               ),
               
-              // Badge (e.g., "SALE LIVE" for BOGO)
+              // Badge
               if (badge != null && badge.isNotEmpty)
                 Positioned(
-                  top: -5,
-                  right: -5,
+                  top: -4,
+                  right: -4,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 3,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                     decoration: BoxDecoration(
                       color: Colors.red,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       badge,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 8,
+                        fontSize: 7,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -192,7 +173,7 @@ class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> {
           
           const SizedBox(height: 4),
           
-          // Category name - allow 2 lines for longer text like "New Arrivals"
+          // Name - 2 lines max
           Text(
             name,
             textAlign: TextAlign.center,
@@ -224,61 +205,35 @@ class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> {
           ),
         );
       } else {
-        // Show placeholder image while video loads
         return imageUrl.isNotEmpty
             ? CachedNetworkImage(
                 imageUrl: imageUrl,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Container(
-                  color: Colors.grey[200],
-                ),
+                placeholder: (context, url) => Container(color: Colors.grey[200]),
                 errorWidget: (context, url, error) => Container(
                   color: Colors.grey[200],
-                  child: const Icon(
-                    Icons.video_library,
-                    size: 30,
-                    color: Colors.grey,
-                  ),
+                  child: const Icon(Icons.video_library, size: 20, color: Colors.grey),
                 ),
-                memCacheWidth: 200,
-                memCacheHeight: 200,
               )
             : Container(
                 color: Colors.grey[200],
-                child: const Icon(
-                  Icons.video_library,
-                  size: 30,
-                  color: Colors.grey,
-                ),
+                child: const Icon(Icons.video_library, size: 20, color: Colors.grey),
               );
       }
     } else {
-      // Regular image
       return imageUrl.isNotEmpty
           ? CachedNetworkImage(
               imageUrl: imageUrl,
               fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
-                color: Colors.grey[200],
-              ),
+              placeholder: (context, url) => Container(color: Colors.grey[200]),
               errorWidget: (context, url, error) => Container(
                 color: Colors.grey[200],
-                child: const Icon(
-                  Icons.image_outlined,
-                  size: 30,
-                  color: Colors.grey,
-                ),
+                child: const Icon(Icons.image_outlined, size: 20, color: Colors.grey),
               ),
-              memCacheWidth: 200,
-              memCacheHeight: 200,
             )
           : Container(
               color: Colors.grey[200],
-              child: const Icon(
-                Icons.category_outlined,
-                size: 30,
-                color: Colors.grey,
-              ),
+              child: const Icon(Icons.category_outlined, size: 20, color: Colors.grey),
             );
     }
   }

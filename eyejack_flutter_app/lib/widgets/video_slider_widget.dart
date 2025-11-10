@@ -4,8 +4,7 @@ import 'package:video_player/video_player.dart';
 import '../models/collection_model.dart';
 import '../screens/collection_screen.dart';
 
-/// Simple video slider based on live Shopify theme pattern
-/// Videos auto-play, muted, looping - just like the website
+/// Reliable video slider with proper buffering and state management
 class VideoSliderWidget extends StatefulWidget {
   final Map<String, dynamic> settings;
 
@@ -19,11 +18,17 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
   final PageController _pageController = PageController(viewportFraction: 0.68);
   int _currentIndex = 0;
   final Map<int, VideoPlayerController> _controllers = {};
+  final Map<int, bool> _isInitializing = {};
 
   @override
   void initState() {
     super.initState();
-    _initializeFirstVideo();
+    // Initialize first video with delay to ensure widget is mounted
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) {
+        _initializeFirstVideo();
+      }
+    });
   }
 
   void _initializeFirstVideo() {
@@ -31,41 +36,63 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
     if (videos.isNotEmpty) {
       final firstVideoUrl = videos[0]['videoUrl'] as String? ?? '';
       if (firstVideoUrl.isNotEmpty) {
-        _createAndPlayVideo(0, firstVideoUrl);
+        _initializeVideo(0, firstVideoUrl);
       }
     }
   }
 
-  Future<void> _createAndPlayVideo(int index, String url) async {
-    // Don't recreate if already exists
-    if (_controllers.containsKey(index)) {
-      _controllers[index]?.play();
+  Future<void> _initializeVideo(int index, String url) async {
+    // Skip if already initializing or initialized
+    if (_isInitializing[index] == true || _controllers.containsKey(index)) {
+      if (_controllers[index]?.value.isInitialized == true) {
+        _controllers[index]?.play();
+      }
       return;
     }
 
+    _isInitializing[index] = true;
+
     try {
-      // Create controller - simple approach
-      final controller = VideoPlayerController.networkUrl(Uri.parse(url));
-      
-      // Initialize
-      await controller.initialize();
-      
-      // Configure exactly like website: autoplay, muted, loop
+      final controller = VideoPlayerController.networkUrl(
+        Uri.parse(url),
+        videoPlayerOptions: VideoPlayerOptions(
+          mixWithOthers: true,
+          allowBackgroundPlayback: false,
+        ),
+      );
+
+      // Initialize with timeout
+      await controller.initialize().timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw TimeoutException('Video initialization timeout');
+        },
+      );
+
+      if (!mounted) return;
+
+      // Configure
       await controller.setLooping(true);
       await controller.setVolume(0.0);
-      
-      // Store
+
+      // Store controller
       _controllers[index] = controller;
-      
+
       // Start playing
       await controller.play();
-      
-      // Update UI
+
       if (mounted) {
-        setState(() {});
+        setState(() {
+          _isInitializing[index] = false;
+        });
       }
     } catch (e) {
-      debugPrint('Video error: $e');
+      debugPrint('Video $index error: $e');
+      if (mounted) {
+        setState(() {
+          _isInitializing[index] = false;
+        });
+      }
     }
   }
 
@@ -79,24 +106,28 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
   }
 
   void _onPageChanged(int index) {
+    if (!mounted) return;
+    
     setState(() {
       _currentIndex = index;
     });
 
     final videos = widget.settings['videos'] as List<dynamic>? ?? [];
-    if (index < videos.length) {
-      final videoUrl = videos[index]['videoUrl'] as String? ?? '';
-      if (videoUrl.isNotEmpty) {
-        _createAndPlayVideo(index, videoUrl);
-      }
-    }
-
-    // Pause others
+    
+    // Pause all videos
     _controllers.forEach((key, controller) {
       if (key != index) {
         controller.pause();
       }
     });
+
+    // Play current video
+    if (index < videos.length) {
+      final videoUrl = videos[index]['videoUrl'] as String? ?? '';
+      if (videoUrl.isNotEmpty) {
+        _initializeVideo(index, videoUrl);
+      }
+    }
   }
 
   @override
@@ -125,7 +156,7 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
           
           const SizedBox(height: 16),
           
-          // Video PageView - Simple slider
+          // Video PageView
           SizedBox(
             height: 400,
             child: PageView.builder(
@@ -134,20 +165,24 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
               itemCount: videos.length,
               itemBuilder: (context, index) {
                 final video = videos[index];
+                final controller = _controllers[index];
+                final isInitializing = _isInitializing[index] == true;
+                final isActive = index == _currentIndex;
+                
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: _VideoCard(
-                    index: index,
                     video: video,
-                    controller: _controllers[index],
-                    isActive: index == _currentIndex,
+                    controller: controller,
+                    isActive: isActive,
+                    isInitializing: isInitializing,
                   ),
                 );
               },
             ),
           ),
           
-          // Dots indicator
+          // Dots
           if (videos.length > 1) ...[
             const SizedBox(height: 12),
             Row(
@@ -173,24 +208,24 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
   }
 }
 
-/// Simple video card - shows video when active, black when not
 class _VideoCard extends StatelessWidget {
-  final int index;
   final Map<String, dynamic> video;
   final VideoPlayerController? controller;
   final bool isActive;
+  final bool isInitializing;
 
   const _VideoCard({
-    required this.index,
     required this.video,
     required this.controller,
     required this.isActive,
+    required this.isInitializing,
   });
 
   @override
   Widget build(BuildContext context) {
     final title = video['title'] as String? ?? '';
     final link = video['link'] as String? ?? '';
+    final isReady = controller?.value.isInitialized == true;
     
     return GestureDetector(
       onTap: () => _handleTap(context, link),
@@ -212,18 +247,28 @@ class _VideoCard extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              // Video - simple native player
-              if (isActive && controller != null && controller!.value.isInitialized)
+              // Video player
+              if (isActive && isReady && controller != null)
                 FittedBox(
                   fit: BoxFit.cover,
                   child: SizedBox(
                     width: controller!.value.size.width,
-                    height: controller!.value.size.height,
-                    child: VideoPlayer(controller!),
+                    height: controller.value.size.height,
+                    child: VideoPlayer(controller),
                   ),
                 )
               else
-                Container(color: Colors.black),
+                Container(
+                  color: Colors.black,
+                  child: isInitializing
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : null,
+                ),
               
               // Gradient
               Container(
