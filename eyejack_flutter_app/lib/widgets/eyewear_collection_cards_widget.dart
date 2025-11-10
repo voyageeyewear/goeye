@@ -48,7 +48,7 @@ class _EyewearCollectionCardsWidgetState extends State<EyewearCollectionCardsWid
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 1.5,
+              childAspectRatio: 0.9,  // Changed from 1.5 to 0.9 for more height
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
             ),
@@ -83,15 +83,15 @@ class _EyewearCollectionCardsWidgetState extends State<EyewearCollectionCardsWid
             // Background (video, image, or gradient)
             _buildBackground(backgroundType, backgroundUrl),
             
-            // Dark overlay for text visibility
+            // Lighter overlay for better visibility
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withOpacity(0.3),
-                    Colors.black.withOpacity(0.7),
+                    Colors.black.withOpacity(0.1),  // Reduced from 0.3
+                    Colors.black.withOpacity(0.3),  // Reduced from 0.7
                   ],
                 ),
               ),
@@ -138,7 +138,10 @@ class _EyewearCollectionCardsWidgetState extends State<EyewearCollectionCardsWid
       return CachedNetworkImage(
         imageUrl: url,
         fit: BoxFit.cover,
+        fadeInDuration: const Duration(milliseconds: 300),
         placeholder: (context, url) => Container(color: Colors.grey[300]),
+        memCacheWidth: 600,  // Optimize image loading
+        memCacheHeight: 800,
         errorWidget: (context, url, error) => Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(

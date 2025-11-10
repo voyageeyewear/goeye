@@ -72,13 +72,13 @@ class CircularCategoriesWidget extends StatelessWidget {
             clipBehavior: Clip.none,
             children: [
               Container(
-                width: 70,
-                height: 70,
+                width: 80,
+                height: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: const Color(0xFF52b1e2),
-                    width: 2,
+                    width: 3,
                   ),
                   boxShadow: [
                     BoxShadow(
@@ -88,31 +88,36 @@ class CircularCategoriesWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: ClipOval(
-                  child: imageUrl.isNotEmpty
-                      ? CachedNetworkImage(
-                          imageUrl: imageUrl,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => Container(
-                            color: Colors.grey[200],  // No loading icon
-                          ),
-                          errorWidget: (context, url, error) => Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(3),  // Padding between border and image
+                  child: ClipOval(
+                    child: imageUrl.isNotEmpty
+                        ? CachedNetworkImage(
+                            imageUrl: imageUrl,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              color: Colors.grey[200],  // No loading icon
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              color: Colors.grey[200],
+                              child: const Icon(
+                                Icons.image_outlined,
+                                size: 30,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            memCacheWidth: 200,  // Optimize image loading
+                            memCacheHeight: 200,
+                          )
+                        : Container(
                             color: Colors.grey[200],
                             child: const Icon(
-                              Icons.image_outlined,
+                              Icons.category_outlined,
                               size: 30,
                               color: Colors.grey,
                             ),
                           ),
-                        )
-                      : Container(
-                          color: Colors.grey[200],
-                          child: const Icon(
-                            Icons.category_outlined,
-                            size: 30,
-                            color: Colors.grey,
-                          ),
-                        ),
+                  ),
                 ),
               ),
               

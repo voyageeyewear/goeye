@@ -90,19 +90,41 @@ class _SplashScreenState extends State<SplashScreen> {
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,
+                fadeInDuration: const Duration(milliseconds: 300),
+                fadeOutDuration: const Duration(milliseconds: 300),
                 placeholder: (context, url) => Container(
                   color: Colors.black,
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: Colors.black,
                   child: const Center(
-                    child: Icon(
-                      Icons.image,
-                      size: 80,
-                      color: Colors.white,
-                    ),
+                    child: SizedBox.shrink(),  // No loading icon
                   ),
                 ),
+                errorWidget: (context, url, error) {
+                  debugPrint('Error loading splash image: $error');
+                  return Container(
+                    color: Colors.black,
+                    child: Center(
+                      child: Image.asset(
+                        'assets/images/splash_fallback.png',
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.black,
+                            child: const Center(
+                              child: Icon(
+                                Icons.photo_library,
+                                size: 80,
+                                color: Colors.white54,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+                httpHeaders: const {
+                  'User-Agent': 'Mozilla/5.0',
+                },
               );
             },
           ),

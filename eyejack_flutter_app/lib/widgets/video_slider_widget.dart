@@ -82,7 +82,7 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
         videoPlayerController: controller,
         autoPlay: false,
         looping: true,
-        aspectRatio: 250 / 255,  // width/height = 250/255
+        aspectRatio: 250 / 400,  // width/height = 250/400
         showControls: false,
       );
 
@@ -115,7 +115,7 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
         videoPlayerController: controller,
         autoPlay: true,
         looping: true,
-        aspectRatio: 250 / 255,  // width/height = 250/255
+        aspectRatio: 250 / 400,  // width/height = 250/400
         showControls: false,
       );
 
@@ -183,9 +183,9 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
           
           const SizedBox(height: 16),
           
-          // Video slider (horizontal scrolling) with fixed height of 255px
+          // Video slider (horizontal scrolling) with increased height to 400px
           SizedBox(
-            height: 255,
+            height: 400,
             child: PageView.builder(
               controller: _pageController,
               padEnds: false,  // Remove space before first video
@@ -218,8 +218,8 @@ class _VideoSliderWidgetState extends State<VideoSliderWidget> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: SizedBox(
-                    width: 250,  // Fixed width changed to 250px
-                    height: 255,  // Fixed height
+                    width: 250,  // Fixed width
+                    height: 400,  // Increased height to prevent compression
                     child: _buildVideoCard(
                       index,
                       video['videoUrl'] ?? '',
