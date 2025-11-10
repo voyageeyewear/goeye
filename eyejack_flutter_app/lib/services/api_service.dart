@@ -11,19 +11,43 @@ class ApiService {
     try {
       // Add cache-busting timestamp to force fresh data
       final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final response = await http
-          .get(Uri.parse('${ApiConfig.baseUrl}${ApiConfig.themeSections}?t=$timestamp'))
-          .timeout(ApiConfig.timeout);
+      final url = '${ApiConfig.baseUrl}${ApiConfig.themeSections}?t=$timestamp';
+      
+      print('🔄 Fetching theme sections from: $url');
+      
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      ).timeout(ApiConfig.timeout);
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('✅ Theme sections loaded successfully');
         print('   Total sections: ${data['data']['layout']?.length ?? 0}');
+        
+        // Log circular categories specifically
+        final circularSection = (data['data']['layout'] as List?)?.firstWhere(
+          (s) => s['id'] == 'circular-categories',
+          orElse: () => null,
+        );
+        if (circularSection != null) {
+          print('🔍 Circular categories found:');
+          final categories = circularSection['settings']['categories'] as List?;
+          categories?.forEach((cat) {
+            print('   - ${cat['name']}: type=${cat['type']}, image=${cat['image']?.substring(0, 50)}...');
+          });
+        }
+        
         return ThemeData.fromJson(data['data']);
       } else {
         throw Exception('Failed to load theme sections: ${response.statusCode}');
       }
     } catch (e) {
+      print('❌ Error fetching theme sections: $e');
       throw Exception('Error fetching theme sections: $e');
     }
   }

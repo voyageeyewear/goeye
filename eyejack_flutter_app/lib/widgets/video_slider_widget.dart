@@ -253,8 +253,8 @@ class _VideoCard extends StatelessWidget {
                   fit: BoxFit.cover,
                   child: SizedBox(
                     width: controller!.value.size.width,
-                    height: controller.value.size.height,
-                    child: VideoPlayer(controller),
+                    height: controller!.value.size.height,
+                    child: VideoPlayer(controller!),
                   ),
                 )
               else
