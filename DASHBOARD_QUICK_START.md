@@ -5,16 +5,34 @@
 ✅ **Professional Admin Dashboard** - Built with React + TypeScript + Vite  
 ✅ **Connected to PostgreSQL** - All data stored in Railway database  
 ✅ **Real-Time Updates** - Changes apply instantly to your Flutter app  
-✅ **Production Ready** - Built, tested, and ready to deploy  
+✅ **Local Admin Tool** - Secure, runs on your computer only
+
+**Note**: This dashboard is designed as a **local admin tool**. It runs on your computer and connects to your production backend, giving you secure control over your app content.  
 
 ## 🎯 Access the Dashboard
 
-### Local Development (Running Now!)
+### Starting the Dashboard
+
+Every time you want to manage your app content:
+
+1. Open Terminal
+2. Navigate to the dashboard folder:
+   ```bash
+   cd "/Users/ssenterprises/Eyejack Native Application/admin-dashboard"
+   ```
+3. Start the dashboard:
+   ```bash
+   npm run dev
+   ```
+4. Open your browser to: `http://localhost:5173`
+
+**Keep the terminal window open** while using the dashboard. Close it when you're done.
+
+### Currently Running
 ```
 Dashboard URL: http://localhost:5173
+Status: ✅ Active
 ```
-
-Open your browser and visit the URL above to see your dashboard!
 
 ## 📱 Dashboard Pages
 
@@ -63,38 +81,37 @@ Open your browser and visit the URL above to see your dashboard!
 4. Section becomes inactive (won't show in app)
 5. Click again to make it active
 
-## 🌐 Deploy to Production
+## 🔒 Why Run Locally?
 
-### Option 1: Vercel (Easiest - Recommended)
-```bash
-cd admin-dashboard
-./deploy-vercel.sh
+### This is an Admin Tool
+The dashboard is intentionally designed to run **only on your computer** for several important reasons:
+
+✅ **Security**: Admin tools shouldn't be publicly accessible  
+✅ **No login needed**: Since only you have access to your computer  
+✅ **Full control**: You decide when it runs  
+✅ **No hosting costs**: Free to run locally  
+✅ **Easy debugging**: Full access to browser dev tools  
+
+### How It Works
+```
+Your Computer               Railway Cloud
+┌──────────────┐           ┌────────────────┐
+│  Dashboard   │  ──────>  │  Backend API   │
+│  (Local)     │  HTTPS    │  PostgreSQL DB │
+└──────────────┘           └────────────────┘
+                                    │
+                                    ▼
+                            ┌────────────────┐
+                            │  Flutter App   │
+                            └────────────────┘
 ```
 
-Or manually:
-```bash
-npm install -g vercel
-vercel --prod
-```
-
-### Option 2: Netlify
-1. Build: `npm run build`
-2. Go to https://app.netlify.com
-3. Drag and drop the `dist/` folder
-4. Done!
-
-### Option 3: Railway (Same Server as Backend)
-1. Create new service in Railway project
-2. Connect to your GitHub repo
-3. Set root directory to `admin-dashboard`
-4. Build command: `npm run build`
-5. Start command: `npm run preview`
-6. Deploy!
+You manage content locally → Saves to production database → App gets updates!
 
 ## 🔧 Configuration
 
 ### API URL
-The dashboard connects to:
+The dashboard connects to your **production backend** on Railway:
 ```
 https://motivated-intuition-production.up.railway.app
 ```
@@ -103,6 +120,8 @@ This is set in `admin-dashboard/.env`:
 ```env
 VITE_API_BASE_URL=https://motivated-intuition-production.up.railway.app
 ```
+
+⚠️ **Important**: Even though the dashboard runs locally, **all changes are REAL** and affect your production database and live Flutter app!
 
 ## 📊 Testing the Dashboard
 
@@ -169,14 +188,23 @@ Or:
 ### Dashboard won't load
 ```bash
 # Restart the dev server
-cd admin-dashboard
+cd "/Users/ssenterprises/Eyejack Native Application/admin-dashboard"
 npm run dev
 ```
 
 ### API errors
-- Check that Railway backend is running
-- Verify DATABASE_URL is set correctly
-- Check Railway logs for errors
+- Check that Railway backend is running (visit your Railway dashboard)
+- Verify your internet connection (dashboard needs to reach Railway)
+- Check Railway logs for backend errors
+
+### Port already in use
+If you see "Port 5173 is already in use":
+```bash
+# Stop the existing process
+lsof -ti:5173 | xargs kill -9
+# Then start again
+npm run dev
+```
 
 ### Changes not appearing in app
 - Make sure you saved the changes

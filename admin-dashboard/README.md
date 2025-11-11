@@ -2,6 +2,10 @@
 
 A professional, elegant admin dashboard for managing the Eyejack Flutter app content in real-time.
 
+**⚠️ Admin Tool - Designed for Local Use Only**
+
+This dashboard is an **administrative tool** meant to run on your local computer. It connects to your production backend API and database, allowing you to manage app content securely from your development environment.
+
 ## Features
 
 - 📊 **Dashboard Overview**: View statistics and quick actions
@@ -9,7 +13,7 @@ A professional, elegant admin dashboard for managing the Eyejack Flutter app con
 - 🎨 **Theme Settings**: Customize colors and global styles
 - 👁️ **Live Preview**: See how your changes look in real-time
 - ⚡ **Real-time Updates**: Changes are applied instantly without app rebuild
-- 🌙 **Dark Mode Support**: Professional dark/light theme
+- 🔒 **Secure**: Runs locally on your machine for maximum security
 
 ## Tech Stack
 
@@ -29,7 +33,7 @@ A professional, elegant admin dashboard for managing the Eyejack Flutter app con
 npm install
 ```
 
-### Development
+### Running the Dashboard (Local Development)
 
 ```bash
 npm run dev
@@ -37,17 +41,15 @@ npm run dev
 
 The dashboard will be available at `http://localhost:5173`
 
-### Build for Production
+**Important**: This dashboard is designed to run locally on your computer. It connects to your production backend on Railway, so all changes you make are real and will affect your live app!
+
+### Build (Optional - For Testing)
 
 ```bash
 npm run build
 ```
 
-### Preview Production Build
-
-```bash
-npm run preview
-```
+This creates an optimized production build in the `dist/` folder. However, **you typically don't need this** since the dashboard is meant for local admin use only.
 
 ## Configuration
 
@@ -93,26 +95,31 @@ The dashboard connects to your PostgreSQL backend via REST API:
 - `PUT /api/admin/theme-settings/:key` - Update theme setting
 - `GET /api/admin/dashboard-stats` - Get dashboard statistics
 
-## Deployment
+## Why Local Only?
 
-### Railway (Recommended)
+### Security & Control
+- ✅ **Secure**: Admin tools shouldn't be publicly accessible
+- ✅ **No authentication needed**: Since it's only accessible from your computer
+- ✅ **Full control**: You control when it runs and who has access
+- ✅ **Cost-effective**: No hosting costs for admin dashboard
+- ✅ **Fast development**: Instant updates and debugging
 
-1. Create a new Railway project
-2. Connect your GitHub repository
-3. Add environment variable: `VITE_API_BASE_URL`
-4. Deploy automatically on push
-
-### Vercel
-
-```bash
-vercel --prod
+### Architecture
+```
+Your Computer (Local)          Railway (Production)
+┌─────────────────┐           ┌──────────────────┐
+│   Dashboard     │  ───────> │   Backend API    │
+│   localhost     │  API Call │   PostgreSQL DB  │
+└─────────────────┘           └──────────────────┘
+                                       │
+                                       ▼
+                              ┌──────────────────┐
+                              │   Flutter App    │
+                              │   (Mobile)       │
+                              └──────────────────┘
 ```
 
-### Netlify
-
-```bash
-netlify deploy --prod
-```
+The dashboard runs locally but manages production data through the Railway API.
 
 ## License
 
