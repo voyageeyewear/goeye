@@ -25,6 +25,7 @@ import 'homepage_faq_section.dart';
 // NEW SECTIONS FROM EYEJACK.IN
 import 'circular_categories_widget.dart';
 import 'video_slider_widget.dart';
+import 'best_selling_collection_widget.dart';
 
 class SectionRenderer extends StatelessWidget {
   final Section section;
@@ -81,6 +82,9 @@ class SectionRenderer extends StatelessWidget {
       
       case 'eyewear_collection_cards':
         return EyewearCollectionCardsWidget(settings: section.settings);
+      
+      case 'best_selling_collection':
+        return BestSellingCollectionWidget(settings: section.settings);
       
       case 'featured_products':
         return FeaturedProductsWidget(settings: section.settings);
