@@ -23,17 +23,17 @@ class CollectionBannerWidget extends StatelessWidget {
         }
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+        margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Stack(
           children: [
             // Banner Image
             ClipRRect(
-              borderRadius: BorderRadius.circular(0),
+              borderRadius: BorderRadius.circular(12),
               child: AspectRatio(
-                aspectRatio: 1.9, // EVEN BIGGER banner - taller (was 2.0)
+                aspectRatio: 2.2, // Better ratio to prevent stretching
                 child: CachedNetworkImage(
                   imageUrl: banner.bannerUrl,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill, // Fill to prevent stretching
                   memCacheWidth: 1400,
                   memCacheHeight: 700,
                   placeholder: (context, url) => Container(
@@ -54,7 +54,7 @@ class CollectionBannerWidget extends StatelessWidget {
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(0),
+                    borderRadius: BorderRadius.circular(12),
                     gradient: LinearGradient(
                       begin: Alignment.centerRight,
                       end: Alignment.centerLeft,

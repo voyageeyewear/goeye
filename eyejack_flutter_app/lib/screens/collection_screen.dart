@@ -672,11 +672,16 @@ class _CollectionScreenState extends State<CollectionScreen>
 
   Widget _buildProductCard(Product product) {
     final imageUrl = product.images.isNotEmpty ? product.images[0].src : '';
-    final originalPriceStr = product.priceRange.maxVariantPrice?.amount ?? '0';
+    
+    // Get compare price from first variant if available
+    final compareAtPriceStr = product.variants.isNotEmpty 
+        ? product.variants.first.compareAtPrice?.amount 
+        : null;
     final salePriceStr = product.priceRange.minVariantPrice.amount;
-    final originalPrice = double.tryParse(originalPriceStr) ?? 0.0;
+    
+    final originalPrice = double.tryParse(compareAtPriceStr ?? '0') ?? 0.0;
     final salePrice = double.tryParse(salePriceStr) ?? 0.0;
-    final hasDiscount = originalPrice > salePrice;
+    final hasDiscount = originalPrice > salePrice && originalPrice > 0;
     final discountPercent = hasDiscount
         ? (((originalPrice - salePrice) / originalPrice) * 100).toInt()
         : 0;
@@ -761,11 +766,11 @@ class _CollectionScreenState extends State<CollectionScreen>
               ),
             ),
             
-            // Product Details (SMALLER - like Woggles!)
+            // Product Details (Compact but fits everything!)
             Flexible(
-              flex: 3, // Was 7, now MUCH SMALLER for bigger images
+              flex: 4, // Slightly bigger to fit all content
               child: Padding(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -776,12 +781,12 @@ class _CollectionScreenState extends State<CollectionScreen>
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 10,
                         fontWeight: FontWeight.w500,
-                        height: 1.2,
+                        height: 1.1,
                       ),
                     ),
-                    const SizedBox(height: 3),
+                    const SizedBox(height: 2),
                     
                     // Star Rating
                     Row(
@@ -790,62 +795,60 @@ class _CollectionScreenState extends State<CollectionScreen>
                           final rating = product.reviews?.rating ?? 5.0;
                           return Icon(
                             index < rating.floor() ? Icons.star : Icons.star_border,
-                            size: 14,
+                            size: 12,
                             color: const Color(0xFFFFC107),
                           );
                         }),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: 3),
                         Text(
                           '${product.reviews?.rating.toStringAsFixed(1) ?? '5.0'} (${product.reviews?.count ?? 1})',
                           style: const TextStyle(
-                            fontSize: 11,
+                            fontSize: 9,
                             color: Colors.black87,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     
                     // Price
-                    if (hasDiscount && originalPrice > 0) ...[
+                    if (hasDiscount && originalPrice > 0)
                       Text(
                         'Rs. ${originalPrice.toStringAsFixed(0)}',
                         style: const TextStyle(
-                          fontSize: 11,
+                          fontSize: 10,
                           color: Colors.grey,
                           decoration: TextDecoration.lineThrough,
                         ),
                       ),
-                      const SizedBox(height: 1),
-                    ],
                     Text(
                       'Rs. ${salePrice.toStringAsFixed(0)}',
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFFE74C3C),
                       ),
                     ),
-                    const SizedBox(height: 3),
+                    const SizedBox(height: 2),
                     
                     // EMI Option
                     Row(
                       children: [
                         const Text(
                           'or ',
-                          style: TextStyle(fontSize: 9, color: Colors.grey),
+                          style: TextStyle(fontSize: 8, color: Colors.grey),
                         ),
                         Text(
                           'Rs.${(salePrice / 3).toInt()}/Month',
                           style: const TextStyle(
-                            fontSize: 9,
+                            fontSize: 8,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(width: 3),
+                        const SizedBox(width: 2),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 3,
+                            horizontal: 2,
                             vertical: 1,
                           ),
                           decoration: BoxDecoration(
@@ -855,7 +858,7 @@ class _CollectionScreenState extends State<CollectionScreen>
                           child: const Text(
                             'Buy on EMI >',
                             style: TextStyle(
-                              fontSize: 8,
+                              fontSize: 7,
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
                             ),
@@ -863,14 +866,14 @@ class _CollectionScreenState extends State<CollectionScreen>
                         ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     
                     // In Stock Indicator
                     Row(
                       children: [
                         Container(
-                          width: 6,
-                          height: 6,
+                          width: 5,
+                          height: 5,
                           decoration: BoxDecoration(
                             color: product.availableForSale
                                 ? const Color(0xFF27916D)
@@ -878,11 +881,11 @@ class _CollectionScreenState extends State<CollectionScreen>
                             shape: BoxShape.circle,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: 3),
                         Text(
                           product.availableForSale ? 'In stock' : 'Out of stock',
                           style: TextStyle(
-                            fontSize: 11,
+                            fontSize: 9,
                             color: product.availableForSale
                                 ? const Color(0xFF27916D)
                                 : Colors.red,
@@ -896,9 +899,9 @@ class _CollectionScreenState extends State<CollectionScreen>
               ),
             ),
             
-            // Add to Cart Button
+            // Add to Cart Button (Compact!)
             Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 0.5),
+              padding: const EdgeInsets.only(left: 6, right: 6, top: 2, bottom: 0.5),
               child: ElevatedButton(
                 onPressed: product.availableForSale
                     ? () => _addToCart(product)
@@ -906,13 +909,13 @@ class _CollectionScreenState extends State<CollectionScreen>
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4),
                     side: const BorderSide(color: Colors.black, width: 1),
                   ),
                   elevation: 0,
-                  minimumSize: const Size(double.infinity, 32),
+                  minimumSize: const Size(double.infinity, 28),
                 ),
                 child: const Text(
                   'ADD TO CART',
@@ -924,9 +927,9 @@ class _CollectionScreenState extends State<CollectionScreen>
               ),
             ),
             
-            // Buy 1 Get 1 Free Button
+            // Buy 1 Get 1 Free Button (Compact!)
             Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8, top: 0.5, bottom: 8),
+              padding: const EdgeInsets.only(left: 6, right: 6, top: 0.5, bottom: 6),
               child: ElevatedButton(
                 onPressed: product.availableForSale
                     ? () => _addToCart(product)
@@ -934,17 +937,17 @@ class _CollectionScreenState extends State<CollectionScreen>
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF5DADE2),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4),
                   ),
                   elevation: 0,
-                  minimumSize: const Size(double.infinity, 32),
+                  minimumSize: const Size(double.infinity, 26),
                 ),
                 child: const Text(
                   'BUY 1 GET 1 FREE',
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 9,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
