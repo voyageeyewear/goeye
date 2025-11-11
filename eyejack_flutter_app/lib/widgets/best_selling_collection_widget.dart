@@ -19,9 +19,13 @@ class BestSellingCollectionWidget extends StatefulWidget {
   State<BestSellingCollectionWidget> createState() => _BestSellingCollectionWidgetState();
 }
 
-class _BestSellingCollectionWidgetState extends State<BestSellingCollectionWidget> {
+class _BestSellingCollectionWidgetState extends State<BestSellingCollectionWidget>
+    with AutomaticKeepAliveClientMixin {
   List<Product> _products = [];
   bool _isLoading = true;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -121,6 +125,8 @@ class _BestSellingCollectionWidgetState extends State<BestSellingCollectionWidge
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // Required for AutomaticKeepAliveClientMixin
+    
     final title = widget.settings['title'] ?? 'Best Selling';
     final subtitle = widget.settings['subtitle'] ?? 'Our most popular products';
     final showViewAll = widget.settings['showViewAll'] ?? true;
@@ -277,9 +283,11 @@ class _BestSellingCollectionWidgetState extends State<BestSellingCollectionWidge
                     aspectRatio: 1,
                     child: CachedNetworkImage(
                       imageUrl: product.images.isNotEmpty 
-                          ? product.images.first.src 
+                          ? _addImageSize(product.images.first.src, 400)
                           : '',
                       fit: BoxFit.cover,
+                      memCacheWidth: 400,
+                      memCacheHeight: 400,
                       placeholder: (context, url) => Container(
                         color: Colors.grey[100],
                         child: const Center(
@@ -413,6 +421,15 @@ class _BestSellingCollectionWidgetState extends State<BestSellingCollectionWidge
         ),
       ),
     );
+  }
+
+  String _addImageSize(String url, int size) {
+    if (url.contains('cdn.shopify.com')) {
+      // Add Shopify image size parameter for optimization
+      final separator = url.contains('?') ? '&' : '?';
+      return '$url${separator}width=$size';
+    }
+    return url;
   }
 
   Color _parseColor(String colorString) {

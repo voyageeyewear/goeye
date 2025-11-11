@@ -11,8 +11,12 @@ class EyewearCollectionCardsWidget extends StatefulWidget {
   State<EyewearCollectionCardsWidget> createState() => _EyewearCollectionCardsWidgetState();
 }
 
-class _EyewearCollectionCardsWidgetState extends State<EyewearCollectionCardsWidget> {
+class _EyewearCollectionCardsWidgetState extends State<EyewearCollectionCardsWidget>
+    with AutomaticKeepAliveClientMixin {
   final Map<int, VideoPlayerController> _videoControllers = {};
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void dispose() {
@@ -24,6 +28,8 @@ class _EyewearCollectionCardsWidgetState extends State<EyewearCollectionCardsWid
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // Required for AutomaticKeepAliveClientMixin
+    
     final title = widget.settings['title'] ?? '';
     final collections = widget.settings['collections'] as List<dynamic>? ?? [];
 
@@ -136,7 +142,7 @@ class _EyewearCollectionCardsWidgetState extends State<EyewearCollectionCardsWid
       return _VideoBackground(url: url);
     } else if (type == 'image' && url.isNotEmpty) {
       return CachedNetworkImage(
-        imageUrl: url,
+        imageUrl: _addImageSize(url, 600),
         fit: BoxFit.cover,
         fadeInDuration: const Duration(milliseconds: 300),
         placeholder: (context, url) => Container(color: Colors.grey[300]),
@@ -170,6 +176,15 @@ class _EyewearCollectionCardsWidgetState extends State<EyewearCollectionCardsWid
         ),
       );
     }
+  }
+
+  String _addImageSize(String url, int size) {
+    if (url.contains('cdn.shopify.com')) {
+      // Add Shopify image size parameter for optimization
+      final separator = url.contains('?') ? '&' : '?';
+      return '$url${separator}width=$size';
+    }
+    return url;
   }
 }
 

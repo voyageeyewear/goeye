@@ -9,19 +9,12 @@ class ApiService {
   // Fetch theme sections
   Future<ThemeData> fetchThemeSections() async {
     try {
-      // Add cache-busting timestamp to force fresh data
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final url = '${ApiConfig.baseUrl}${ApiConfig.themeSections}?t=$timestamp';
+      final url = '${ApiConfig.baseUrl}${ApiConfig.themeSections}';
       
       print('🔄 Fetching theme sections from: $url');
       
       final response = await http.get(
         Uri.parse(url),
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-        },
       ).timeout(ApiConfig.timeout);
 
       if (response.statusCode == 200) {

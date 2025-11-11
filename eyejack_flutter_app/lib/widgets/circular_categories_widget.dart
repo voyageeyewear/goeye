@@ -13,8 +13,12 @@ class CircularCategoriesWidget extends StatefulWidget {
   State<CircularCategoriesWidget> createState() => _CircularCategoriesWidgetState();
 }
 
-class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> {
+class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> 
+    with AutomaticKeepAliveClientMixin {
   final Map<String, VideoPlayerController> _videoControllers = {};
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -57,6 +61,8 @@ class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // Required for AutomaticKeepAliveClientMixin
+    
     final categories = widget.settings['categories'] as List<dynamic>? ?? [];
     
     if (categories.isEmpty) return const SizedBox.shrink();
@@ -207,8 +213,10 @@ class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> {
       } else {
         return imageUrl.isNotEmpty
             ? CachedNetworkImage(
-                imageUrl: imageUrl,
+                imageUrl: _addImageSize(imageUrl, 200),
                 fit: BoxFit.cover,
+                memCacheWidth: 200,
+                memCacheHeight: 200,
                 placeholder: (context, url) => Container(color: Colors.grey[200]),
                 errorWidget: (context, url, error) => Container(
                   color: Colors.grey[200],
@@ -223,8 +231,10 @@ class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> {
     } else {
       return imageUrl.isNotEmpty
           ? CachedNetworkImage(
-              imageUrl: imageUrl,
+              imageUrl: _addImageSize(imageUrl, 200),
               fit: BoxFit.cover,
+              memCacheWidth: 200,
+              memCacheHeight: 200,
               placeholder: (context, url) => Container(color: Colors.grey[200]),
               errorWidget: (context, url, error) => Container(
                 color: Colors.grey[200],
@@ -236,5 +246,14 @@ class _CircularCategoriesWidgetState extends State<CircularCategoriesWidget> {
               child: const Icon(Icons.category_outlined, size: 20, color: Colors.grey),
             );
     }
+  }
+
+  String _addImageSize(String url, int size) {
+    if (url.contains('cdn.shopify.com')) {
+      // Add Shopify image size parameter
+      final separator = url.contains('?') ? '&' : '?';
+      return '$url${separator}width=$size';
+    }
+    return url;
   }
 }
