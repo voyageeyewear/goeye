@@ -1,18 +1,27 @@
 # EyeJack Native Application
 
-A complete Flutter-based e-commerce mobile application for EyeJack eyewear store, integrated with Shopify Storefront API and featuring a sophisticated lens customization wizard with modern BoAt-style UI.
+A complete Flutter-based e-commerce mobile application for EyeJack eyewear store with **PostgreSQL-powered dynamic content management** and a **professional admin dashboard** for real-time app content updates without requiring app rebuilds.
 
 ## 🎯 Project Overview
 
-EyeJack Native Application is a full-featured mobile e-commerce app that replicates the functionality of the live EyeJack Shopify store (www.eyejack.in) with enhanced mobile-first user experience. The app includes real-time product synchronization, custom lens selection wizard, cart management, and seamless checkout integration.
+EyeJack Native Application is a full-featured mobile e-commerce app that replicates the functionality of the live EyeJack Shopify store (www.eyejack.in) with enhanced mobile-first user experience. The app now features a **PostgreSQL backend** and an **elegant admin dashboard** that allows content management without code changes or app rebuilds.
 
 ## 📦 Latest Release
 
-**Version:** 6.0.1 (Build 61)  
-**Release Date:** November 5, 2024  
-**APK:** `Eyejack-v6.0.1-BoatStyle-Build61.apk` (52MB)
+**Version:** 8.0.1 (Build 81)  
+**Release Date:** November 11, 2025  
+**APK:** `Eyejack-v8.0.1-AdminDashboard.apk`
 
-### What's New in v6.0.1
+### 🎨 What's New in v8.0.1 - **ADMIN DASHBOARD RELEASE**
+- 🎉 **NEW: Admin Dashboard**: Professional web-based dashboard for content management
+- 🗄️ **PostgreSQL Integration**: All app content stored in production database
+- ⚡ **Real-Time Updates**: Change app content instantly without rebuilds
+- 🎨 **Theme Management**: Edit colors, styles, and settings through UI
+- 📊 **Section Management**: Add, edit, delete, and reorder app sections
+- 🔒 **Local Admin Tool**: Secure dashboard runs on your computer
+- 🚀 **Zero Downtime**: Update content while app is live
+
+### Previous v6.0.1 Features
 - ✅ **BoAt-Style Product Page**: Modern two-button layout (Add To Cart + Select Lens)
 - ✅ **Enhanced Price Display**: Price with discount badge and tax information
 - ✅ **4 New Homepage Sections**: Feature highlights, statistics, video demo, FAQ
@@ -20,6 +29,26 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 - ✅ **Railway Deployment**: All backend updates deployed to production
 
 ## ✨ Key Features
+
+### 🎨 Admin Dashboard & Content Management (NEW!)
+- ✅ **Professional Dashboard**: React-based admin panel with elegant UI
+- ✅ **PostgreSQL Backend**: All app content stored in production database
+- ✅ **Real-Time Updates**: Change content instantly without app rebuilds
+- ✅ **Sections Management**: 
+  - View all 9 app sections (announcement bars, hero slider, categories, etc.)
+  - Edit section settings with JSON editor
+  - Toggle sections active/inactive
+  - Delete or reorder sections
+  - Create new sections
+- ✅ **Theme Settings**: 
+  - Edit colors with color picker
+  - Modify text and numeric settings
+  - Primary color, background, text colors
+- ✅ **Live Preview**: See current app configuration with auto-refresh
+- ✅ **Dashboard Statistics**: View section counts, active sections, and types
+- ✅ **Local Admin Tool**: Secure, runs on your computer only
+- ✅ **API-First Architecture**: RESTful admin API endpoints
+- ✅ **Instant Deployment**: Changes appear in app on next launch
 
 ### 🏪 E-Commerce Functionality
 - ✅ **Shopify Integration**: Full integration with Shopify Storefront API v2025-01
@@ -83,15 +112,36 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 ### Backend (Middleware)
 - **Runtime**: Node.js 18.x
 - **Framework**: Express.js
+- **Database**: PostgreSQL (Railway)
+- **ORM**: Sequelize
 - **API Integration**: Shopify Storefront API (GraphQL)
 - **Deployment**: Railway (Production)
 - **Key Libraries**:
   - `axios`: HTTP client
+  - `sequelize`: Database ORM
+  - `pg`: PostgreSQL driver
   - `dotenv`: Environment management
   - `cors`: Cross-origin resource sharing
 
+### 🎨 Admin Dashboard (NEW!)
+- **Framework**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS v4
+- **State Management**: React Query (@tanstack/react-query)
+- **Routing**: React Router v6
+- **Icons**: Lucide React
+- **Deployment**: Runs locally for security
+- **Key Features**:
+  - Dashboard overview with statistics
+  - Sections management (CRUD operations)
+  - Theme settings editor
+  - Live preview of changes
+  - Real-time updates to PostgreSQL
+
 ### Infrastructure
 - **Production Backend**: https://motivated-intuition-production.up.railway.app
+- **Database**: PostgreSQL on Railway (crossover.proxy.rlwy.net:31441)
+- **Admin Dashboard**: Local (http://localhost:5173)
 - **Shopify Store**: eyejack1907.myshopify.com (www.eyejack.in)
 - **CDN**: Shopify CDN for all images
 - **API Version**: 2025-01
@@ -99,6 +149,25 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 ## 🏗️ Architecture
 
 ```
+┌─────────────────────────────────────────┐
+│      Admin Dashboard (Local)            │
+│      React + TypeScript + Vite          │
+│  ┌───────────────────────────────────┐  │
+│  │  Pages                            │  │
+│  │  - Dashboard (stats)              │  │
+│  │  - Sections (CRUD)                │  │
+│  │  - Theme Settings                 │  │
+│  │  - Live Preview                   │  │
+│  └───────────────────────────────────┘  │
+│  ┌───────────────────────────────────┐  │
+│  │  API Client (Axios + React Query) │  │
+│  │  - Real-time updates              │  │
+│  │  - Optimistic UI                  │  │
+│  └───────────────────────────────────┘  │
+└─────────────────────────────────────────┘
+                  ▼
+        HTTPS - Admin API Calls
+                  ▼
 ┌─────────────────────────────────────────┐
 │         Flutter Mobile App              │
 │  ┌───────────────────────────────────┐  │
@@ -119,19 +188,26 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 │  │  - API calls to Railway           │  │
 │  └───────────────────────────────────┘  │
 └─────────────────────────────────────────┘
-                   ▼
-         HTTP (JSON) - REST API
-                   ▼
+                  ▼
+        HTTP (JSON) - REST API
+                  ▼
 ┌─────────────────────────────────────────┐
 │      Railway Cloud (Production)         │
 │      Node.js Middleware (Express)       │
 │  ┌───────────────────────────────────┐  │
 │  │  Routes                           │  │
-│  │  - /api/shopify/*                 │  │
+│  │  - /api/shopify/* (Mobile App)    │  │
+│  │  - /api/admin/* (Dashboard)       │  │
 │  └───────────────────────────────────┘  │
 │  ┌───────────────────────────────────┐  │
 │  │  Controllers                      │  │
 │  │  - shopifyController.js           │  │
+│  │  - adminController.js (NEW!)      │  │
+│  └───────────────────────────────────┘  │
+│  ┌───────────────────────────────────┐  │
+│  │  Database Layer (Sequelize ORM)  │  │
+│  │  - AppSection model               │  │
+│  │  - AppTheme model                 │  │
 │  └───────────────────────────────────┘  │
 │  ┌───────────────────────────────────┐  │
 │  │  Services                         │  │
@@ -141,14 +217,46 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 │  │  - Cart management                │  │
 │  └───────────────────────────────────┘  │
 └─────────────────────────────────────────┘
-                   ▼
-         GraphQL (Shopify Storefront API)
-                   ▼
+         ▼                        ▼
+         │                        │
+         │                  PostgreSQL
+         │                  Database
+         │                  (Railway)
+         │                 ┌──────────┐
+         │                 │ Tables:  │
+         │                 │ app_     │
+         │                 │ sections │
+         │                 │ app_     │
+         │                 │ theme    │
+         │                 └──────────┘
+         │
+        GraphQL (Shopify Storefront API)
+         ▼
 ┌─────────────────────────────────────────┐
 │       Shopify Store Backend             │
 │       (eyejack1907.myshopify.com)       │
 │       www.eyejack.in (Live Store)       │
 └─────────────────────────────────────────┘
+```
+
+### Data Flow
+
+**Admin Updates Content:**
+```
+Admin Dashboard → Railway API → PostgreSQL → Flutter App (on refresh)
+```
+
+**User Views Product:**
+```
+Flutter App → Railway API → Shopify API → Products → User
+```
+
+**Content Management:**
+```
+1. Admin edits section in dashboard
+2. Changes saved to PostgreSQL
+3. Flutter app fetches updated data on next launch
+4. No app rebuild required!
 ```
 
 ## 📂 Project Structure
@@ -186,17 +294,57 @@ Eyejack Native Application/
 │   └── pubspec.yaml               # Flutter dependencies
 │
 ├── shopify-middleware/            # Node.js backend
+│   ├── config/
+│   │   └── database.js            # PostgreSQL config (Sequelize)
+│   ├── models/
+│   │   ├── AppSection.js          # Section data model
+│   │   ├── AppTheme.js            # Theme settings model
+│   │   └── index.js               # Model exports
 │   ├── controllers/
-│   │   └── shopifyController.js   # Request handlers
+│   │   ├── shopifyController.js   # Mobile app API
+│   │   └── adminController.js     # Dashboard API (NEW!)
 │   ├── routes/
-│   │   └── shopify.js             # API routes
+│   │   ├── shopify.js             # Mobile API routes
+│   │   └── admin.js               # Dashboard API routes (NEW!)
 │   ├── services/
 │   │   └── shopifyService.js      # Shopify API logic
+│   ├── scripts/
+│   │   └── seedDatabase.js        # Database seeding script
 │   ├── server.js                  # Express server
 │   ├── package.json               # Node dependencies
 │   └── .env                       # Environment variables
 │
-├── BUILD32_FINAL.md               # Latest build documentation
+├── admin-dashboard/               # Admin Dashboard (NEW!)
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── ui/                # Reusable UI components
+│   │   │   │   ├── Button.tsx
+│   │   │   │   ├── Card.tsx
+│   │   │   │   ├── Input.tsx
+│   │   │   │   └── Label.tsx
+│   │   │   └── Layout.tsx         # Main layout with sidebar
+│   │   ├── pages/
+│   │   │   ├── Dashboard.tsx      # Stats overview
+│   │   │   ├── Sections.tsx       # Sections CRUD
+│   │   │   ├── ThemeSettings.tsx  # Theme editor
+│   │   │   └── Preview.tsx        # Live preview
+│   │   ├── lib/
+│   │   │   ├── api.ts             # API client (Axios)
+│   │   │   └── utils.ts           # Helper functions
+│   │   ├── App.tsx                # Router setup
+│   │   ├── main.tsx               # Entry point
+│   │   └── index.css              # Tailwind styles
+│   ├── package.json               # React dependencies
+│   ├── .env                       # API URL config
+│   ├── vite.config.ts             # Vite configuration
+│   ├── tailwind.config.js         # Tailwind config
+│   ├── README.md                  # Dashboard docs
+│   └── HOW_TO_USE.md              # Usage guide
+│
+├── DASHBOARD_COMPLETE.md          # Dashboard documentation
+├── DASHBOARD_QUICK_START.md       # Quick start guide
+├── POSTGRESQL_INTEGRATION_SUCCESS.md  # PostgreSQL setup
+├── BUILD32_FINAL.md               # Build documentation
 ├── README.md                      # This file
 └── [APK files]                    # Built Android packages
 ```
@@ -254,7 +402,72 @@ https://motivated-intuition-production.up.railway.app
 
 Auto-deploys on `git push` to `main` branch.
 
-### 3. Setup Flutter App
+### 3. Setup Admin Dashboard (Content Management)
+
+The admin dashboard allows you to manage app content without code changes!
+
+#### Installation
+
+```bash
+cd admin-dashboard
+npm install
+```
+
+#### Configuration
+
+The `.env` file should already exist with:
+
+```env
+VITE_API_BASE_URL=https://motivated-intuition-production.up.railway.app
+```
+
+If not, create it with the above content.
+
+#### Run the Dashboard
+
+```bash
+npm run dev
+```
+
+Dashboard will be available at: **http://localhost:5173**
+
+#### Using the Dashboard
+
+1. **Dashboard Page** - View statistics and quick actions
+2. **Sections Page** - Manage all app sections:
+   - Edit section settings (JSON editor)
+   - Toggle active/inactive
+   - Delete sections
+3. **Theme Settings** - Edit colors and styles:
+   - Primary color
+   - Background color
+   - Text color
+4. **Preview** - See current app configuration
+
+#### Making Changes
+
+**Example: Change Announcement Bar**
+1. Go to Sections page
+2. Click edit on "announcement-bars"
+3. Modify the text or colors in JSON
+4. Click "Save Changes"
+5. Close and reopen Flutter app to see changes!
+
+**Example: Change Primary Color**
+1. Go to Theme Settings
+2. Click color picker next to "Primary Color"
+3. Choose new color
+4. Click "Save"
+5. Done!
+
+> **Important**: The dashboard connects to your **production database** on Railway. All changes are real and will affect the live app!
+
+📚 **For detailed documentation:**
+- See `DASHBOARD_QUICK_START.md` for quick start guide
+- See `admin-dashboard/HOW_TO_USE.md` for daily usage
+- See `DASHBOARD_COMPLETE.md` for technical details
+
+### 4. Setup Flutter App
 
 ```bash
 cd eyejack_flutter_app
@@ -280,7 +493,7 @@ static const String baseUrl = 'http://10.0.2.2:3000'; // Android emulator
 static const String baseUrl = 'http://YOUR_LOCAL_IP:3000'; // Physical device
 ```
 
-### 4. Run the App
+### 5. Run the App
 
 #### On Emulator/Simulator
 
