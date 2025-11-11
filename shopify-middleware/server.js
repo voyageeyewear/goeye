@@ -4,6 +4,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const shopifyRoutes = require('./routes/shopify');
+const adminRoutes = require('./routes/admin');
+const { sequelize } = require('./models');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,14 +16,28 @@ app.use(express.json());
 
 // Routes
 app.use('/api/shopify', shopifyRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
-    message: 'Shopify Middleware API is running',
-    store: process.env.SHOPIFY_STORE_DOMAIN
-  });
+app.get('/health', async (req, res) => {
+  try {
+    // Test database connection
+    await sequelize.authenticate();
+    const dbStatus = 'Connected';
+    
+    res.json({ 
+      status: 'OK', 
+      message: 'Shopify Middleware API is running',
+      store: process.env.SHOPIFY_STORE_DOMAIN,
+      database: dbStatus
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'ERROR',
+      message: 'Database connection failed',
+      error: error.message
+    });
+  }
 });
 
 // Error handling middleware

@@ -1,14 +1,38 @@
 const shopifyService = require('../services/shopifyService');
+const { AppSection } = require('../models');
 
-// Get theme sections for homepage
+// Get theme sections for homepage (NOW READS FROM POSTGRESQL!)
 exports.getThemeSections = async (req, res, next) => {
   try {
-    const sections = await shopifyService.fetchThemeSections();
+    console.log('📊 Fetching sections from PostgreSQL...');
+    
+    // Fetch active sections from database, ordered by display_order
+    const dbSections = await AppSection.findAll({
+      where: { is_active: true },
+      order: [['display_order', 'ASC']]
+    });
+
+    console.log(`✅ Found ${dbSections.length} active sections in database`);
+
+    // Transform database format to API format
+    const layout = dbSections.map(section => ({
+      id: section.section_id,
+      type: section.section_type,
+      settings: section.settings
+    }));
+
+    // Still fetch shop info from Shopify for now
+    const shopInfo = await shopifyService.fetchShopInfo();
+
     res.json({
       success: true,
-      data: sections
+      data: {
+        layout,
+        shop: shopInfo
+      }
     });
   } catch (error) {
+    console.error('❌ Error fetching sections from database:', error);
     next(error);
   }
 };
