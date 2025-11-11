@@ -587,8 +587,8 @@ class _CollectionScreenState extends State<CollectionScreen>
         final screenWidth = constraints.maxWidth;
         final crossAxisCount = screenWidth > 600 ? 3 : 2;
         
-        // Better aspect ratio calculation for proper responsiveness
-        final aspectRatio = 0.65; // Width:Height ratio (BIGGER cards for larger images)
+        // Woggles-style: Much taller cards with bigger images
+        final aspectRatio = 0.55; // Like Woggles - tall cards, big images
         
         // Get banners for different positions
         final topBanners = _banners.where((b) => b.bannerPosition == 'top').toList();
@@ -718,13 +718,13 @@ class _CollectionScreenState extends State<CollectionScreen>
                       ),
                       child: imageUrl.isNotEmpty
                           ? CachedNetworkImage(
-                              imageUrl: _optimizeImageUrl(imageUrl, 800),
+                              imageUrl: _optimizeImageUrl(imageUrl, 1000),
                               fit: BoxFit.cover,
-                              memCacheWidth: 800,
-                              memCacheHeight: 1000,
-                              fadeInDuration: const Duration(milliseconds: 150),
+                              memCacheWidth: 1000,
+                              memCacheHeight: 1400,
+                              fadeInDuration: const Duration(milliseconds: 100),
                               placeholder: (context, url) => Container(
-                                color: Colors.grey[200],
+                                color: Colors.grey[100],
                               ),
                               errorWidget: (context, url, error) => Container(
                                 color: Colors.grey[200],
@@ -1006,13 +1006,13 @@ class _CollectionScreenState extends State<CollectionScreen>
                     ),
                     child: imageUrl.isNotEmpty
                         ? CachedNetworkImage(
-                            imageUrl: _optimizeImageUrl(imageUrl, 500),
+                            imageUrl: _optimizeImageUrl(imageUrl, 600),
                             fit: BoxFit.cover,
-                            memCacheWidth: 500,
-                            memCacheHeight: 700,
-                            fadeInDuration: const Duration(milliseconds: 150),
+                            memCacheWidth: 600,
+                            memCacheHeight: 900,
+                            fadeInDuration: const Duration(milliseconds: 100),
                             placeholder: (context, url) => Container(
-                              color: Colors.grey[200],
+                              color: Colors.grey[100],
                             ),
                             errorWidget: (context, url, error) => Container(
                               color: Colors.grey[200],

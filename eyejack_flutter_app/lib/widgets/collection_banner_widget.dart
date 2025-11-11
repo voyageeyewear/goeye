@@ -23,19 +23,19 @@ class CollectionBannerWidget extends StatelessWidget {
         }
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
         child: Stack(
           children: [
             // Banner Image
             ClipRRect(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(0),
               child: AspectRatio(
-                aspectRatio: 2.5, // Bigger, less stretched (was 3.5)
+                aspectRatio: 2.0, // BIGGER banner like Woggles (was 2.5)
                 child: CachedNetworkImage(
                   imageUrl: banner.bannerUrl,
                   fit: BoxFit.cover,
-                  memCacheWidth: 1200,
-                  memCacheHeight: 600,
+                  memCacheWidth: 1400,
+                  memCacheHeight: 700,
                   placeholder: (context, url) => Container(
                     color: Colors.grey[200],
                   ),
@@ -54,20 +54,20 @@ class CollectionBannerWidget extends StatelessWidget {
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(0),
                     gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                      begin: Alignment.centerRight,
+                      end: Alignment.centerLeft,
                       colors: [
                         Colors.transparent,
-                        Colors.black.withOpacity(0.4),
+                        Colors.black.withOpacity(0.3),
                       ],
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (banner.title != null)
@@ -75,17 +75,19 @@ class CollectionBannerWidget extends StatelessWidget {
                             banner.title!,
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 20,
+                              fontSize: 32,
                               fontWeight: FontWeight.bold,
+                              letterSpacing: 1.2,
                             ),
                           ),
                         if (banner.subtitle != null) ...[
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 8),
                           Text(
                             banner.subtitle!,
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ],
