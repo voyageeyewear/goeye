@@ -766,11 +766,11 @@ class _CollectionScreenState extends State<CollectionScreen>
               ),
             ),
             
-            // Product Details (Professional Spacing!)
+            // Product Details (MAXIMUM Spacing!)
             Flexible(
               flex: 4, // Slightly bigger to fit all content
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -781,12 +781,12 @@ class _CollectionScreenState extends State<CollectionScreen>
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontSize: 11,
+                        fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        height: 1.3,
+                        height: 1.4,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 8),
                     
                     // Star Rating
                     Row(
@@ -795,21 +795,21 @@ class _CollectionScreenState extends State<CollectionScreen>
                           final rating = product.reviews?.rating ?? 5.0;
                           return Icon(
                             index < rating.floor() ? Icons.star : Icons.star_border,
-                            size: 13,
+                            size: 14,
                             color: const Color(0xFFFFC107),
                           );
                         }),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: 6),
                         Text(
                           '${product.reviews?.rating.toStringAsFixed(1) ?? '5.0'} (${product.reviews?.count ?? 1})',
                           style: const TextStyle(
-                            fontSize: 10,
+                            fontSize: 11,
                             color: Colors.black87,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 10),
                     
                     // Price (Horizontal: Real Price first, then Compare Price)
                     Row(
@@ -817,17 +817,17 @@ class _CollectionScreenState extends State<CollectionScreen>
                         Text(
                           'Rs. ${salePrice.toStringAsFixed(0)}',
                           style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFFE74C3C),
                           ),
                         ),
                         if (hasDiscount && originalPrice > 0) ...[
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 10),
                           Text(
                             'Rs. ${originalPrice.toStringAsFixed(0)}',
                             style: const TextStyle(
-                              fontSize: 11,
+                              fontSize: 12,
                               color: Colors.grey,
                               decoration: TextDecoration.lineThrough,
                             ),
@@ -835,36 +835,36 @@ class _CollectionScreenState extends State<CollectionScreen>
                         ],
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 8),
                     
                     // EMI Option
                     Row(
                       children: [
                         const Text(
                           'or ',
-                          style: TextStyle(fontSize: 9, color: Colors.grey),
+                          style: TextStyle(fontSize: 10, color: Colors.grey),
                         ),
                         Text(
                           'Rs.${(salePrice / 3).toInt()}/Month',
                           style: const TextStyle(
-                            fontSize: 9,
+                            fontSize: 10,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: 6),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 4,
-                            vertical: 2,
+                            horizontal: 6,
+                            vertical: 3,
                           ),
                           decoration: BoxDecoration(
                             color: const Color(0xFF27916D),
-                            borderRadius: BorderRadius.circular(3),
+                            borderRadius: BorderRadius.circular(4),
                           ),
                           child: const Text(
                             'Buy on EMI >',
                             style: TextStyle(
-                              fontSize: 8,
+                              fontSize: 9,
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
                             ),
@@ -878,8 +878,8 @@ class _CollectionScreenState extends State<CollectionScreen>
                     Row(
                       children: [
                         Container(
-                          width: 5,
-                          height: 5,
+                          width: 6,
+                          height: 6,
                           decoration: BoxDecoration(
                             color: product.availableForSale
                                 ? const Color(0xFF27916D)
@@ -887,11 +887,11 @@ class _CollectionScreenState extends State<CollectionScreen>
                             shape: BoxShape.circle,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: 6),
                         Text(
                           product.availableForSale ? 'In stock' : 'Out of stock',
                           style: TextStyle(
-                            fontSize: 9,
+                            fontSize: 10,
                             color: product.availableForSale
                                 ? const Color(0xFF27916D)
                                 : Colors.red,
@@ -900,15 +900,15 @@ class _CollectionScreenState extends State<CollectionScreen>
                         ),
                       ],
                     ),
-                    const SizedBox(height: 6), // Better space before buttons
+                    const SizedBox(height: 10), // More space before buttons
                   ],
                 ),
               ),
             ),
             
-            // Add to Cart Button (Professional!)
+            // Add to Cart Button (MAXIMUM Spacing!)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               child: ElevatedButton(
                 onPressed: product.availableForSale
                     ? () => _addToCart(product)
@@ -916,27 +916,27 @@ class _CollectionScreenState extends State<CollectionScreen>
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(8),
                     side: const BorderSide(color: Colors.black, width: 1.5),
                   ),
                   elevation: 0,
-                  minimumSize: const Size(double.infinity, 32),
+                  minimumSize: const Size(double.infinity, 38),
                 ),
                 child: const Text(
                   'ADD TO CART',
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 11,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
             
-            // Buy 1 Get 1 Free Button (Professional!)
+            // Buy 1 Get 1 Free Button (MAXIMUM Spacing!)
             Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 6),
+              padding: const EdgeInsets.only(left: 12, right: 12, bottom: 8),
               child: ElevatedButton(
                 onPressed: product.availableForSale
                     ? () => _addToCart(product)
@@ -944,17 +944,17 @@ class _CollectionScreenState extends State<CollectionScreen>
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF5DADE2),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 7),
+                  padding: const EdgeInsets.symmetric(vertical: 9),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   elevation: 0,
-                  minimumSize: const Size(double.infinity, 30),
+                  minimumSize: const Size(double.infinity, 35),
                 ),
                 child: const Text(
                   'BUY 1 GET 1 FREE',
                   style: TextStyle(
-                    fontSize: 9,
+                    fontSize: 10,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
