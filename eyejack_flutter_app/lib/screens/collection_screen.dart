@@ -8,6 +8,7 @@ import '../providers/shop_provider.dart';
 import '../services/api_service.dart';
 import '../screens/product_detail_screen.dart';
 import '../widgets/collection_banner_widget.dart';
+import '../widgets/cart_drawer.dart';
 
 class CollectionScreen extends StatefulWidget {
   final Collection collection;
@@ -27,6 +28,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
   String? _error;
   bool _isGridView = true;
   String _sortBy = 'featured'; // featured, price_asc, price_desc, name_asc, name_desc
+  int _cartCount = 0; // Track cart item count
   
   // Filter states
   Map<String, bool> _selectedFilters = {};
@@ -38,6 +40,40 @@ class _CollectionScreenState extends State<CollectionScreen> {
     super.initState();
     _loadProducts();
     _loadBanners();
+    _loadCartCount();
+  }
+  
+  Future<void> _loadCartCount() async {
+    try {
+      final cartData = await ApiService().getCart();
+      if (mounted) {
+        setState(() {
+          _cartCount = cartData['items']?.length ?? 0;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error loading cart count: $e');
+    }
+  }
+  
+  void _showCartDrawer() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => CartDrawer(
+        onCheckout: () {
+          Navigator.pop(context);
+          // Navigate to checkout if needed
+        },
+        onItemRemoved: () {
+          _loadCartCount(); // Refresh cart count after removal
+        },
+      ),
+    ).then((_) {
+      // Refresh cart count when drawer closes
+      _loadCartCount();
+    });
   }
 
   Future<void> _loadBanners() async {
@@ -388,11 +424,38 @@ class _CollectionScreenState extends State<CollectionScreen> {
               // TODO: Implement search
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
-            onPressed: () {
-              // TODO: Open cart
-            },
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
+                onPressed: _showCartDrawer,
+              ),
+              if (_cartCount > 0)
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 18,
+                      minHeight: 18,
+                    ),
+                    child: Text(
+                      _cartCount > 99 ? '99+' : '$_cartCount',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
           ),
         ],
       ),
@@ -702,10 +765,10 @@ class _CollectionScreenState extends State<CollectionScreen> {
         ),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            // Calculate heights properly for REAL DEVICES
+            // Calculate heights properly for REAL DEVICES (MORE AGGRESSIVE!)
             final totalHeight = constraints.maxHeight;
-            final imageHeight = totalHeight * 0.45; // 45% for image (less space)
-            final detailsHeight = totalHeight * 0.55; // 55% for details+buttons (MORE space!)
+            final imageHeight = totalHeight * 0.38; // 38% for image (EVEN LESS!)
+            final detailsHeight = totalHeight * 0.62; // 62% for details+buttons (MUCH MORE!)
             
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1228,15 +1291,10 @@ class _CollectionScreenState extends State<CollectionScreen> {
       
       debugPrint('✅ Successfully added ${product.title} to cart');
       
+      // Update cart count and open cart drawer
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('✅ ${product.title} added to cart!'),
-            backgroundColor: const Color(0xFF27916D),
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        await _loadCartCount(); // Refresh cart count
+        _showCartDrawer(); // Open cart drawer immediately
       }
     } catch (e) {
       debugPrint('❌ Error adding to cart: $e');
