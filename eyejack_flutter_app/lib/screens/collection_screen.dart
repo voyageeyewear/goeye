@@ -18,8 +18,7 @@ class CollectionScreen extends StatefulWidget {
   State<CollectionScreen> createState() => _CollectionScreenState();
 }
 
-class _CollectionScreenState extends State<CollectionScreen> 
-    with AutomaticKeepAliveClientMixin {
+class _CollectionScreenState extends State<CollectionScreen> {
   List<Product>? _products;
   List<Product>? _filteredProducts;
   List<CollectionBanner> _banners = [];
@@ -33,9 +32,6 @@ class _CollectionScreenState extends State<CollectionScreen>
   Map<String, bool> _selectedFilters = {};
   RangeValues _priceRange = const RangeValues(0, 10000);
   double _maxPrice = 10000;
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -368,8 +364,6 @@ class _CollectionScreenState extends State<CollectionScreen>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); // Required for AutomaticKeepAliveClientMixin
-    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
