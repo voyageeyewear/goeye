@@ -841,15 +841,12 @@ class _CollectionScreenState extends State<CollectionScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Product Details Section - COMPACT for real devices!
-                      Expanded(
-                        child: SingleChildScrollView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          child: Padding(
-                            padding: const EdgeInsets.all(6), // Reduced from 8 to 6
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                      // Product Details Section - ULTRA COMPACT!
+                      Padding(
+                        padding: const EdgeInsets.all(4), // Reduced to 4px
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                     // Product Title
                     Text(
                       product.title,
@@ -861,7 +858,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         height: 1.3, // Reduced from 1.4
                       ),
                     ),
-                    const SizedBox(height: 4), // Reduced from 8
+                    const SizedBox(height: 2), // ULTRA compact
                     
                     // Star Rating
                     Row(
@@ -884,7 +881,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 4), // Reduced from 10
+                    const SizedBox(height: 2), // ULTRA compact
                     
                     // Price (Horizontal: Real Price first, then Compare Price)
                     Row(
@@ -910,7 +907,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         ],
                       ],
                     ),
-                    const SizedBox(height: 3), // Reduced from 8
+                    const SizedBox(height: 1), // ULTRA compact
                     
                     // EMI Option
                     Row(
@@ -947,7 +944,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 3), // Reduced from 6
+                    const SizedBox(height: 1), // ULTRA compact
                     
                     // In Stock Indicator
                     Row(
@@ -975,11 +972,12 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         ),
                       ],
                     ),
-                              ],
-                            ),
-                          ),
+                          ],
                         ),
                       ),
+                      
+                      // Spacer to push buttons down but not too much
+                      const Spacer(),
                       
                       // Buttons Section - COMPACT for real devices!
                       // Add to Cart Button - FULL WIDTH
