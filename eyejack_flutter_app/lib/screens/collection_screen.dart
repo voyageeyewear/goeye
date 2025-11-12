@@ -747,14 +747,23 @@ class _CollectionScreenState extends State<CollectionScreen> {
         ? (((originalPrice - salePrice) / originalPrice) * 100).toInt()
         : 0;
 
-    return Container(
+    return GestureDetector(
       key: key,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[300]!),
-      ),
-      child: LayoutBuilder(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductDetailScreen(product: product),
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey[300]!),
+        ),
+        child: LayoutBuilder(
           builder: (context, constraints) {
             // Calculate heights properly for REAL DEVICES (MORE AGGRESSIVE!)
             final totalHeight = constraints.maxHeight;
@@ -764,75 +773,65 @@ class _CollectionScreenState extends State<CollectionScreen> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Product Image with Discount Badge (tappable to open product details)
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductDetailScreen(product: product),
-                      ),
-                    );
-                  },
-                  child: SizedBox(
-                    height: imageHeight,
-                    child: Stack(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(8),
-                            ),
-                            color: Colors.grey[100],
+                // Product Image with Discount Badge
+                SizedBox(
+                  height: imageHeight,
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(8),
                           ),
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(8),
+                          color: Colors.grey[100],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(8),
+                          ),
+                          child: imageUrl.isNotEmpty
+                              ? CachedNetworkImage(
+                                  imageUrl: _optimizeImageUrl(imageUrl, 1000),
+                                  fit: BoxFit.cover,
+                                  memCacheWidth: 1000,
+                                  memCacheHeight: 1400,
+                                  fadeInDuration: const Duration(milliseconds: 100),
+                                  placeholder: (context, url) => Container(
+                                    color: Colors.grey[100],
+                                  ),
+                                  errorWidget: (context, url, error) => Container(
+                                    color: Colors.grey[200],
+                                    child: const Icon(Icons.image, size: 40),
+                                  ),
+                                )
+                              : const Icon(Icons.image, size: 40),
+                        ),
+                      ),
+                      if (hasDiscount)
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
                             ),
-                            child: imageUrl.isNotEmpty
-                                ? CachedNetworkImage(
-                                    imageUrl: _optimizeImageUrl(imageUrl, 1000),
-                                    fit: BoxFit.cover,
-                                    memCacheWidth: 1000,
-                                    memCacheHeight: 1400,
-                                    fadeInDuration: const Duration(milliseconds: 100),
-                                    placeholder: (context, url) => Container(
-                                      color: Colors.grey[100],
-                                    ),
-                                    errorWidget: (context, url, error) => Container(
-                                      color: Colors.grey[200],
-                                      child: const Icon(Icons.image, size: 40),
-                                    ),
-                                  )
-                                : const Icon(Icons.image, size: 40),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE74C3C),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              '$discountPercent% off',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
-                        if (hasDiscount)
-                          Positioned(
-                            top: 8,
-                            right: 8,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFE74C3C),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Text(
-                                '$discountPercent% off',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
+                    ],
                   ),
                 ),
                 
