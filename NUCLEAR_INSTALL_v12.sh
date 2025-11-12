@@ -1,11 +1,12 @@
 #!/bin/bash
 
-# 🔥 NUCLEAR INSTALLATION SCRIPT FOR BUILD 120 - v12.0.0 🔥
+# 🔥 NUCLEAR INSTALLATION SCRIPT FOR BUILD 121 - v12.1.0 🔥
 # This script will COMPLETELY REMOVE all traces of the old app
+# BUILD 121 includes VISIBLE DEBUG BANNERS to verify which version is running!
 
-echo "=================================="
-echo "🔥 NUCLEAR FRESH INSTALL - v12.0.0"
-echo "=================================="
+echo "===================================="
+echo "🔥 NUCLEAR INSTALL - v12.1.0 DEBUG"
+echo "===================================="
 echo ""
 
 # Check if adb is available
@@ -48,8 +49,8 @@ adb shell pm trim-caches 999G
 echo "✅ Cache trimmed"
 echo ""
 
-echo "📦 STEP 5: Installing FRESH v12.0.0 Build 120..."
-adb install -r "/Users/ssenterprises/Eyejack Native Application/Eyejack-v12.0.0-Build120-NUCLEAR-FRESH.apk"
+echo "📦 STEP 5: Installing v12.1.0 Build 121 (WITH DEBUG BANNERS)..."
+adb install -r "/Users/ssenterprises/Eyejack Native Application/Eyejack-v12.1.0-Build121-WITH-DEBUG-BANNER.apk"
 echo "✅ App installed!"
 echo ""
 
@@ -58,17 +59,21 @@ adb shell am start -n com.eyejack.app/.MainActivity
 echo "✅ App launched!"
 echo ""
 
-echo "=================================="
+echo "===================================="
 echo "✅ NUCLEAR INSTALL COMPLETE!"
-echo "=================================="
+echo "===================================="
 echo ""
-echo "📱 Version: v12.0.0 (Build 120)"
+echo "📱 Version: v12.1.0 (Build 121)"
 echo "🔥 This is a COMPLETELY FRESH install"
 echo "📋 All old data has been wiped"
 echo ""
-echo "If you STILL see old layout:"
-echo "1. Restart your phone"
-echo "2. Re-run this script"
-echo "3. Check app version in settings"
+echo "🎯 HOW TO VERIFY IT'S THE NEW VERSION:"
+echo "   1. Open any collection page in the app"
+echo "   2. Look for a GREEN BANNER at the top"
+echo "   3. It should say: '🔥 v12.1.0 DEBUG BUILD'"
+echo ""
+echo "❌ If you DON'T see the green banner:"
+echo "   → You're running the OLD cached version!"
+echo "   → Restart your phone and re-run this script"
 echo ""
 

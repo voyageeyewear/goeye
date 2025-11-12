@@ -526,6 +526,21 @@ class _CollectionScreenState extends State<CollectionScreen> {
 
     return Column(
       children: [
+        // DEBUG VERSION BANNER - TO VERIFY WHICH BUILD IS RUNNING
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          color: Colors.green,
+          child: const Text(
+            '🔥 v12.1.0 DEBUG BUILD - 4px Padding, 1-2px Spacing 🔥',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
         // Promotional Banner
         Container(
           width: double.infinity,
@@ -610,11 +625,30 @@ class _CollectionScreenState extends State<CollectionScreen> {
           ),
         ),
         
-        // Results Count
+        // Results Count + VERSION INDICATOR
         Container(
           width: double.infinity,
               padding: const EdgeInsets.all(16),
-              child: Text(
+              child: Row(
+                children: [
+                  // VERSION BADGE - FOR DEBUGGING CACHE ISSUES
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: const Text(
+                      'v12.0.0 COMPACT',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
             '${_filteredProducts!.length} Results',
             style: const TextStyle(
               fontSize: 16,
@@ -622,6 +656,8 @@ class _CollectionScreenState extends State<CollectionScreen> {
               color: Colors.black87,
             ),
           ),
+                ],
+              ),
         ),
         
         // Product Grid/List
