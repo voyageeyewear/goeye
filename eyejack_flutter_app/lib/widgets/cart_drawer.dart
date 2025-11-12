@@ -4,10 +4,12 @@ import '../services/api_service.dart';
 
 class CartDrawer extends StatefulWidget {
   final Function() onCheckout;
+  final Function()? onItemRemoved;
 
   const CartDrawer({
     super.key,
     required this.onCheckout,
+    this.onItemRemoved,
   });
 
   @override
@@ -69,6 +71,7 @@ class _CartDrawerState extends State<CartDrawer> {
     try {
       await ApiService().removeFromCart(variantId: variantId);
       await _loadCart(); // Reload cart
+      widget.onItemRemoved?.call(); // Notify parent about removal
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -85,6 +88,7 @@ class _CartDrawerState extends State<CartDrawer> {
     try {
       await ApiService().clearCart();
       await _loadCart(); // Reload cart
+      widget.onItemRemoved?.call(); // Notify parent about cart clear
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
