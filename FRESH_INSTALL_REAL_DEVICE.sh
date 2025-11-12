@@ -47,8 +47,8 @@ adb uninstall com.eyejack.app
 echo "✅ App uninstalled"
 echo ""
 
-echo "📦 STEP 4: Installing Build 113 (WORKING)..."
-adb install "/Users/ssenterprises/Eyejack Native Application/Eyejack-v10.4.0-Build113-WORKING.apk"
+echo "📦 STEP 4: Installing Build 116 (FRESH NEW VERSION v11.0.0)..."
+adb install "/Users/ssenterprises/Eyejack Native Application/Eyejack-v11.0.0-Build116-FRESH-NEW.apk"
 echo "✅ App installed!"
 echo ""
 
