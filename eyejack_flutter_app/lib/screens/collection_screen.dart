@@ -633,7 +633,8 @@ class _CollectionScreenState extends State<CollectionScreen> {
           ),
           itemCount: productsChunk.length,
           itemBuilder: (context, index) {
-            return _buildProductCard(productsChunk[index]);
+            final product = productsChunk[index];
+            return _buildProductCard(product, key: ValueKey(product.id));
           },
         ),
       );
@@ -664,7 +665,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
     );
   }
 
-  Widget _buildProductCard(Product product) {
+  Widget _buildProductCard(Product product, {Key? key}) {
     final imageUrl = product.images.isNotEmpty ? product.images[0].src : '';
     
     // Get compare price from first variant if available
@@ -681,6 +682,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
         : 0;
 
     return GestureDetector(
+      key: key,
       onTap: () {
         Navigator.push(
           context,
