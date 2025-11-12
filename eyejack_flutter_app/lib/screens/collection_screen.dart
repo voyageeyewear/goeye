@@ -711,60 +711,61 @@ class _CollectionScreenState extends State<CollectionScreen> {
                 SizedBox(
                   height: imageHeight,
                   child: Stack(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(8),
-                      ),
-                      color: Colors.grey[100],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(8),
-                      ),
-                      child: imageUrl.isNotEmpty
-                          ? CachedNetworkImage(
-                              imageUrl: _optimizeImageUrl(imageUrl, 1000),
-                              fit: BoxFit.cover,
-                              memCacheWidth: 1000,
-                              memCacheHeight: 1400,
-                              fadeInDuration: const Duration(milliseconds: 100),
-                              placeholder: (context, url) => Container(
-                                color: Colors.grey[100],
-                              ),
-                              errorWidget: (context, url, error) => Container(
-                                color: Colors.grey[200],
-                                child: const Icon(Icons.image, size: 40),
-                              ),
-                            )
-                          : const Icon(Icons.image, size: 40),
-                    ),
-                  ),
-                  if (hasDiscount)
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
+                    children: [
+                      Container(
+                        width: double.infinity,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE74C3C),
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(8),
+                          ),
+                          color: Colors.grey[100],
                         ),
-                        child: Text(
-                          '$discountPercent% off',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(8),
+                          ),
+                          child: imageUrl.isNotEmpty
+                              ? CachedNetworkImage(
+                                  imageUrl: _optimizeImageUrl(imageUrl, 1000),
+                                  fit: BoxFit.cover,
+                                  memCacheWidth: 1000,
+                                  memCacheHeight: 1400,
+                                  fadeInDuration: const Duration(milliseconds: 100),
+                                  placeholder: (context, url) => Container(
+                                    color: Colors.grey[100],
+                                  ),
+                                  errorWidget: (context, url, error) => Container(
+                                    color: Colors.grey[200],
+                                    child: const Icon(Icons.image, size: 40),
+                                  ),
+                                )
+                              : const Icon(Icons.image, size: 40),
+                        ),
+                      ),
+                      if (hasDiscount)
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE74C3C),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              '$discountPercent% off',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                    ],
                   ),
                 ),
                 
