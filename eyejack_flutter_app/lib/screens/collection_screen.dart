@@ -706,7 +706,7 @@ class _CollectionScreenState extends State<CollectionScreen>
           children: [
             // Product Image with Discount Badge (BIGGER - like Woggles!)
             Flexible(
-              flex: 11, // Was 6, now MUCH BIGGER for Woggles style
+              flex: 10, // Balanced with details+buttons flex: 6
               child: Stack(
                 children: [
                   Container(
@@ -766,15 +766,20 @@ class _CollectionScreenState extends State<CollectionScreen>
               ),
             ),
             
-            // Product Details (MAXIMUM Spacing!)
+            // Product Details + Buttons (MAXIMUM Spacing!)
             Flexible(
-              flex: 4, // Slightly bigger to fit all content
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+              flex: 6, // Increased to fit details AND buttons properly
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Product Details Section
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                     // Product Title
                     Text(
                       product.title,
@@ -901,63 +906,66 @@ class _CollectionScreenState extends State<CollectionScreen>
                       ],
                     ),
                     const SizedBox(height: 10), // More space before buttons
-                  ],
-                ),
-              ),
-            ),
-            
-            // Add to Cart Button (MAXIMUM Spacing!)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              child: ElevatedButton(
-                onPressed: product.availableForSale
-                    ? () => _addToCart(product)
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    side: const BorderSide(color: Colors.black, width: 1.5),
+                        ],
+                      ),
+                    ),
                   ),
-                  elevation: 0,
-                  minimumSize: const Size(double.infinity, 38),
-                ),
-                child: const Text(
-                  'ADD TO CART',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
+                  
+                  // Add to Cart Button (MAXIMUM Spacing!)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    child: ElevatedButton(
+                      onPressed: product.availableForSale
+                          ? () => _addToCart(product)
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: const BorderSide(color: Colors.black, width: 1.5),
+                        ),
+                        elevation: 0,
+                        minimumSize: const Size(double.infinity, 38),
+                      ),
+                      child: const Text(
+                        'ADD TO CART',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-            
-            // Buy 1 Get 1 Free Button (MAXIMUM Spacing!)
-            Padding(
-              padding: const EdgeInsets.only(left: 12, right: 12, top: 6, bottom: 8),
-              child: ElevatedButton(
-                onPressed: product.availableForSale
-                    ? () => _addToCart(product)
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF5DADE2),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 9),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  
+                  // Buy 1 Get 1 Free Button (MAXIMUM Spacing!)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12, right: 12, top: 6, bottom: 8),
+                    child: ElevatedButton(
+                      onPressed: product.availableForSale
+                          ? () => _addToCart(product)
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF5DADE2),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 9),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
+                        minimumSize: const Size(double.infinity, 35),
+                      ),
+                      child: const Text(
+                        'BUY 1 GET 1 FREE',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                  elevation: 0,
-                  minimumSize: const Size(double.infinity, 35),
-                ),
-                child: const Text(
-                  'BUY 1 GET 1 FREE',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                ],
               ),
             ),
           ],
