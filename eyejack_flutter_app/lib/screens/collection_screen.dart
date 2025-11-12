@@ -936,7 +936,7 @@ class _CollectionScreenState extends State<CollectionScreen>
             
             // Buy 1 Get 1 Free Button (MAXIMUM Spacing!)
             Padding(
-              padding: const EdgeInsets.only(left: 12, right: 12, bottom: 8),
+              padding: const EdgeInsets.only(left: 12, right: 12, top: 6, bottom: 8),
               child: ElevatedButton(
                 onPressed: product.availableForSale
                     ? () => _addToCart(product)
