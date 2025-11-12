@@ -49,8 +49,8 @@ adb shell pm trim-caches 999G
 echo "✅ Cache trimmed"
 echo ""
 
-echo "📦 STEP 5: Installing v12.1.0 Build 121 (WITH DEBUG BANNERS)..."
-adb install -r "/Users/ssenterprises/Eyejack Native Application/Eyejack-v12.1.0-Build121-WITH-DEBUG-BANNER.apk"
+echo "📦 STEP 5: Installing v12.2.0 Build 122 (NO SPACER FIX)..."
+adb install -r "/Users/ssenterprises/Eyejack Native Application/Eyejack-v12.2.0-Build122-NO-SPACER.apk"
 echo "✅ App installed!"
 echo ""
 

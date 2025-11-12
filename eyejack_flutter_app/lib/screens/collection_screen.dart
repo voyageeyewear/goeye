@@ -532,7 +532,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           color: Colors.green,
           child: const Text(
-            '🔥 v12.1.0 DEBUG BUILD - 4px Padding, 1-2px Spacing 🔥',
+            '🔥 v12.2.0 ULTRA TIGHT - 2px Padding, 1px Spacing, NO SPACER 🔥',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -639,7 +639,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: const Text(
-                      'v12.0.0 COMPACT',
+                      'v12.2.0 NO-SPACER',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 10,
@@ -879,7 +879,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                     children: [
                       // Product Details Section - ULTRA COMPACT!
                       Padding(
-                        padding: const EdgeInsets.all(4), // Reduced to 4px
+                        padding: const EdgeInsets.all(2), // MINIMAL 2px
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -894,7 +894,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         height: 1.3, // Reduced from 1.4
                       ),
                     ),
-                    const SizedBox(height: 2), // ULTRA compact
+                    const SizedBox(height: 1), // MINIMAL spacing
                     
                     // Star Rating
                     Row(
@@ -917,7 +917,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 2), // ULTRA compact
+                    const SizedBox(height: 1), // MINIMAL spacing
                     
                     // Price (Horizontal: Real Price first, then Compare Price)
                     Row(
@@ -1012,13 +1012,13 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         ),
                       ),
                       
-                      // Spacer to push buttons down but not too much
-                      const Spacer(),
+                      // NO SPACER - Keep everything tight!
+                      const SizedBox(height: 4), // Tiny gap before buttons
                       
                       // Buttons Section - COMPACT for real devices!
                       // Add to Cart Button - FULL WIDTH
                       Padding(
-                        padding: const EdgeInsets.only(top: 1, bottom: 1), // Minimal padding
+                        padding: const EdgeInsets.only(top: 0, bottom: 0), // ZERO padding
                         child: SizedBox(
                           height: 28, // Reduced from 32
                           width: double.infinity,
@@ -1049,7 +1049,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                       
                       // Buy 1 Get 1 Free Button - FULL WIDTH
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 2), // Reduced from 4
+                        padding: const EdgeInsets.only(bottom: 0, top: 0), // ZERO padding
                         child: SizedBox(
                           height: 26, // Reduced from 30
                           width: double.infinity,
