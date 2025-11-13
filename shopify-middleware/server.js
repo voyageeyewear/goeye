@@ -6,6 +6,7 @@ const cors = require('cors');
 const shopifyRoutes = require('./routes/shopify');
 const adminRoutes = require('./routes/admin');
 const bannerRoutes = require('./routes/banners');
+const collectionSettingsRoutes = require('./routes/collectionSettings');
 const { sequelize } = require('./models');
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use('/api/shopify', shopifyRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/banners', bannerRoutes);
+app.use('/api/collection', collectionSettingsRoutes);
 
 // Health check endpoint
 app.get('/health', async (req, res) => {

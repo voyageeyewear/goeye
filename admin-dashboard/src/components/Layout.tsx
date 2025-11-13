@@ -3,6 +3,7 @@ import {
   LayoutDashboard, 
   Layers, 
   Image,
+  Settings,
   Palette, 
   Eye, 
   Menu, 
@@ -15,6 +16,7 @@ const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
   { name: 'Sections', href: '/sections', icon: Layers },
   { name: 'Collection Banners', href: '/banners', icon: Image },
+  { name: 'Collection Settings', href: '/collection-settings', icon: Settings },
   { name: 'Theme Settings', href: '/theme', icon: Palette },
   { name: 'Preview', href: '/preview', icon: Eye },
 ];

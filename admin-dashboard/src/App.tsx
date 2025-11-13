@@ -6,6 +6,7 @@ import { Sections } from './pages/Sections';
 import { ThemeSettings } from './pages/ThemeSettings';
 import { Preview } from './pages/Preview';
 import Banners from './pages/Banners';
+import { CollectionSettings } from './pages/CollectionSettings';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,6 +26,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="sections" element={<Sections />} />
             <Route path="banners" element={<Banners />} />
+            <Route path="collection-settings" element={<CollectionSettings />} />
             <Route path="theme" element={<ThemeSettings />} />
             <Route path="preview" element={<Preview />} />
           </Route>

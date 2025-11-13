@@ -6,6 +6,7 @@ import '../models/product_model.dart';
 import '../models/collection_model.dart';
 import '../models/section_model.dart';
 import '../models/collection_banner_model.dart';
+import '../models/collection_settings_model.dart';
 
 class ApiService {
   // Fetch theme sections
@@ -400,6 +401,32 @@ class ApiService {
     } catch (e) {
       debugPrint('Error fetching banners: $e');
       return [];
+    }
+  }
+
+  // Fetch collection page settings
+  Future<CollectionPageSettings> fetchCollectionSettings() async {
+    try {
+      final url = '${ApiConfig.baseUrl}/api/collection/settings';
+      
+      debugPrint('🔄 Fetching collection settings from: $url');
+      
+      final response = await http.get(
+        Uri.parse(url),
+      ).timeout(ApiConfig.timeout);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        debugPrint('✅ Collection settings loaded successfully');
+        return CollectionPageSettings.fromJson(data['data']);
+      } else {
+        debugPrint('⚠️ Failed to load collection settings, using defaults');
+        return CollectionPageSettings.defaults();
+      }
+    } catch (e) {
+      debugPrint('❌ Error fetching collection settings: $e');
+      debugPrint('   Using default settings');
+      return CollectionPageSettings.defaults();
     }
   }
 }
