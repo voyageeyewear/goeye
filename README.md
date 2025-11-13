@@ -8,17 +8,18 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 
 ## 📦 Latest Release
 
-**Version:** 12.6.1 (Build 129)  
+**Version:** 12.8.3 (Build 136) - **🎯 MILESTONE 2 ACHIEVED**  
 **Release Date:** November 13, 2025  
-**APK:** `Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk`
+**APK:** `Eyejack-v12.8.3-Build136-TAG-BASED-SPECS-FINAL.apk`
 
-### 🎨 What's New in v12.6.1 - **COLLECTION SCREEN OPTIMIZED**
-- ✨ **Improved Layout**: Collection screen product cards fit perfectly within containers
-- 🎯 **Better Spacing**: Optimized padding and margins for professional look
-- 🔘 **Rounded Buttons**: Modernized button styling with rounded corners
-- 📱 **Responsive Design**: Side-by-side button layout that adapts to screen size
-- 🐛 **Bug Fixes**: Fixed gap issues and overlapping elements
-- 🚀 **Performance**: Smoother scrolling and better memory management
+### 🏷️ What's New in v12.8.3 - **TAG-BASED PRODUCT SPECIFICATIONS**
+- ✨ **Smart Content Display**: Product Specifications section only shows on products with 'spec' tag
+- 🏷️ **Shopify Tag Integration**: Uses native Shopify product tags for conditional content
+- 🔄 **Real-Time Updates**: Add/remove 'spec' tag in Shopify - changes reflect instantly
+- 🎯 **Case-Insensitive**: Works with 'spec', 'Spec', or 'SPEC' tags
+- 🚀 **No Rebuild Needed**: Content management via Shopify tags without app updates
+- 💎 **Cleaner UX**: Shows specifications only where relevant
+- ⚡ **Production Ready**: Fully tested and verified on multiple products
 
 ### Previous v8.0.1 Features (Admin Dashboard)
 - 🎉 **Admin Dashboard**: Professional web-based dashboard for content management
@@ -58,9 +59,11 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 
 ### 🏪 E-Commerce Functionality
 - ✅ **Shopify Integration**: Full integration with Shopify Storefront API v2025-01
+- ✅ **Tag-Based Content** (NEW!): Conditional display of product sections using Shopify tags
 - ✅ **Dynamic Home Screen**: Real-time product collections, banners, and promotional content
 - ✅ **Hero Slider**: Image and video carousel with smooth playback (BoxFit.contain for no cropping)
 - ✅ **Product Details**: Complete product information with variant selection and breadcrumbs
+- ✅ **Product Specifications**: Smart display based on 'spec' tag - shows only where relevant
 - ✅ **In-App Navigation**: All collection/product links navigate within app (no external browser)
 - ✅ **Search Functionality**: Product search with icon in header
 - ✅ **Smart Cart Management**: Add multiple items (lens + frame) in single transaction
@@ -599,6 +602,41 @@ Automatic categorization by keywords:
 - **Blue Block**: "blue", "block", "blu ray", "blue cut"
 - **Colour Lenses**: "color", "colour", "tint", "mirror", "gradient"
 
+### Tag-Based Content Management (NEW!)
+
+**How it works:**
+Products can conditionally show/hide sections based on Shopify product tags. Currently implemented for Product Specifications section.
+
+**Usage:**
+
+1. **To Show Specifications**:
+   - Go to Shopify Admin → Products
+   - Select a product
+   - Add tag: `spec` (lowercase recommended)
+   - Save product
+   - Product Specifications section automatically appears in app
+
+2. **To Hide Specifications**:
+   - Simply don't add the 'spec' tag
+   - Or remove existing 'spec' tag from product
+   - Section will be hidden automatically
+
+3. **Case-Insensitive**:
+   - Works with: `spec`, `Spec`, `SPEC`, `sPeC`
+   - All variations are recognized
+
+4. **Real-Time**:
+   - Changes reflect immediately when app fetches fresh data
+   - No app rebuild or code changes needed
+   - Pure Shopify tag management
+
+**Benefits:**
+- ✅ **No Code Required**: Manage content visibility through Shopify admin
+- ✅ **Instant Updates**: Changes appear without app rebuilds
+- ✅ **Selective Display**: Show specifications only where relevant
+- ✅ **Cleaner UX**: Avoid information overload on simple products
+- ✅ **Scalable**: Easy to extend to other sections in future
+
 ## 📊 Features in Detail
 
 ### 1. Hero Slider
@@ -623,6 +661,9 @@ Automatic categorization by keywords:
 - Image gallery (BoxFit.contain, no cropping)
 - Smaller product title (18px)
 - Reduced image margins
+- **Tag-Based Specifications**: Product Specifications section only appears on products with 'spec' tag
+- **Smart Content Management**: Add/remove 'spec' tag in Shopify to show/hide specifications
+- **Case-Insensitive Tags**: Works with 'spec', 'Spec', or 'SPEC'
 
 ### 4. 4-Step Lens Selector
 
@@ -669,7 +710,7 @@ adb emu kill
 
 # Wait for boot, then install APK
 adb wait-for-device
-adb install -r Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk
+adb install -r Eyejack-v12.8.3-Build136-TAG-BASED-SPECS-FINAL.apk
 adb shell am start -n com.eyejack.app/.MainActivity
 ```
 
@@ -822,9 +863,9 @@ For issues or questions:
 
 **Production URL**: https://motivated-intuition-production.up.railway.app  
 **Live Store**: www.eyejack.in  
-**Latest APK**: Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk  
+**Latest APK**: Eyejack-v12.8.3-Build136-TAG-BASED-SPECS-FINAL.apk  
 **Last Updated**: November 13, 2025  
-**Current Version**: 12.6.1 (Build 129)
+**Current Version**: 12.8.3 (Build 136) - 🎯 Milestone 2 Achieved
 
 ### 🎯 Quick Links
 - [BoAt-Style Update Summary](BOAT_STYLE_UPDATE.md)
