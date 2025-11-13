@@ -162,7 +162,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final hasNoPowerTag = widget.product.tags.contains('no-power');
-    
+
     // Check for 'spec' tag (case-insensitive)
     final hasSpecTag = widget.product.tags.any((tag) => tag.toLowerCase() == 'spec');
 
@@ -289,12 +289,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                 const SizedBox(height: 8),
 
+                // Product Highlights Image Collage (only if multiple images)
+                if (widget.product.images.length > 1)
+                  _buildProductHighlights(),
+
+                const SizedBox(height: 8),
+
                 // Product Specifications (new component) - Only show if product has 'spec' tag
                 if (hasSpecTag) ...[
-                  ProductSpecsWidget(
-                    specs: _buildSpecsData(),
-                  ),
-                  const SizedBox(height: 8),
+                ProductSpecsWidget(
+                  specs: _buildSpecsData(),
+                ),
+                const SizedBox(height: 8),
                 ],
 
                 // Product FAQs (new component)
@@ -1202,148 +1208,411 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     ];
   }
 
+  Widget _buildProductHighlights() {
+    final images = widget.product.images;
+    
+    // Skip first image (main product image) and use images 2-7
+    final highlightImages = images.skip(1).take(6).toList();
+    
+    if (highlightImages.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Product Highlights',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+              letterSpacing: -0.3,
+            ),
+          ),
+          const SizedBox(height: 16),
+          
+          // Create collage based on number of images
+          if (highlightImages.length == 1)
+            _buildSingleImageLayout(highlightImages[0])
+          else if (highlightImages.length == 2)
+            _buildTwoImageLayout(highlightImages)
+          else if (highlightImages.length == 3)
+            _buildThreeImageLayout(highlightImages)
+          else
+            _buildMultiImageLayout(highlightImages),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSingleImageLayout(ProductImage image) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        color: Colors.white,
+        child: CachedNetworkImage(
+          imageUrl: image.src,
+          width: double.infinity,
+          height: 300,
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTwoImageLayout(List<ProductImage> images) {
+    return Row(
+      children: [
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              color: Colors.white,
+              height: 250,
+              child: CachedNetworkImage(
+                imageUrl: images[0].src,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              color: Colors.white,
+              height: 250,
+              child: CachedNetworkImage(
+                imageUrl: images[1].src,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildThreeImageLayout(List<ProductImage> images) {
+    return Column(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            color: Colors.white,
+            width: double.infinity,
+            height: 300,
+            child: CachedNetworkImage(
+              imageUrl: images[0].src,
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  color: Colors.white,
+                  height: 180,
+                  child: CachedNetworkImage(
+                    imageUrl: images[1].src,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  color: Colors.white,
+                  height: 180,
+                  child: CachedNetworkImage(
+                    imageUrl: images[2].src,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMultiImageLayout(List<ProductImage> images) {
+    return Column(
+      children: [
+        // Top large image
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            color: Colors.white,
+            width: double.infinity,
+            height: 300,
+            child: CachedNetworkImage(
+              imageUrl: images[0].src,
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        
+        // Two medium images
+        Row(
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  color: Colors.white,
+                  height: 200,
+                  child: CachedNetworkImage(
+                    imageUrl: images[1].src,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  color: Colors.white,
+                  height: 200,
+                  child: CachedNetworkImage(
+                    imageUrl: images[2].src,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        
+        // Bottom row - 3 small images if available
+        if (images.length > 3) ...[
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              if (images.length > 3)
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      color: Colors.white,
+                      height: 140,
+                      child: CachedNetworkImage(
+                        imageUrl: images[3].src,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
+              if (images.length > 4) ...[
+                const SizedBox(width: 8),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      color: Colors.white,
+                      height: 140,
+                      child: CachedNetworkImage(
+                        imageUrl: images[4].src,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+              if (images.length > 5) ...[
+                const SizedBox(width: 8),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      color: Colors.white,
+                      height: 140,
+                      child: CachedNetworkImage(
+                        imageUrl: images[5].src,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ],
+      ],
+    );
+  }
+
   Widget _buildModernStickyCart(bool hasNoPowerTag) {
     final price = _selectedVariant?.price ?? widget.product.priceRange.minVariantPrice;
     final compareAtPrice = _selectedVariant?.compareAtPrice;
 
     return Container(
+      margin: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(
-            color: Colors.grey[200]!,
-            width: 1,
-          ),
-        ),
+        color: const Color(0xFFF5F5F5),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 20,
-            offset: const Offset(0, -5),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, -2),
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: const EdgeInsets.all(12),
       child: SafeArea(
         top: false,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Price Section
+            // Reward Points Banner - Ultra Slim
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: const Color(0xFF27916D),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.card_giftcard, color: Colors.white, size: 12),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Earn upto ${(double.parse(price.amount) * 0.05).toInt()} boAt reward points on this product',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 6),
+            
+            // Price Row - ALL IN ONE LINE
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Current Price
                 Text(
                   price.formatted,
                   style: const TextStyle(
-                    fontSize: 28,
+                    fontSize: 22,
                     fontWeight: FontWeight.w700,
                     color: Colors.black,
                     letterSpacing: -0.5,
                   ),
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 6),
                 
-                // Original Price (if discount)
-                if (compareAtPrice != null) ...[
+                // Original Price
+                if (compareAtPrice != null)
                   Text(
                     compareAtPrice.formatted,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 13,
                       color: Colors.grey[500],
                       decoration: TextDecoration.lineThrough,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  
-                  // Discount Badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF27916D),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      '${_calculateDiscount(compareAtPrice, price)}% OFF',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
+                
+                const SizedBox(width: 4),
+                
+                // Discount percentage
+                if (compareAtPrice != null)
+                  Text(
+                    '${_calculateDiscount(compareAtPrice, price)}% Off',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF27916D),
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                ],
+                
+                const SizedBox(width: 8),
+                
+                // Tax info - inline
+                Expanded(
+                  child: Text(
+                    'Inclusive of all taxes',
+                    style: TextStyle(
+                      fontSize: 9,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
               ],
             ),
             
-            // Tax info
-            const SizedBox(height: 4),
-            Text(
-              'Inclusive of all taxes',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[600],
-                fontWeight: FontWeight.w400,
-              ),
-            ),
+            const SizedBox(height: 6),
             
-            const SizedBox(height: 18),
-            
-            // Buttons Column
-            Column(
+            // Buttons Row - Side by Side - Ultra Slim
+            Row(
               children: [
-                // Add To Cart Button - Full Width
-                SizedBox(
-                  width: double.infinity,
+                // Add To Cart Button
+                Expanded(
                   child: ElevatedButton(
                     onPressed: hasNoPowerTag ? _addToCart : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2D3748),
+                      backgroundColor: const Color(0xFF1A1A1A),
                       foregroundColor: Colors.white,
-                      disabledBackgroundColor: Colors.grey[200],
-                      disabledForegroundColor: Colors.grey[500],
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      disabledBackgroundColor: Colors.grey[300],
+                      disabledForegroundColor: Colors.grey[600],
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       elevation: 0,
                     ),
                     child: const Text(
-                      'ADD TO CART',
+                      'Add To Cart',
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        letterSpacing: 0.5,
+                        letterSpacing: 0.2,
                       ),
                     ),
                   ),
                 ),
                 
-                const SizedBox(height: 12),
+                const SizedBox(width: 8),
                 
-                // Select Lens / Buy Now Button - Full Width
-                SizedBox(
-                  width: double.infinity,
+                // Buy Now / Select Lens Button
+                Expanded(
                   child: ElevatedButton(
                     onPressed: hasNoPowerTag ? _addToCart : _showLensSelector,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF27916D),
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       elevation: 0,
                     ),
                     child: Text(
-                      hasNoPowerTag ? 'BUY NOW' : 'SELECT LENS',
+                      hasNoPowerTag ? 'Buy Now' : 'Select Lens',
                       style: const TextStyle(
-                        fontSize: 15,
+                        fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        letterSpacing: 0.5,
+                        letterSpacing: 0.2,
                       ),
                     ),
                   ),

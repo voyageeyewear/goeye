@@ -531,90 +531,6 @@ class _CollectionScreenState extends State<CollectionScreen> {
 
     return Column(
       children: [
-        // Promotional Banner
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          color: const Color(0xFF5DADE2),
-          child: const Text(
-            'BUY 1 GET 1 FREE',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        
-        // Filter/Sort/View Toggle Bar
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
-        children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: _showFilterSheet,
-                  icon: const Icon(Icons.tune, size: 20),
-                  label: const Text('Filter'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: _showSortSheet,
-                  icon: const Icon(Icons.swap_vert, size: 20),
-                  label: const Text('Sort'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              OutlinedButton(
-                onPressed: () {
-                  setState(() {
-                    _isGridView = !_isGridView;
-                  });
-                },
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: Icon(
-                  _isGridView ? Icons.view_list : Icons.grid_view,
-                  size: 20,
-                ),
-              ),
-            ],
-          ),
-        ),
-        
         // Results Count
         Container(
           width: double.infinity,
@@ -636,6 +552,77 @@ class _CollectionScreenState extends State<CollectionScreen> {
             child: _isGridView
                 ? _buildProductGrid(collectionSettings)
                 : _buildProductList(),
+          ),
+        ),
+        
+        // Filter/Sort/View Toggle Bar - NOW AT BOTTOM
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 4,
+                offset: const Offset(0, -2),
+              ),
+            ],
+          ),
+          child: SafeArea(
+            top: false,
+            child: Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _showFilterSheet,
+                    icon: const Icon(Icons.tune, size: 20),
+                    label: const Text('Filter'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _showSortSheet,
+                    icon: const Icon(Icons.swap_vert, size: 20),
+                    label: const Text('Sort'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                OutlinedButton(
+                  onPressed: () {
+                    setState(() {
+                      _isGridView = !_isGridView;
+                    });
+                  },
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Icon(
+                    _isGridView ? Icons.view_list : Icons.grid_view,
+                    size: 20,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
