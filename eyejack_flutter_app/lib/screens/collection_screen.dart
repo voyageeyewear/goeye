@@ -4,7 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../models/collection_model.dart';
 import '../models/product_model.dart';
 import '../models/collection_banner_model.dart';
+import '../models/collection_settings_model.dart';
 import '../providers/shop_provider.dart';
+import '../providers/collection_settings_provider.dart';
 import '../services/api_service.dart';
 import '../screens/product_detail_screen.dart';
 import '../widgets/collection_banner_widget.dart';
@@ -400,6 +402,9 @@ class _CollectionScreenState extends State<CollectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get collection settings from provider
+    final collectionSettings = Provider.of<CollectionSettingsProvider>(context, listen: false).settings;
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -700,6 +705,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
               aspectRatio: aspectRatio,
               after6Banners: after6Banners,
               after12Banners: after12Banners,
+              settings: collectionSettings,
             ),
           ],
         );
@@ -712,6 +718,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
     required double aspectRatio,
     required List<CollectionBanner> after6Banners,
     required List<CollectionBanner> after12Banners,
+    CollectionPageSettings? settings,
   }) {
     List<Widget> widgets = [];
     
@@ -735,7 +742,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
             itemCount: productsChunk.length,
             itemBuilder: (context, index) {
               final product = productsChunk[index];
-              return _buildProductCard(product, key: ValueKey(product.id));
+              return _buildProductCard(product, key: ValueKey(product.id), settings: settings);
             },
           ),
         ),
@@ -767,8 +774,9 @@ class _CollectionScreenState extends State<CollectionScreen> {
     );
   }
 
-  Widget _buildProductCard(Product product, {Key? key}) {
+  Widget _buildProductCard(Product product, {Key? key, CollectionPageSettings? settings}) {
     final imageUrl = product.images.isNotEmpty ? product.images[0].src : '';
+    final collectionSettings = settings ?? CollectionPageSettings.defaults();
     
     // Get compare price from first variant if available
     final compareAtPriceStr = product.variants.isNotEmpty 
@@ -1018,19 +1026,18 @@ class _CollectionScreenState extends State<CollectionScreen> {
                                     ? () => _addToCart(product)
                                     : null,
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  foregroundColor: Colors.black,
+                                  backgroundColor: Color(CollectionPageSettings.hexToColor(collectionSettings.addToCartButtonColor)),
+                                  foregroundColor: Color(CollectionPageSettings.hexToColor(collectionSettings.addToCartTextColor)),
                                   padding: EdgeInsets.zero,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    side: const BorderSide(color: Colors.black, width: 1.5),
+                                    borderRadius: BorderRadius.circular(collectionSettings.buttonBorderRadius.toDouble()),
                                   ),
                                   elevation: 0,
                                 ),
-                                child: const Text(
+                                child: Text(
                                   'ADD TO CART',
                                   style: TextStyle(
-                                    fontSize: 10,
+                                    fontSize: collectionSettings.buttonFontSize.toDouble(),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -1050,18 +1057,18 @@ class _CollectionScreenState extends State<CollectionScreen> {
                                     ? () => _addToCart(product)
                                     : null,
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF5DADE2),
-                                  foregroundColor: Colors.white,
+                                  backgroundColor: Color(CollectionPageSettings.hexToColor(collectionSettings.selectLensButtonColor)),
+                                  foregroundColor: Color(CollectionPageSettings.hexToColor(collectionSettings.selectLensTextColor)),
                                   padding: EdgeInsets.zero,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(collectionSettings.buttonBorderRadius.toDouble()),
                                   ),
                                   elevation: 0,
                                 ),
-                                child: const Text(
+                                child: Text(
                                   'BUY 1 GET 1',
                                   style: TextStyle(
-                                    fontSize: 9,
+                                    fontSize: collectionSettings.buttonFontSize.toDouble(),
                                     fontWeight: FontWeight.bold,
                                   ),
                                   textAlign: TextAlign.center,
