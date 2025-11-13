@@ -532,7 +532,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           color: Colors.green,
           child: const Text(
-            '🔥 v12.2.0 ULTRA TIGHT - 2px Padding, 1px Spacing, NO SPACER 🔥',
+            '🔥 v12.6.1 BUTTONS FIT IN CARD 🔥',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -639,7 +639,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: const Text(
-                      'v12.2.0 NO-SPACER',
+                      'v12.6.1 FITS-CARD',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 10,
@@ -801,10 +801,10 @@ class _CollectionScreenState extends State<CollectionScreen> {
         ),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            // Calculate heights properly for REAL DEVICES (MORE AGGRESSIVE!)
+            // NEW DESIGN: Bigger images, larger text, consistent spacing!
             final totalHeight = constraints.maxHeight;
-            final imageHeight = totalHeight * 0.38; // 38% for image (EVEN LESS!)
-            final detailsHeight = totalHeight * 0.62; // 62% for details+buttons (MUCH MORE!)
+            final imageHeight = totalHeight * 0.50; // 50% for BIG image!
+            final detailsHeight = totalHeight * 0.50; // 50% for details+buttons
             
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -871,210 +871,205 @@ class _CollectionScreenState extends State<CollectionScreen> {
                   ),
                 ),
                 
-                // Product Details + Buttons Section
-                SizedBox(
-                  height: detailsHeight,
+                // Product Details + Buttons Section - COMPACT TO FIT IN CARD!
+                Padding(
+                  padding: const EdgeInsets.all(6), // Reduced from 8
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Product Details Section - ULTRA COMPACT!
-                      Padding(
-                        padding: const EdgeInsets.all(2), // MINIMAL 2px
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                    // Product Title
-                    Text(
-                      product.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 11, // Reduced from 12
-                        fontWeight: FontWeight.w600,
-                        height: 1.3, // Reduced from 1.4
+                      // Product Title
+                      Text(
+                        product.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 13, // Slightly smaller
+                          fontWeight: FontWeight.w600,
+                          height: 1.2,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 1), // MINIMAL spacing
-                    
-                    // Star Rating
-                    Row(
-                      children: [
-                        ...List.generate(5, (index) {
-                          final rating = product.reviews?.rating ?? 5.0;
-                          return Icon(
-                            index < rating.floor() ? Icons.star : Icons.star_border,
-                            size: 12, // Reduced from 14
-                            color: const Color(0xFFFFC107),
-                          );
-                        }),
-                        const SizedBox(width: 4), // Reduced from 6
-                        Text(
-                          '${product.reviews?.rating.toStringAsFixed(1) ?? '5.0'} (${product.reviews?.count ?? 1})',
-                          style: const TextStyle(
-                            fontSize: 10, // Reduced from 11
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 1), // MINIMAL spacing
-                    
-                    // Price (Horizontal: Real Price first, then Compare Price)
-                    Row(
-                      children: [
-                        Text(
-                          'Rs. ${salePrice.toStringAsFixed(0)}',
-                          style: const TextStyle(
-                            fontSize: 14, // Reduced from 16
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFE74C3C),
-                          ),
-                        ),
-                        if (hasDiscount && originalPrice > 0) ...[
-                          const SizedBox(width: 6), // Reduced from 10
+                      const SizedBox(height: 5), // Reduced from 8
+                      
+                      // Star Rating
+                      Row(
+                        children: [
+                          ...List.generate(5, (index) {
+                            final rating = product.reviews?.rating ?? 5.0;
+                            return Icon(
+                              index < rating.floor() ? Icons.star : Icons.star_border,
+                              size: 12, // Slightly smaller
+                              color: const Color(0xFFFFC107),
+                            );
+                          }),
+                          const SizedBox(width: 4),
                           Text(
-                            'Rs. ${originalPrice.toStringAsFixed(0)}',
+                            '${product.reviews?.rating.toStringAsFixed(1) ?? '5.0'} (${product.reviews?.count ?? 1})',
                             style: const TextStyle(
-                              fontSize: 11, // Reduced from 12
-                              color: Colors.grey,
-                              decoration: TextDecoration.lineThrough,
+                              fontSize: 10, // Slightly smaller
+                              color: Colors.black87,
                             ),
                           ),
                         ],
-                      ],
-                    ),
-                    const SizedBox(height: 1), // ULTRA compact
-                    
-                    // EMI Option
-                    Row(
-                      children: [
-                        const Text(
-                          'or ',
-                          style: TextStyle(fontSize: 9, color: Colors.grey), // Reduced from 10
-                        ),
-                        Text(
-                          'Rs.${(salePrice / 3).toInt()}/Month',
-                          style: const TextStyle(
-                            fontSize: 9, // Reduced from 10
-                            fontWeight: FontWeight.w600,
+                      ),
+                      const SizedBox(height: 5), // Reduced from 8
+                      
+                      // Price
+                      Row(
+                        children: [
+                          Text(
+                            'Rs. ${salePrice.toStringAsFixed(0)}',
+                            style: const TextStyle(
+                              fontSize: 16, // Reduced from 18
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFE74C3C),
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 4), // Reduced from 6
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 4, // Reduced from 6
-                            vertical: 2, // Reduced from 3
+                          if (hasDiscount && originalPrice > 0) ...[
+                            const SizedBox(width: 6),
+                            Text(
+                              'Rs. ${originalPrice.toStringAsFixed(0)}',
+                              style: const TextStyle(
+                                fontSize: 11, // Reduced from 13
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      const SizedBox(height: 5), // Reduced from 8
+                      
+                      // EMI Option
+                      Row(
+                        children: [
+                          const Text(
+                            'or ',
+                            style: TextStyle(fontSize: 10, color: Colors.grey),
                           ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF27916D),
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                          child: const Text(
-                            'Buy on EMI >',
-                            style: TextStyle(
-                              fontSize: 8, // Reduced from 9
-                              color: Colors.white,
+                          Text(
+                            'Rs.${(salePrice / 3).toInt()}/Month',
+                            style: const TextStyle(
+                              fontSize: 10,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 1), // ULTRA compact
-                    
-                    // In Stock Indicator
-                    Row(
-                      children: [
-                        Container(
-                          width: 5, // Reduced from 6
-                          height: 5, // Reduced from 6
-                          decoration: BoxDecoration(
-                            color: product.availableForSale
-                                ? const Color(0xFF27916D)
-                                : Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(width: 4), // Reduced from 6
-                        Text(
-                          product.availableForSale ? 'In stock' : 'Out of stock',
-                          style: TextStyle(
-                            fontSize: 9, // Reduced from 10
-                            color: product.availableForSale
-                                ? const Color(0xFF27916D)
-                                : Colors.red,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                          ],
-                        ),
-                      ),
-                      
-                      // NO SPACER - Keep everything tight!
-                      const SizedBox(height: 4), // Tiny gap before buttons
-                      
-                      // Buttons Section - COMPACT for real devices!
-                      // Add to Cart Button - FULL WIDTH
-                      Padding(
-                        padding: const EdgeInsets.only(top: 0, bottom: 0), // ZERO padding
-                        child: SizedBox(
-                          height: 28, // Reduced from 32
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: product.availableForSale
-                                ? () => _addToCart(product)
-                                : null,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.black,
-                              padding: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0), // Sharp corners for full width
-                                side: const BorderSide(color: Colors.black, width: 1.5),
-                              ),
-                              elevation: 0,
+                          const SizedBox(width: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 5,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF27916D),
+                              borderRadius: BorderRadius.circular(3),
                             ),
                             child: const Text(
-                              'ADD TO CART',
+                              'Buy on EMI >',
                               style: TextStyle(
-                                fontSize: 9, // Reduced from 10
-                                fontWeight: FontWeight.bold,
+                                fontSize: 8,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
-                        ),
+                        ],
+                      ),
+                      const SizedBox(height: 5), // Reduced from 8
+                      
+                      // In Stock Indicator
+                      Row(
+                        children: [
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: product.availableForSale
+                                  ? const Color(0xFF27916D)
+                                  : Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            product.availableForSale ? 'In stock' : 'Out of stock',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: product.availableForSale
+                                  ? const Color(0xFF27916D)
+                                  : Colors.red,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                       
-                      // Buy 1 Get 1 Free Button - FULL WIDTH
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 0, top: 0), // ZERO padding
-                        child: SizedBox(
-                          height: 26, // Reduced from 30
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: product.availableForSale
-                                ? () => _addToCart(product)
-                                : null,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF5DADE2),
-                              foregroundColor: Colors.white,
-                              padding: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0), // Sharp corners for full width
-                              ),
-                              elevation: 0,
-                            ),
-                            child: const Text(
-                              'BUY 1 GET 1 FREE',
-                              style: TextStyle(
-                                fontSize: 8, // Reduced from 9
-                                fontWeight: FontWeight.bold,
+                      // SPACING before buttons
+                      const SizedBox(height: 8), // Reduced from 12
+                      
+                      // Buttons Section - BOTH BUTTONS IN ONE LINE!
+                      Row(
+                        children: [
+                          // Add to Cart Button (Left)
+                          Expanded(
+                            child: SizedBox(
+                              height: 32, // Reduced from 36 to fit in card
+                              child: ElevatedButton(
+                                onPressed: product.availableForSale
+                                    ? () => _addToCart(product)
+                                    : null,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: Colors.black,
+                                  padding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    side: const BorderSide(color: Colors.black, width: 1.5),
+                                  ),
+                                  elevation: 0,
+                                ),
+                                child: const Text(
+                                  'ADD TO CART',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          
+                          // Spacing between buttons
+                          const SizedBox(width: 8),
+                          
+                          // Buy 1 Get 1 Free Button (Right)
+                          Expanded(
+                            child: SizedBox(
+                              height: 32, // Reduced from 36 to fit in card
+                              child: ElevatedButton(
+                                onPressed: product.availableForSale
+                                    ? () => _addToCart(product)
+                                    : null,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF5DADE2),
+                                  foregroundColor: Colors.white,
+                                  padding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  elevation: 0,
+                                ),
+                                child: const Text(
+                                  'BUY 1 GET 1',
+                                  style: TextStyle(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
