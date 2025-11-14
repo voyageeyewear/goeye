@@ -8,18 +8,17 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 
 ## 📦 Latest Release
 
-**Version:** 12.8.3 (Build 136) - **🎯 MILESTONE 2 ACHIEVED**  
-**Release Date:** November 13, 2025  
-**APK:** `Eyejack-v12.8.3-Build136-TAG-BASED-SPECS-FINAL.apk`
+**Version:** 12.22.2 (Build 154) - **Pagination + Color Swatches**  
+**Release Date:** November 14, 2025  
+**APK:** `Eyejack-v12.22.2-Build154-Pagination.apk`
 
-### 🏷️ What's New in v12.8.3 - **TAG-BASED PRODUCT SPECIFICATIONS**
-- ✨ **Smart Content Display**: Product Specifications section only shows on products with 'spec' tag
-- 🏷️ **Shopify Tag Integration**: Uses native Shopify product tags for conditional content
-- 🔄 **Real-Time Updates**: Add/remove 'spec' tag in Shopify - changes reflect instantly
-- 🎯 **Case-Insensitive**: Works with 'spec', 'Spec', or 'SPEC' tags
-- 🚀 **No Rebuild Needed**: Content management via Shopify tags without app updates
-- 💎 **Cleaner UX**: Shows specifications only where relevant
-- ⚡ **Production Ready**: Fully tested and verified on multiple products
+### 🏷️ What's New in v12.22.2 - **Collection Pagination + Swatch Navigation**
+- 🎨 **Matrix & Aviator Swatches**: Color swatches parse product titles and instantly navigate to the matching SKU without loaders
+- 🧭 **Instant Variant Navigation**: Tapping a swatch triggers `Navigator.pushReplacement` so the selected product opens immediately
+- 🖼️ **Image Debugging**: Added gallery + thumbnail logging to verify all product images render
+- 📃 **Collection Pagination**: Collections now fetch 50 products at a time with a **Load More Products** button
+- 🔁 **Backend Pagination API**: Node middleware now accepts `limit` + `offset`, returns `hasMore`, and logs page diagnostics
+- 🧹 **Nuclear Cache Scripts**: Added repeatable scripts for full emulator reboot, uninstall, and reinstall to fight caching
 
 ### Previous v8.0.1 Features (Admin Dashboard)
 - 🎉 **Admin Dashboard**: Professional web-based dashboard for content management
@@ -771,7 +770,7 @@ Railway detects changes and deploys automatically (60-90 seconds).
 
 ### APK Distribution
 
-**Latest APK**: `Eyejack-v3.0.0-Build32-FINAL.apk`
+**Latest APK**: `Eyejack-v12.22.2-Build154-Pagination.apk`
 
 Build new version:
 ```bash
@@ -789,7 +788,17 @@ cp build/app/outputs/flutter-apk/app-release.apk Eyejack-v3.0.0-Build33.apk
 
 ## 📱 App Releases
 
-### Latest Version: v6.0.1 Build 61 (November 5, 2024)
+### Latest Version: v12.22.2 Build 154 (November 14, 2025)
+
+**🔥 Pagination + Swatches Update:**
+- ✅ **Color Swatches**: Matrix + Classic Aviator swatches parse titles, display hardcoded palette, and open the correct product instantly
+- ✅ **Instant Navigation**: Removed loading spinners so tapping a swatch immediately navigates via `Navigator.pushReplacement`
+- ✅ **Image Gallery Debugging**: Added logging to confirm every image/thumbnail is fetched and rendered
+- ✅ **Collection Pagination**: Collection pages now fetch in batches of 50 with a persistent **Load More Products** button
+- ✅ **Backend Pagination Support**: Middleware now respects `limit`/`offset`, returns `hasMore`, and logs page stats for debugging
+- ✅ **Nuclear Refresh Scripts**: Added `NUCLEAR_EMULATOR_REFRESH.sh` plus install guides for clean testing
+
+### Version v6.0.1 Build 61 (November 5, 2024)
 
 **🎉 BoAt-Style UI Update:**
 - ✅ **Modern Sticky Cart**: Two buttons side by side (Add To Cart + Select Lens)
@@ -863,9 +872,9 @@ For issues or questions:
 
 **Production URL**: https://motivated-intuition-production.up.railway.app  
 **Live Store**: www.eyejack.in  
-**Latest APK**: Eyejack-v12.8.3-Build136-TAG-BASED-SPECS-FINAL.apk  
-**Last Updated**: November 13, 2025  
-**Current Version**: 12.8.3 (Build 136) - 🎯 Milestone 2 Achieved
+**Latest APK**: Eyejack-v12.22.2-Build154-Pagination.apk  
+**Last Updated**: November 14, 2025  
+**Current Version**: 12.22.2 (Build 154) - Pagination + Swatches
 
 ### 🎯 Quick Links
 - [BoAt-Style Update Summary](BOAT_STYLE_UPDATE.md)

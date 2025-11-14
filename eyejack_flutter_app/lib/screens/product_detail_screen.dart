@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
@@ -13,6 +14,7 @@ import '../widgets/product_features_widget.dart';
 import '../widgets/product_specs_widget.dart';
 import '../widgets/product_faq_widget.dart';
 import '../widgets/product_video_widget.dart';
+import '../widgets/color_swatch_widget.dart';
 import 'collection_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -32,6 +34,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   bool _showStickyCart = false;
   bool _isDescriptionExpanded = false;
   bool _isFrameMeasurementsExpanded = false;
+  bool _isProductHighlightsExpanded = false;
 
   @override
   void initState() {
@@ -239,14 +242,26 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       _buildReviewStars(),
                       const SizedBox(height: 16),
 
-                      // Price Section
-                      _buildPriceSection(),
-                      const SizedBox(height: 20),
-
                       // Trust Badges
                       _buildTrustBadges(),
                     ],
                   ),
+                ),
+                
+                const SizedBox(height: 8),
+
+                // Color Swatches
+                ColorSwatchWidget(
+                  currentProduct: widget.product,
+                  onColorSelected: (product) {
+                    // Navigate to the selected color variant product
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetailScreen(product: product),
+                      ),
+                    );
+                  },
                 ),
                 
                 const SizedBox(height: 8),
@@ -388,6 +403,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget _buildImageGallery() {
     final images = widget.product.images;
     
+    // Debug logging
+    debugPrint('📸 Product Images Debug:');
+    debugPrint('   Product: ${widget.product.title}');
+    debugPrint('   Total Images: ${images.length}');
+    for (int i = 0; i < images.length; i++) {
+      debugPrint('   Image $i: ${images[i].src.substring(0, 60)}...');
+    }
+    
     if (images.isEmpty) {
       return Container(
         height: 400,
@@ -486,8 +509,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 height: 70,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: images.length,
+                  itemCount: images.length, // Shows ALL images
                   itemBuilder: (context, index) {
+                    debugPrint('🖼️ Rendering thumbnail $index of ${images.length}');
                     final isSelected = _currentImageIndex == index;
                     return GestureDetector(
                       onTap: () {
@@ -700,13 +724,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Product Description',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                  Row(
+                    children: const [
+                      Icon(Icons.description_outlined, color: Color(0xFF27916D), size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        'Product Description',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   Icon(
                     _isDescriptionExpanded ? Icons.remove : Icons.add,
@@ -1218,30 +1248,68 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Product Highlights',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              letterSpacing: -0.3,
+          // Header with expand/collapse
+          InkWell(
+            onTap: () {
+              setState(() {
+                _isProductHighlightsExpanded = !_isProductHighlightsExpanded;
+              });
+            },
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey[200]!),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: const [
+                      Icon(Icons.collections_outlined, color: Color(0xFF27916D), size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        'Product Highlights',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Icon(
+                    _isProductHighlightsExpanded ? Icons.remove : Icons.add,
+                    color: Colors.black54,
+                    size: 22,
+                  ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 16),
           
-          // Create collage based on number of images
-          if (highlightImages.length == 1)
-            _buildSingleImageLayout(highlightImages[0])
-          else if (highlightImages.length == 2)
-            _buildTwoImageLayout(highlightImages)
-          else if (highlightImages.length == 3)
-            _buildThreeImageLayout(highlightImages)
-          else
-            _buildMultiImageLayout(highlightImages),
+          // Content (only shown when expanded)
+          if (_isProductHighlightsExpanded)
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  // Create collage based on number of images
+                  if (highlightImages.length == 1)
+                    _buildSingleImageLayout(highlightImages[0])
+                  else if (highlightImages.length == 2)
+                    _buildTwoImageLayout(highlightImages)
+                  else if (highlightImages.length == 3)
+                    _buildThreeImageLayout(highlightImages)
+                  else
+                    _buildMultiImageLayout(highlightImages),
+                ],
+              ),
+            ),
         ],
       ),
     );
@@ -1460,166 +1528,158 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final price = _selectedVariant?.price ?? widget.product.priceRange.minVariantPrice;
     final compareAtPrice = _selectedVariant?.compareAtPrice;
 
-    return Container(
-      margin: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF5F5F5),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 8,
-            offset: const Offset(0, -2),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          margin: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0xFF27916D).withOpacity(0.15),
+                const Color(0xFFA8E6CF).withOpacity(0.25),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 20,
+                offset: const Offset(0, -4),
+              ),
+            ],
           ),
-        ],
-      ),
-      padding: const EdgeInsets.all(12),
-      child: SafeArea(
-        top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Reward Points Banner - Ultra Slim
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: const Color(0xFF27916D),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.card_giftcard, color: Colors.white, size: 12),
-                  const SizedBox(width: 4),
-                  Text(
-                    'Earn upto ${(double.parse(price.amount) * 0.05).toInt()} boAt reward points on this product',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 9,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            
-            const SizedBox(height: 6),
-            
-            // Price Row - ALL IN ONE LINE
-            Row(
+          padding: const EdgeInsets.fromLTRB(16, 2, 16, 2),
+          child: SafeArea(
+            top: false,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                // Current Price
-                Text(
-                  price.formatted,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                
-                // Original Price
-                if (compareAtPrice != null)
-                  Text(
-                    compareAtPrice.formatted,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey[500],
-                      decoration: TextDecoration.lineThrough,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                
-                const SizedBox(width: 4),
-                
-                // Discount percentage
-                if (compareAtPrice != null)
-                  Text(
-                    '${_calculateDiscount(compareAtPrice, price)}% Off',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF27916D),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                
-                const SizedBox(width: 8),
-                
-                // Tax info - inline
-                Expanded(
-                  child: Text(
-                    'Inclusive of all taxes',
-                    style: TextStyle(
-                      fontSize: 9,
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            
-            const SizedBox(height: 6),
-            
-            // Buttons Row - Side by Side - Ultra Slim
-            Row(
-              children: [
-                // Add To Cart Button
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: hasNoPowerTag ? _addToCart : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1A1A1A),
-                      foregroundColor: Colors.white,
-                      disabledBackgroundColor: Colors.grey[300],
-                      disabledForegroundColor: Colors.grey[600],
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      'Add To Cart',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.2,
-                      ),
-                    ),
-                  ),
-                ),
-                
-                const SizedBox(width: 8),
-                
-                // Buy Now / Select Lens Button
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: hasNoPowerTag ? _addToCart : _showLensSelector,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF27916D),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      hasNoPowerTag ? 'Buy Now' : 'Select Lens',
+                // Price Row - ALL IN ONE LINE (2px top padding)
+                Row(
+                  children: [
+                    // Current Price
+                    Text(
+                      price.formatted,
                       style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.2,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                        letterSpacing: -0.5,
                       ),
                     ),
-                  ),
+                    const SizedBox(width: 6),
+                    
+                    // Original Price
+                    if (compareAtPrice != null)
+                      Text(
+                        compareAtPrice.formatted,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey[600],
+                          decoration: TextDecoration.lineThrough,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    
+                    const SizedBox(width: 4),
+                    
+                    // Discount percentage
+                    if (compareAtPrice != null)
+                      Text(
+                        '${_calculateDiscount(compareAtPrice, price)}% Off',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF27916D),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    
+                    const SizedBox(width: 8),
+                    
+                    // Tax info - inline
+                    Expanded(
+                      child: Text(
+                        'Inclusive of all taxes',
+                        style: TextStyle(
+                          fontSize: 9,
+                          color: Colors.grey[700],
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                
+                const SizedBox(height: 4), // 4px gap between price and buttons
+                
+                // Buttons Row - Side by Side with 12px gap
+                Row(
+                  children: [
+                    // Add To Cart Button
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: hasNoPowerTag ? _addToCart : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF1A1A1A),
+                          foregroundColor: Colors.white,
+                          disabledBackgroundColor: Colors.grey[300],
+                          disabledForegroundColor: Colors.grey[600],
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: const Text(
+                          'Add To Cart',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                      ),
+                    ),
+                    
+                    const SizedBox(width: 12), // 12px gap between buttons
+                    
+                    // Buy Now / Select Lens Button
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: hasNoPowerTag ? _addToCart : _showLensSelector,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF27916D),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          hasNoPowerTag ? 'Buy Now' : 'Select Lens',
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // 2px bottom padding (already in EdgeInsets.fromLTRB)
               ],
             ),
-          ],
+          ),
         ),
       ),
     );

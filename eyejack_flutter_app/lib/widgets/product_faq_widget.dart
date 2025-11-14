@@ -22,13 +22,19 @@ class _ProductFAQWidgetState extends State<ProductFAQWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Frequently Asked Questions',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+          Row(
+            children: const [
+              Icon(Icons.help_outline, color: Color(0xFF27916D), size: 20),
+              SizedBox(width: 8),
+              Text(
+                'Frequently Asked Questions',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
           ...List.generate(widget.faqs.length, (index) {

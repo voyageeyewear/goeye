@@ -108,12 +108,19 @@ class ApiService {
     }
   }
 
-  // Fetch products by collection
-  Future<List<Product>> fetchProductsByCollection(String handle, {int limit = 50}) async {
+  // Fetch products by collection with pagination
+  Future<Map<String, dynamic>> fetchProductsByCollection(
+    String handle, {
+    int limit = 50,
+    int page = 1,
+  }) async {
     try {
+      // Calculate offset for pagination
+      final offset = (page - 1) * limit;
+      
       final response = await http
           .get(Uri.parse(
-              '${ApiConfig.baseUrl}${ApiConfig.products}/collection/$handle?limit=$limit'))
+              '${ApiConfig.baseUrl}${ApiConfig.products}/collection/$handle?limit=$limit&offset=$offset'))
           .timeout(ApiConfig.timeout);
 
       if (response.statusCode == 200) {
@@ -122,7 +129,21 @@ class ApiService {
         final products = (collectionData['products'] as List)
             .map((product) => Product.fromJson(product))
             .toList();
-        return products;
+        
+        final hasMore = products.length == limit;
+        
+        debugPrint('🔍 API Pagination Debug:');
+        debugPrint('   Page: $page, Offset: $offset, Limit: $limit');
+        debugPrint('   Products received: ${products.length}');
+        debugPrint('   hasMore: $hasMore (${products.length} == $limit)');
+        
+        // Return products with metadata for pagination
+        return {
+          'products': products,
+          'hasMore': hasMore, // If we got full limit, there might be more
+          'currentPage': page,
+          'limit': limit,
+        };
       } else {
         throw Exception('Failed to load collection products: ${response.statusCode}');
       }

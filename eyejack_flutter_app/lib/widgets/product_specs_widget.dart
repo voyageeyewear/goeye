@@ -20,15 +20,21 @@ class _ProductSpecsWidgetState extends State<ProductSpecsWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Product Specifications',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: const [
+                Icon(Icons.tune_outlined, color: Color(0xFF27916D), size: 20),
+                SizedBox(width: 8),
+                Text(
+                  'Product Specifications',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 8),

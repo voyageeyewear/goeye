@@ -39,13 +39,24 @@ class _BestSellingCollectionWidgetState extends State<BestSellingCollectionWidge
       final collectionHandle = widget.settings['collectionHandle'] ?? 'best-selling';
       
       // Fetch products from the specified collection
-      final products = await shopProvider.fetchProductsByCollection(collectionHandle);
+      final dynamic limitSetting = widget.settings['productsLimit'];
+      int limit = 16;
+      if (limitSetting is int) {
+        limit = limitSetting;
+      } else if (limitSetting is String) {
+        limit = int.tryParse(limitSetting) ?? 16;
+      }
       
-      // Limit to specified number of products (default 16)
-      final limit = widget.settings['productsLimit'] ?? 16;
+      final result = await shopProvider.fetchProductsByCollection(
+        collectionHandle,
+        page: 1,
+        limit: limit,
+      );
       
+      final products = (result['products'] as List<dynamic>).cast<Product>();
+    
       setState(() {
-        _products = products.take(limit).toList();
+        _products = products;
         _isLoading = false;
       });
     } catch (e) {

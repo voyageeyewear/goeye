@@ -80,9 +80,17 @@ class ShopProvider with ChangeNotifier {
   }
 
   // Fetch products by collection
-  Future<List<Product>> fetchProductsByCollection(String handle) async {
+  Future<Map<String, dynamic>> fetchProductsByCollection(
+    String handle, {
+    int page = 1,
+    int limit = 50,
+  }) async {
     try {
-      return await _apiService.fetchProductsByCollection(handle);
+      return await _apiService.fetchProductsByCollection(
+        handle,
+        page: page,
+        limit: limit,
+      );
     } catch (e) {
       throw Exception('Failed to load collection: $e');
     }

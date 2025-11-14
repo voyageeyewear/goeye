@@ -38,13 +38,19 @@ class _ProductFeaturesWidgetState extends State<ProductFeaturesWidget> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Product Features',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                  Row(
+                    children: const [
+                      Icon(Icons.stars_outlined, color: Color(0xFF27916D), size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        'Product Features',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   Icon(
                     _isExpanded ? Icons.remove : Icons.add,

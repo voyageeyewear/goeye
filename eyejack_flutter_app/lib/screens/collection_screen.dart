@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/collection_model.dart';
 import '../models/product_model.dart';
 import '../models/collection_banner_model.dart';
@@ -31,6 +32,12 @@ class _CollectionScreenState extends State<CollectionScreen> {
   bool _isGridView = true;
   String _sortBy = 'featured'; // featured, price_asc, price_desc, name_asc, name_desc
   int _cartCount = 0; // Track cart item count
+  
+  // Pagination states
+  int _currentPage = 1;
+  bool _hasMore = true;
+  bool _isLoadingMore = false;
+  final int _productsPerPage = 50;
   
   // Filter states
   Map<String, bool> _selectedFilters = {};
@@ -64,9 +71,77 @@ class _CollectionScreenState extends State<CollectionScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => CartDrawer(
-        onCheckout: () {
-          Navigator.pop(context);
-          // Navigate to checkout if needed
+        onCheckout: () async {
+          Navigator.pop(context); // Close cart drawer
+          
+          try {
+            debugPrint('🛒 Opening Shopify checkout...');
+            
+            // Show loading indicator
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Row(
+                    children: [
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Text('Preparing checkout...'),
+                    ],
+                  ),
+                  backgroundColor: Color(0xFF27916D),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            }
+            
+            // Get Shopify checkout URL from cart
+            final cartData = await ApiService().getCart();
+            final checkoutUrl = cartData['checkoutUrl'] as String?;
+            
+            if (checkoutUrl == null || checkoutUrl.isEmpty) {
+              throw Exception('Checkout URL not available');
+            }
+            
+            debugPrint('✅ Shopify checkout URL: $checkoutUrl');
+            
+            // Open Shopify checkout in in-app browser
+            if (mounted) {
+              final Uri uri = Uri.parse(checkoutUrl);
+              final launched = await launchUrl(
+                uri,
+                mode: LaunchMode.inAppWebView,
+                webViewConfiguration: const WebViewConfiguration(
+                  enableJavaScript: true,
+                  enableDomStorage: true,
+                ),
+              );
+              
+              if (launched) {
+                debugPrint('✅ Shopify checkout opened in app');
+              } else {
+                throw Exception('Could not launch checkout');
+              }
+            }
+          } catch (e) {
+            debugPrint('❌ Error opening Shopify checkout: $e');
+            
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Error: ${e.toString()}'),
+                  backgroundColor: Colors.red,
+                  duration: const Duration(seconds: 3),
+                ),
+              );
+            }
+          }
         },
         onItemRemoved: () {
           _loadCartCount(); // Refresh cart count after removal
@@ -101,11 +176,22 @@ class _CollectionScreenState extends State<CollectionScreen> {
     setState(() {
       _isLoading = true;
       _error = null;
+      _currentPage = 1;
+      _hasMore = true;
     });
 
     try {
       final shopProvider = Provider.of<ShopProvider>(context, listen: false);
-      final products = await shopProvider.fetchProductsByCollection(widget.collection.handle);
+      final result = await shopProvider.fetchProductsByCollection(
+        widget.collection.handle,
+        page: 1,
+        limit: _productsPerPage,
+      );
+      
+      final products = (result['products'] as List<dynamic>)
+          .map((e) => e as Product)
+          .toList();
+      final hasMore = result['hasMore'] as bool;
       
       // Calculate max price for filter
       if (products.isNotEmpty) {
@@ -120,13 +206,68 @@ class _CollectionScreenState extends State<CollectionScreen> {
       setState(() {
         _products = products;
         _filteredProducts = products;
+        _hasMore = hasMore;
         _isLoading = false;
       });
+      
+      debugPrint('📦 Loaded page 1: ${products.length} products');
+      debugPrint('   hasMore: $hasMore');
+      debugPrint('   _hasMore state: $_hasMore');
+      debugPrint('   _currentPage: $_currentPage');
+      debugPrint('   Should show button: ${_hasMore || _isLoadingMore}');
     } catch (e) {
       setState(() {
         _error = e.toString();
         _isLoading = false;
       });
+    }
+  }
+  
+  Future<void> _loadMoreProducts() async {
+    if (_isLoadingMore || !_hasMore) return;
+    
+    setState(() {
+      _isLoadingMore = true;
+    });
+    
+    try {
+      final shopProvider = Provider.of<ShopProvider>(context, listen: false);
+      final nextPage = _currentPage + 1;
+      
+      final result = await shopProvider.fetchProductsByCollection(
+        widget.collection.handle,
+        page: nextPage,
+        limit: _productsPerPage,
+      );
+      
+      final newProducts = (result['products'] as List<dynamic>)
+          .map((e) => e as Product)
+          .toList();
+      final hasMore = result['hasMore'] as bool;
+      
+      setState(() {
+        _products = [..._products!, ...newProducts];
+        _filteredProducts = [..._filteredProducts!, ...newProducts];
+        _currentPage = nextPage;
+        _hasMore = hasMore;
+        _isLoadingMore = false;
+      });
+      
+      debugPrint('📦 Loaded page $nextPage: ${newProducts.length} products, total: ${_products!.length}, hasMore: $hasMore');
+    } catch (e) {
+      debugPrint('❌ Error loading more products: $e');
+      setState(() {
+        _isLoadingMore = false;
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to load more products: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -658,9 +799,63 @@ class _CollectionScreenState extends State<CollectionScreen> {
               after12Banners: after12Banners,
               settings: settings,
             ),
+            
+            // Load More Button
+            if (_hasMore || _isLoadingMore) ...[
+              const SizedBox(height: 20),
+              _buildLoadMoreButton(),
+            ] else
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text(
+                  'All products loaded (${_filteredProducts?.length ?? 0} total)',
+                  style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                  textAlign: TextAlign.center,
+                ),
+              ),
           ],
         );
       },
+    );
+  }
+  
+  Widget _buildLoadMoreButton() {
+    debugPrint('🔘 Rendering Load More Button: hasMore=$_hasMore, isLoading=$_isLoadingMore, currentPage=$_currentPage, totalProducts=${_filteredProducts?.length}');
+    
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: _isLoadingMore
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFF27916D),
+              ),
+            )
+          : ElevatedButton(
+              onPressed: _loadMoreProducts,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF27916D),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                elevation: 2,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Load More Products',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Icon(Icons.arrow_downward, size: 20),
+                ],
+              ),
+            ),
     );
   }
 
@@ -715,13 +910,21 @@ class _CollectionScreenState extends State<CollectionScreen> {
   }
 
   Widget _buildProductList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: _filteredProducts!.length,
-      itemBuilder: (context, index) {
-        return _buildProductListItem(_filteredProducts![index]);
-      },
+    return Column(
+      children: [
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: _filteredProducts!.length,
+          itemBuilder: (context, index) {
+            return _buildProductListItem(_filteredProducts![index]);
+          },
+        ),
+        
+        // Load More Button
+        if (_hasMore || _isLoadingMore)
+          _buildLoadMoreButton(),
+      ],
     );
   }
 
