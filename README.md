@@ -8,11 +8,21 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 
 ## 📦 Latest Release
 
-**Version:** 12.22.2 (Build 154) - **Pagination + Color Swatches**  
-**Release Date:** November 14, 2025  
-**APK:** `Eyejack-v12.22.2-Build154-Pagination.apk`
+**Version:** 12.24.0 (Build 156) - **GoKwik Checkout SDK Integration**  
+**Release Date:** January 2025  
+**APK:** `Eyejack-v12.24.0-Build156-ALL-SCREENS-CHECKOUT.apk`
 
-### 🏷️ What's New in v12.22.2 - **Collection Pagination + Swatch Navigation**
+### 🏷️ What's New in v12.24.0 - **GoKwik Checkout SDK Integration**
+- 🛒 **GoKwik SDK Integration**: Full integration with Kwikpass Shopify Plus + Non Plus Flutter SDK
+- 📱 **All-Screen Checkout**: GoKwik checkout now works from Home, Collection, and Product Detail screens
+- 🔧 **SDK Widget Implementation**: Replaced custom WebView with SDK's official `KPCheckout` widget
+- 🎯 **Backend API Integration**: Uses `createGokwikCheckout()` API for proper checkout URL generation
+- 📊 **Version Display**: Added version number (v12.24.0 (156)) in app header for cache tracking
+- ✅ **Proper Context Handling**: Fixed navigation issues with parent context/navigator management
+- 🔄 **Unified Checkout Flow**: All cart icons now use the same GoKwik checkout implementation
+- 🎨 **Event Handling**: Proper event callbacks for checkout success, errors, and modal close
+
+### Previous v12.22.2 Features - **Collection Pagination + Swatch Navigation**
 - 🎨 **Matrix & Aviator Swatches**: Color swatches parse product titles and instantly navigate to the matching SKU without loaders
 - 🧭 **Instant Variant Navigation**: Tapping a swatch triggers `Navigator.pushReplacement` so the selected product opens immediately
 - 🖼️ **Image Debugging**: Added gallery + thumbnail logging to verify all product images render
@@ -67,7 +77,9 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 - ✅ **Search Functionality**: Product search with icon in header
 - ✅ **Smart Cart Management**: Add multiple items (lens + frame) in single transaction
 - ✅ **Cart Drawer**: Full-featured cart with item management
-- ✅ **Checkout Integration**: Seamless Gokwik checkout integration
+- ✅ **GoKwik Checkout Integration**: Full Kwikpass SDK integration with checkout on all screens (Home, Collection, Product Detail)
+- ✅ **SDK-Based Checkout**: Uses official GoKwik `KPCheckout` widget with proper event handling
+- ✅ **Backend Checkout API**: Integrated with `createGokwikCheckout()` endpoint for secure checkout URL generation
 
 ### 🎨 UI/UX Features
 - ✅ **BoAt-Style Product Page**: Modern sticky cart with two buttons side by side
@@ -115,6 +127,8 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
   - `cached_network_image`: Image caching and loading
   - `flutter_carousel_widget`: Carousel/slider functionality
   - `video_player` + `chewie`: Video playback
+  - `gokwik: ^1.0.9`: GoKwik Kwikpass SDK for checkout integration
+  - `webview_flutter`: WebView support for checkout
   - `url_launcher`: External links (Instagram, etc.)
 
 ### Backend (Middleware)
@@ -285,7 +299,8 @@ Eyejack Native Application/
 │   │   │   ├── home_screen.dart   # Main home screen
 │   │   │   ├── product_detail_screen.dart # Product page
 │   │   │   ├── collection_screen.dart
-│   │   │   └── search_screen.dart
+│   │   │   ├── search_screen.dart
+│   │   │   └── kp_checkout_screen.dart # GoKwik checkout screen
 │   │   ├── services/
 │   │   │   ├── api_service.dart   # API calls (cache-busting)
 │   │   │   └── gokwik_service.dart
@@ -590,8 +605,8 @@ All routes prefixed with `/api/shopify/`:
 - `POST /api/shopify/cart/clear` - Clear cart
 
 #### Checkout Routes
-- `POST /api/shopify/checkout/create` - Create checkout
-- `POST /api/shopify/checkout/gokwik` - Gokwik checkout
+- `POST /api/shopify/checkout/create` - Create Shopify checkout
+- `POST /api/shopify/checkout/gokwik` - Create GoKwik checkout (returns checkoutUrl, cartId, merchantId)
 
 ### Lens Categorization
 
@@ -693,7 +708,12 @@ Products can conditionally show/hide sections based on Shopify product tags. Cur
 - Remove items
 - Cart properties preserved
 - Total price display
-- Gokwik checkout integration
+- **GoKwik Checkout Integration**:
+  - Works from Home, Collection, and Product Detail screens
+  - Uses official GoKwik Kwikpass SDK (`KPCheckout` widget)
+  - Backend API integration for secure checkout URL generation
+  - Proper event handling (success, error, modal close)
+  - Version display in header for cache tracking
 
 ## 🐛 Troubleshooting
 
