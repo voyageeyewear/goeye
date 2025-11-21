@@ -757,7 +757,7 @@ Products can conditionally show/hide sections based on Shopify product tags. Cur
 ## 🐛 Troubleshooting
 
 ### Emulator Shows "Error Loading Store" (DNS Issue)
-**Issue**: Android emulator can't resolve Railway domain (motivated-intuition-production.up.railway.app)  
+**Issue**: Android emulator can't resolve Railway domain (web-production-b0095.up.railway.app)  
 **Solution**: Restart emulator with Google DNS servers
 ```bash
 # Kill current emulator
@@ -785,7 +785,7 @@ adb shell setprop net.dns2 8.8.4.4
 ### Images Not Loading
 **Solution**: 
 1. Check internet connection
-2. Verify Railway backend is running (https://motivated-intuition-production.up.railway.app/health)
+2. Verify Railway backend is running (https://web-production-b0095.up.railway.app/health)
 3. Pull to refresh
 4. If using emulator, check DNS settings (see above)
 
@@ -810,7 +810,7 @@ adb shell setprop net.dns2 8.8.4.4
 
 ### Railway (Production Backend)
 
-Already deployed at: `https://motivated-intuition-production.up.railway.app`
+Deployed at: `https://web-production-b0095.up.railway.app`
 
 **Auto-deploy on Git push:**
 ```bash
@@ -822,11 +822,18 @@ git push origin main
 Railway detects changes and deploys automatically (60-90 seconds).
 
 **Environment Variables (set in Railway dashboard):**
-- `SHOPIFY_STORE_DOMAIN`
-- `SHOPIFY_ADMIN_ACCESS_TOKEN`
-- `SHOPIFY_STOREFRONT_ACCESS_TOKEN`
-- `SHOPIFY_API_VERSION`
-- `PORT`
+- `SHOPIFY_STORE_DOMAIN=goeyee.myshopify.com`
+- `SHOPIFY_ADMIN_ACCESS_TOKEN=shpat_xxxxxxxxxxxxxxxxxxxxx`
+- `SHOPIFY_STOREFRONT_ACCESS_TOKEN=xxxxxxxxxxxxxxxxxxxxxxx`
+- `SHOPIFY_API_VERSION=2025-01`
+- `DATABASE_URL=postgresql://postgres:xxxxx@shortline.proxy.rlwy.net:20844/railway`
+- `NODE_ENV=production`
+- `PORT` (automatically set by Railway)
+
+**Database:**
+- PostgreSQL database is connected and seeded
+- Contains 9 app sections and 3 theme settings
+- See `SEED_DATABASE_RAILWAY.md` for database management
 
 ### APK Distribution
 
