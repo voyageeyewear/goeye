@@ -15,10 +15,17 @@ exports.getSettings = async (req, res) => {
       data: settings
     });
   } catch (error) {
-    console.error('Error fetching collection page settings:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
+    console.warn('⚠️ Database not available, returning default settings:', error.message);
+    // Return default settings when database is unavailable
+    res.json({
+      success: true,
+      data: {
+        showFilters: true,
+        showSort: true,
+        productsPerPage: 20,
+        defaultSort: 'best-selling'
+      },
+      warning: 'Database not connected. Using default settings.'
     });
   }
 };

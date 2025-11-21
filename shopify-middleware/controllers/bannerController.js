@@ -46,11 +46,12 @@ exports.getAllBanners = async (req, res) => {
             data: banners
         });
     } catch (error) {
-        console.error('Error fetching all banners:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Failed to fetch banners',
-            error: error.message
+        console.warn('⚠️ Database not available, returning empty banners:', error.message);
+        // Return empty array when database is unavailable
+        res.json({
+            success: true,
+            data: [],
+            warning: 'Database not connected. Using fallback data.'
         });
     }
 };

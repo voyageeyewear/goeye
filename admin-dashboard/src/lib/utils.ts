@@ -5,5 +5,5 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://motivated-intuition-production.up.railway.app';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://web-production-b0095.up.railway.app';
 
