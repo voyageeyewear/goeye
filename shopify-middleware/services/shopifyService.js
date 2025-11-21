@@ -61,6 +61,7 @@ exports.fetchThemeSections = async () => {
 
     // Fetch the index.json template which contains section order and settings
     let sections = [];
+    let shopInfo = null;
     
     try {
       const indexResponse = await adminClient.get(`/themes/${themeId}/assets.json`, {
@@ -92,14 +93,19 @@ exports.fetchThemeSections = async () => {
       console.warn('⚠️ Could not fetch from theme API, using fallback:', themeError.message);
     }
 
+    // Always fetch shop info
+    shopInfo = await this.fetchShopInfo();
+
     // If no sections from theme, fall back to fetching collections and products
     if (sections.length === 0) {
       console.log('⚠️ No sections found in theme, using fallback...');
-      const [collections, allProducts, shopInfo] = await Promise.all([
+      const [collections, allProducts] = await Promise.all([
         this.fetchCollections(),
-        this.fetchProducts(50),
-        this.fetchShopInfo()
+        this.fetchProducts(50)
       ]);
+      
+      // Use first 20 products for featured collections
+      const diwaliProducts = allProducts.slice(0, 20);
 
       // Create basic homepage layout matching goeye.in structure
       sections = [
@@ -472,7 +478,7 @@ exports.fetchThemeSections = async () => {
 
     return {
       layout: sections,
-      shop: shopInfo
+      shop: shopInfo || {}
     };
   } catch (error) {
     console.error('Error fetching theme sections:', error.message);
