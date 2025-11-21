@@ -58,10 +58,27 @@ interface CollectionSettings {
   ratingStarColor: string;
 }
 
+const STORAGE_KEY = 'goeye_collection_settings';
+
 export function CollectionSettings() {
   const queryClient = useQueryClient();
   const [settings, setSettings] = useState<CollectionSettings | null>(null);
   const [hasChanges, setHasChanges] = useState(false);
+  const [isLocalStorage, setIsLocalStorage] = useState(false);
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setSettings(parsed);
+        setIsLocalStorage(true);
+      } catch (e) {
+        console.error('Error loading from localStorage:', e);
+      }
+    }
+  }, []);
 
   // Fetch settings
   const { data, isLoading, error } = useQuery({
@@ -74,7 +91,11 @@ export function CollectionSettings() {
 
   useEffect(() => {
     if (data) {
-      setSettings(data);
+      // Only update if we don't have localStorage data
+      if (!localStorage.getItem(STORAGE_KEY)) {
+        setSettings(data);
+        setIsLocalStorage(false);
+      }
     }
   }, [data]);
 
@@ -82,15 +103,33 @@ export function CollectionSettings() {
   const updateMutation = useMutation({
     mutationFn: async (updatedSettings: CollectionSettings) => {
       const response = await api.put('/api/collection/settings', updatedSettings);
+      
+      // Save to localStorage as backup (especially when database is unavailable)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedSettings));
+      setIsLocalStorage(true);
+      
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['collectionSettings'] });
       setHasChanges(false);
-      alert('✅ Settings saved successfully! Changes will appear in the app on next launch.');
+      
+      // Check if database is connected
+      if (data.warning && data.warning.includes('Database not connected')) {
+        alert('⚠️ Settings saved locally (browser storage). Changes will NOT appear in the app until database is connected. Database connection required for app to see changes.');
+      } else {
+        alert('✅ Settings saved successfully! Changes will appear in the app on next launch.');
+      }
     },
     onError: (error: any) => {
-      alert(`❌ Error: ${error.response?.data?.error || error.message}`);
+      // Even on error, save to localStorage
+      if (settings) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+        setIsLocalStorage(true);
+        alert('⚠️ Database error, but settings saved locally. Changes will NOT appear in the app until database is connected.');
+      } else {
+        alert(`❌ Error: ${error.response?.data?.error || error.message}`);
+      }
     },
   });
 
@@ -103,6 +142,8 @@ export function CollectionSettings() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['collectionSettings'] });
       setHasChanges(false);
+      localStorage.removeItem(STORAGE_KEY);
+      setIsLocalStorage(false);
       alert('✅ Settings reset to defaults!');
     },
     onError: (error: any) => {
@@ -126,6 +167,9 @@ export function CollectionSettings() {
   const handleReset = () => {
     if (confirm('Are you sure you want to reset all settings to defaults?')) {
       resetMutation.mutate();
+      // Clear localStorage on reset
+      localStorage.removeItem(STORAGE_KEY);
+      setIsLocalStorage(false);
     }
   };
 
@@ -180,6 +224,16 @@ export function CollectionSettings() {
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <p className="text-yellow-800 text-sm">
             ⚠️ You have unsaved changes. Click "Save Changes" to apply them.
+          </p>
+        </div>
+      )}
+
+      {isLocalStorage && (
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+          <p className="text-orange-800 text-sm font-medium">
+            ⚠️ Database Not Connected: Settings are saved in browser storage only. 
+            Changes will NOT appear in the Flutter app until the database is connected.
+            To make changes visible in the app, connect the PostgreSQL database on Railway.
           </p>
         </div>
       )}
