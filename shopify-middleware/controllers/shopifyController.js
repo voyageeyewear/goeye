@@ -1,38 +1,85 @@
 const shopifyService = require('../services/shopifyService');
 const { AppSection } = require('../models');
 
-// Get theme sections for homepage (NOW READS FROM POSTGRESQL!)
+// Get theme sections for homepage (NOW READS FROM POSTGRESQL with Shopify fallback!)
 exports.getThemeSections = async (req, res, next) => {
   try {
-    console.log('📊 Fetching sections from PostgreSQL...');
-    
-    // Fetch active sections from database, ordered by display_order
-    const dbSections = await AppSection.findAll({
-      where: { is_active: true },
-      order: [['display_order', 'ASC']]
-    });
+    let layout = [];
+    let shopInfo = null;
 
-    console.log(`✅ Found ${dbSections.length} active sections in database`);
+    // Try to fetch from PostgreSQL database first
+    try {
+      console.log('📊 Fetching sections from PostgreSQL...');
+      
+      const dbSections = await AppSection.findAll({
+        where: { is_active: true },
+        order: [['display_order', 'ASC']]
+      });
 
-    // Transform database format to API format
-    const layout = dbSections.map(section => ({
-      id: section.section_id,
-      type: section.section_type,
-      settings: section.settings
-    }));
+      console.log(`✅ Found ${dbSections.length} active sections in database`);
 
-    // Still fetch shop info from Shopify for now
-    const shopInfo = await shopifyService.fetchShopInfo();
+      // Transform database format to API format
+      layout = dbSections.map(section => ({
+        id: section.section_id,
+        type: section.section_type,
+        settings: section.settings
+      }));
 
-    res.json({
-      success: true,
-      data: {
-        layout,
-        shop: shopInfo
+      // Fetch shop info from Shopify
+      shopInfo = await shopifyService.fetchShopInfo();
+
+      // If we got sections from database, return them
+      if (layout.length > 0) {
+        return res.json({
+          success: true,
+          data: {
+            layout,
+            shop: shopInfo
+          }
+        });
       }
-    });
+    } catch (dbError) {
+      console.warn('⚠️ Database not available, falling back to Shopify API:', dbError.message);
+    }
+
+    // Fallback: Fetch from Shopify Theme API directly
+    console.log('📦 Fetching sections from Shopify Theme API (fallback)...');
+    try {
+      const themeData = await shopifyService.fetchThemeSections();
+      layout = themeData.layout || [];
+      shopInfo = themeData.shop || {};
+
+      // If shopInfo is empty, try to fetch it
+      if (!shopInfo || Object.keys(shopInfo).length === 0) {
+        shopInfo = await shopifyService.fetchShopInfo().catch(() => ({}));
+      }
+
+      res.json({
+        success: true,
+        data: {
+          layout,
+          shop: shopInfo
+        }
+      });
+    } catch (shopifyError) {
+      console.error('❌ Error fetching from Shopify API:', shopifyError);
+      // Last resort: return minimal structure
+      try {
+        shopInfo = await shopifyService.fetchShopInfo();
+      } catch (e) {
+        shopInfo = {};
+      }
+      
+      res.json({
+        success: true,
+        data: {
+          layout: [],
+          shop: shopInfo
+        }
+      });
+    }
   } catch (error) {
-    console.error('❌ Error fetching sections from database:', error);
+    console.error('❌ Critical error in getThemeSections:', error);
     next(error);
   }
 };

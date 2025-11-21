@@ -40,11 +40,19 @@ class ApiService {
         
         return ThemeData.fromJson(data['data']);
       } else {
-        throw Exception('Failed to load theme sections: ${response.statusCode}');
+        final errorBody = response.body;
+        print('❌ Backend error (${response.statusCode}): $errorBody');
+        throw Exception('Failed to load theme sections: ${response.statusCode}. ${errorBody.contains('error') ? 'Backend server error. Please try again later.' : 'Please check your internet connection and try again.'}');
       }
     } catch (e) {
       print('❌ Error fetching theme sections: $e');
-      throw Exception('Error fetching theme sections: $e');
+      if (e.toString().contains('TimeoutException') || e.toString().contains('timeout')) {
+        throw Exception('Connection timeout. Please check your internet connection and try again.');
+      } else if (e.toString().contains('SocketException') || e.toString().contains('Failed host lookup')) {
+        throw Exception('No internet connection. Please check your network and try again.');
+      } else {
+        throw Exception('Error fetching theme sections: ${e.toString().replaceAll('Exception: ', '')}');
+      }
     }
   }
 

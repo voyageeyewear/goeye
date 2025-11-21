@@ -320,38 +320,65 @@ class _HomeScreenState extends State<HomeScreen> {
           }
 
           if (shopProvider.error != null) {
+            // Try to extract a user-friendly error message
+            String errorMessage = shopProvider.error!;
+            if (errorMessage.contains('500') || errorMessage.contains('Internal Server Error')) {
+              errorMessage = 'Backend server is temporarily unavailable.\nPlease try again in a few moments.';
+            } else if (errorMessage.contains('timeout') || errorMessage.contains('Timeout')) {
+              errorMessage = 'Connection timeout.\nPlease check your internet connection.';
+            } else if (errorMessage.contains('SocketException') || errorMessage.contains('Failed host lookup')) {
+              errorMessage = 'No internet connection.\nPlease check your network settings.';
+            } else {
+              // Extract just the meaningful part of the error
+              errorMessage = errorMessage.split(':').last.trim();
+              if (errorMessage.length > 100) {
+                errorMessage = errorMessage.substring(0, 100) + '...';
+              }
+            }
+            
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.error_outline,
-                    size: 60,
-                    color: Colors.red,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Error Loading Store',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: Text(
-                      shopProvider.error!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.grey),
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.error_outline,
+                      size: 64,
+                      color: Colors.red,
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      shopProvider.fetchThemeSections();
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Retry'),
-                  ),
-                ],
+                    const SizedBox(height: 24),
+                    Text(
+                      'Error Loading Store',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      errorMessage,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        shopProvider.fetchThemeSections();
+                      },
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('Retry'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }
