@@ -475,6 +475,7 @@ exports.fetchThemeSections = async () => {
         }
       }
     ];
+    } // Close the if (sections.length === 0) block
 
     return {
       layout: sections,
