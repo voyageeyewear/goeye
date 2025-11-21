@@ -27,20 +27,26 @@ app.use('/api/migrate', migrateRoutes);
 // Health check endpoint
 app.get('/health', async (req, res) => {
   try {
-    // Test database connection
-    await sequelize.authenticate();
-    const dbStatus = 'Connected';
+    // Test database connection (optional)
+    let dbStatus = 'Not Connected';
+    try {
+      await sequelize.authenticate();
+      dbStatus = 'Connected';
+    } catch (dbError) {
+      console.warn('⚠️ Database not available:', dbError.message);
+    }
     
     res.json({ 
       status: 'OK', 
       message: 'Shopify Middleware API is running',
-      store: process.env.SHOPIFY_STORE_DOMAIN,
-      database: dbStatus
+      store: process.env.SHOPIFY_STORE_DOMAIN || 'Not configured',
+      database: dbStatus,
+      shopifyApi: process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN ? 'Configured' : 'Not configured'
     });
   } catch (error) {
     res.status(500).json({
       status: 'ERROR',
-      message: 'Database connection failed',
+      message: 'Health check failed',
       error: error.message
     });
   }

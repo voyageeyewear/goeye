@@ -36,8 +36,11 @@ async function testConnection() {
     }
 }
 
-// Initialize connection on import
-testConnection();
+// Initialize connection on import (don't crash if it fails)
+testConnection().catch(err => {
+    console.warn('⚠️ Database connection failed at startup. Server will continue without database features.');
+    console.warn('   This is OK if you only need Shopify API functionality.');
+});
 
 module.exports = sequelize;
 
