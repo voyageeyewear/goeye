@@ -1,6 +1,6 @@
 class ApiConfig {
   // Production Railway URL (works everywhere - emulator AND real devices)
-  static const String baseUrl = 'https://motivated-intuition-production.up.railway.app';
+  static const String baseUrl = 'https://web-production-b0095.up.railway.app';
   
   // API Endpoints
   static const String themeSections = '/api/shopify/theme-sections';
