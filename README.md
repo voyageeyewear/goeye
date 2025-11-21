@@ -187,12 +187,14 @@ Goeye Native Application is a full-featured mobile e-commerce app that replicate
   - Real-time updates to PostgreSQL
 
 ### Infrastructure
-- **Production Backend**: https://motivated-intuition-production.up.railway.app
-- **Database**: PostgreSQL on Railway (crossover.proxy.rlwy.net:31441)
+- **Production Backend**: https://web-production-b0095.up.railway.app
+- **Database**: PostgreSQL on Railway (shortline.proxy.rlwy.net:20844)
+- **Database Name**: railway
 - **Admin Dashboard**: Local (http://localhost:5173)
 - **Shopify Store**: goeyee.myshopify.com (www.goeye.in)
 - **CDN**: Shopify CDN for all images
 - **API Version**: 2025-01
+- **GitHub Repository**: https://github.com/voyageeyewear/goeye
 
 ## 🏗️ Architecture
 
@@ -444,12 +446,23 @@ npm start
 
 #### For Production (Railway):
 
-Backend is already deployed at:
+Backend is deployed at:
 ```
-https://motivated-intuition-production.up.railway.app
+https://web-production-b0095.up.railway.app
 ```
 
-Auto-deploys on `git push` to `main` branch.
+**Auto-deploys on `git push` to `main` branch.**
+
+**Environment Variables Required in Railway:**
+- `SHOPIFY_STORE_DOMAIN=goeyee.myshopify.com`
+- `SHOPIFY_ADMIN_ACCESS_TOKEN=shpat_xxxxxxxxxxxxxxxxxxxxx`
+- `SHOPIFY_STOREFRONT_ACCESS_TOKEN=xxxxxxxxxxxxxxxxxxxxxxx`
+- `SHOPIFY_API_VERSION=2025-01`
+- `DATABASE_URL=postgresql://postgres:xxxxx@shortline.proxy.rlwy.net:20844/railway`
+- `NODE_ENV=production`
+
+**Database Setup:**
+The database has been seeded with 9 sections and 3 theme settings. See `SEED_DATABASE_RAILWAY.md` for details.
 
 ### 3. Setup Admin Dashboard (Content Management)
 
@@ -530,7 +543,7 @@ The app is pre-configured for production (Railway):
 ```dart
 // lib/config/api_config.dart
 class ApiConfig {
-  static const String baseUrl = 'https://motivated-intuition-production.up.railway.app';
+  static const String baseUrl = 'https://web-production-b0095.up.railway.app';
 }
 ```
 
@@ -779,9 +792,10 @@ adb shell setprop net.dns2 8.8.4.4
 ### Backend Not Responding
 **Solution**:
 1. Check Railway deployment status
-2. Test API health: `curl https://motivated-intuition-production.up.railway.app/health`
-3. Expected response: `{"status":"OK","message":"Shopify Middleware API is running"...}`
+2. Test API health: `curl https://web-production-b0095.up.railway.app/health`
+3. Expected response: `{"status":"OK","message":"Shopify Middleware API is running","store":"goeyee.myshopify.com","database":"Connected","shopifyApi":"Configured"}`
 4. If server is down, redeploy: `git push origin main` (auto-deploys to Railway)
+5. Check Railway logs for specific error messages
 
 ### Videos Cropping
 **Fixed**: All videos use BoxFit.contain (no cropping)
@@ -916,15 +930,21 @@ For issues or questions:
 
 **Built with ❤️ for Goeye**
 
-**Production URL**: https://motivated-intuition-production.up.railway.app  
+**Production URL**: https://web-production-b0095.up.railway.app  
 **Live Store**: www.goeye.in  
+**GitHub Repository**: https://github.com/voyageeyewear/goeye  
+**Database**: PostgreSQL on Railway (seeded with 9 sections + 3 theme settings)  
 **Latest Android APK**: Goeye-v12.24.0-Build156-ALL-SCREENS-CHECKOUT.apk  
 **iOS Status**: ✅ Ready for App Store submission (v12.24.0 Build 156)  
-**Last Updated**: January 2025  
+**Last Updated**: November 2025  
 **Current Version**: 12.24.0 (Build 156) - GoKwik Checkout + iOS App Store Ready  
-**Milestone 2**: ✅ Achieved - iOS App Store submission ready
+**Milestone 2**: ✅ Achieved - iOS App Store submission ready  
+**Deployment Status**: ✅ Live on Railway
 
 ### 🎯 Quick Links
+- [Migration Summary](GOEYE_MIGRATION_SUMMARY.md) - Complete migration from EyeJack to Goeye
+- [Railway Deployment Guide](RAILWAY_QUICK_FIX.md) - Troubleshooting deployment issues
+- [Database Seeding Guide](SEED_DATABASE_RAILWAY.md) - How to seed the database
 - [BoAt-Style Update Summary](BOAT_STYLE_UPDATE.md)
 - [FireLens Redesign Details](FIRELENS_REDESIGN_COMPLETE.md)
 - [Installation Guide](APK_INSTALL_INSTRUCTIONS.md)
