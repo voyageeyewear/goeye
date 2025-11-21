@@ -3,7 +3,7 @@
 
 **Date:** November 11, 2025  
 **Version:** 8.2.0+87  
-**File:** `Eyejack-v8.2.0-Build87-Banners-Performance.apk`  
+**File:** `Goeye-v8.2.0-Build87-Banners-Performance.apk`  
 **Size:** 52 MB
 
 ---
@@ -170,7 +170,7 @@ open http://localhost:5173/banners
 ### 3. Test Flutter App
 ```bash
 # Install APK
-adb install -r "Eyejack-v8.2.0-Build87-Banners-Performance.apk"
+adb install -r "Goeye-v8.2.0-Build87-Banners-Performance.apk"
 ```
 
 **Test Checklist:**
@@ -329,11 +329,11 @@ A: Unlimited! But recommended max 3-5 for performance
 - `admin-dashboard/src/components/Layout.tsx` (MODIFIED)
 
 ### Flutter App
-- `eyejack_flutter_app/lib/models/collection_banner_model.dart` (NEW)
-- `eyejack_flutter_app/lib/widgets/collection_banner_widget.dart` (NEW)
-- `eyejack_flutter_app/lib/screens/collection_screen.dart` (MODIFIED)
-- `eyejack_flutter_app/lib/services/api_service.dart` (MODIFIED)
-- `eyejack_flutter_app/pubspec.yaml` (VERSION BUMP)
+- `goeye_flutter_app/lib/models/collection_banner_model.dart` (NEW)
+- `goeye_flutter_app/lib/widgets/collection_banner_widget.dart` (NEW)
+- `goeye_flutter_app/lib/screens/collection_screen.dart` (MODIFIED)
+- `goeye_flutter_app/lib/services/api_service.dart` (MODIFIED)
+- `goeye_flutter_app/pubspec.yaml` (VERSION BUMP)
 
 ---
 
@@ -358,7 +358,7 @@ This build is **production-ready** and can be:
 
 **Install Command:**
 ```bash
-adb install -r "Eyejack-v8.2.0-Build87-Banners-Performance.apk"
+adb install -r "Goeye-v8.2.0-Build87-Banners-Performance.apk"
 ```
 
 **Dashboard URL (Local):**
@@ -368,6 +368,6 @@ http://localhost:5173/banners
 
 ---
 
-*Built with ❤️ by Eyejack Team*  
+*Built with ❤️ by Goeye Team*  
 *November 11, 2025*
 

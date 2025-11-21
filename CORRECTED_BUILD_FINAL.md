@@ -35,20 +35,20 @@ The yellow information box at the bottom of the sticky cart has been completely 
 
 ## Files Modified
 
-1. **eyejack_flutter_app/lib/widgets/sticky_cart_widget.dart**
+1. **goeye_flutter_app/lib/widgets/sticky_cart_widget.dart**
    - Removed `_buildSection3InfoText()` call
    - Removed yellow info box section
    - Cleaned up unused methods
 
-2. **eyejack_flutter_app/lib/widgets/section_renderer.dart**
+2. **goeye_flutter_app/lib/widgets/section_renderer.dart**
    - Restored `AnnouncementBarsWidget`
    - Restored `MovingUspStripWidget`
 
 ## APK Details
 
-**File:** `Eyejack-FINAL-WithPromo-NoYellowBox.apk`  
+**File:** `Goeye-FINAL-WithPromo-NoYellowBox.apk`  
 **Size:** 50 MB  
-**Location:** `/Users/ssenterprises/Eyejack Native Application/`
+**Location:** `/Users/ssenterprises/Goeye Native Application/`
 
 ## Full Feature List
 
@@ -65,7 +65,7 @@ The yellow information box at the bottom of the sticky cart has been completely 
 
 ## Installation
 
-Transfer `Eyejack-FINAL-WithPromo-NoYellowBox.apk` to your Android device and install.
+Transfer `Goeye-FINAL-WithPromo-NoYellowBox.apk` to your Android device and install.
 
 ---
 *Built: October 30, 2025*

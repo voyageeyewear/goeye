@@ -205,14 +205,14 @@ Container(
 ## 🚀 Installation
 
 ### APK Location:
-`Eyejack-v12.11.0-Build139-SLIM-SLEEK.apk`
+`Goeye-v12.11.0-Build139-SLIM-SLEEK.apk`
 
 ### Quick Install:
 ```bash
-cd "/Users/ssenterprises/Eyejack Native Application"
-adb uninstall com.eyejack.shopify_app
-adb install Eyejack-v12.11.0-Build139-SLIM-SLEEK.apk
-adb shell pm clear com.eyejack.shopify_app
+cd "/Users/ssenterprises/Goeye Native Application"
+adb uninstall com.goeye.shopify_app
+adb install Goeye-v12.11.0-Build139-SLIM-SLEEK.apk
+adb shell pm clear com.goeye.shopify_app
 ```
 
 ---

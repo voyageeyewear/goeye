@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const SHOPIFY_STORE = 'eyejack1907.myshopify.com';
+const SHOPIFY_STORE = 'goeyee.myshopify.com';
 const STOREFRONT_TOKEN = '0032c089ead422dfbfaa0ffcbbddcc97';
 
 async function testLensQuery() {

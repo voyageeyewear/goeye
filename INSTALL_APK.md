@@ -1,9 +1,9 @@
-# 📱 Install Eyejack App on Your Android Device
+# 📱 Install Goeye App on Your Android Device
 
 ## ✅ APK Built Successfully!
 
-**File:** `Eyejack-Video-App.apk` (48 MB)  
-**Location:** `/Users/ssenterprises/Eyejack Native Application/Eyejack-Video-App.apk`
+**File:** `Goeye-Video-App.apk` (48 MB)  
+**Location:** `/Users/ssenterprises/Goeye Native Application/Goeye-Video-App.apk`
 
 ---
 
@@ -24,26 +24,26 @@
    ```
 4. **On your phone:**
    - Open Files app → Downloads
-   - Tap on `Eyejack-Video-App.apk`
+   - Tap on `Goeye-Video-App.apk`
    - Tap "Install"
    - Tap "Allow" if prompted to install from unknown sources
 
 ### **Option 2: Transfer via Email/AirDrop**
 
 1. **Email yourself the APK:**
-   - Attach `Eyejack-Video-App.apk` to an email
+   - Attach `Goeye-Video-App.apk` to an email
    - Send it to yourself
    - Open email on your phone and download
 
 2. **Or use AirDrop** (if your phone supports it):
-   - Share `Eyejack-Video-App.apk` via AirDrop to your phone
+   - Share `Goeye-Video-App.apk` via AirDrop to your phone
 
 ### **Option 3: Install via ADB (Recommended for developers)**
 
 1. **Connect phone via USB** with USB Debugging enabled
 2. **Install APK directly:**
    ```bash
-   adb install "/Users/ssenterprises/Eyejack Native Application/Eyejack-Video-App.apk"
+   adb install "/Users/ssenterprises/Goeye Native Application/Goeye-Video-App.apk"
    ```
 
 ---
@@ -64,7 +64,7 @@
 **IMPORTANT:** Before using the app, make sure the Node.js backend is running:
 
 ```bash
-cd "/Users/ssenterprises/Eyejack Native Application/shopify-middleware"
+cd "/Users/ssenterprises/Goeye Native Application/shopify-middleware"
 node server.js
 ```
 
@@ -79,7 +79,7 @@ The backend should be running on `http://localhost:3000`
 ## ✅ Test Videos on Real Device
 
 Once installed on your phone:
-1. **Open the Eyejack app**
+1. **Open the Goeye app**
 2. **Scroll to the slideshow section**
 3. **Swipe to slide 2** - MP4 video should auto-play! 🎬
 4. **Swipe to slide 3** - Another MP4 video should auto-play! 🎬
@@ -96,7 +96,7 @@ Once installed on your phone:
 - ✅ Ensure your Mac's firewall allows port 3000
 
 ### App crashes?
-- Check the logs: `adb logcat | grep eyejack`
+- Check the logs: `adb logcat | grep goeye`
 
 ### Can't install APK?
 - Enable "Install from Unknown Sources" in Android settings

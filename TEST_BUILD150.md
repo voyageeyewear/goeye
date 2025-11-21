@@ -63,7 +63,7 @@ Run this to see what's in Shopify:
 
 ### Verify Build 150 is installed:
 ```bash
-adb shell dumpsys package com.eyejack.app | grep version
+adb shell dumpsys package com.goeye.app | grep version
 ```
 
 Should show:

@@ -2,7 +2,7 @@
 
 ## 🎯 **Problem Identified**
 
-After reviewing the live Shopify theme code (`www.eyejack.in`), I found that:
+After reviewing the live Shopify theme code (`www.goeye.in`), I found that:
 
 1. ❌ **OLD IMPLEMENTATION**: The app was making TWO separate API calls:
    - First: Add frame to cart
@@ -80,7 +80,7 @@ exports.addMultipleToCart = async (req, res, next) => {
 
 ### 3. Frontend - Flutter API Service
 
-**File**: `eyejack_flutter_app/lib/services/api_service.dart`
+**File**: `goeye_flutter_app/lib/services/api_service.dart`
 
 Added new method:
 ```dart
@@ -101,7 +101,7 @@ Future<Map<String, dynamic>> addMultipleToCart({
 
 ### 4. Frontend - Product Detail Screen Logic
 
-**File**: `eyejack_flutter_app/lib/screens/product_detail_screen.dart`
+**File**: `goeye_flutter_app/lib/screens/product_detail_screen.dart`
 
 **NEW LOGIC**:
 ```dart
@@ -171,7 +171,7 @@ Now handles:
 - ❌ `$299.00 USD` → ✅ `₹299.00`
 
 **Files Modified**:
-- `eyejack_flutter_app/lib/widgets/cart_drawer.dart`
+- `goeye_flutter_app/lib/widgets/cart_drawer.dart`
 - All price displays now use `₹` symbol only
 
 ---
@@ -226,13 +226,13 @@ Now handles:
 
 ## 📱 **APK Generated**
 
-**File**: `Eyejack-Lens-Frame-Fixed.apk`
+**File**: `Goeye-Lens-Frame-Fixed.apk`
 **Size**: ~50.4 MB
 **Location**: Root directory
 
 **Install Command**:
 ```bash
-adb install -r Eyejack-Lens-Frame-Fixed.apk
+adb install -r Goeye-Lens-Frame-Fixed.apk
 ```
 
 ---
@@ -260,7 +260,7 @@ adb install -r Eyejack-Lens-Frame-Fixed.apk
    - Verify both items appear in cart
 
 2. **Test on Physical Device**:
-   - Install `Eyejack-Lens-Frame-Fixed.apk`
+   - Install `Goeye-Lens-Frame-Fixed.apk`
    - Test all scenarios
 
 3. **Monitor Logs**:
@@ -277,10 +277,10 @@ adb install -r Eyejack-Lens-Frame-Fixed.apk
 3. `shopify-middleware/routes/shopify.js` - Added route
 
 ### Frontend
-4. `eyejack_flutter_app/lib/services/api_service.dart` - Added `addMultipleToCart()` method
-5. `eyejack_flutter_app/lib/screens/product_detail_screen.dart` - Changed to single API call
-6. `eyejack_flutter_app/lib/widgets/cart_drawer.dart` - Fixed currency display
-7. `eyejack_flutter_app/lib/widgets/lens_selector_drawer.dart` - Button text update
+4. `goeye_flutter_app/lib/services/api_service.dart` - Added `addMultipleToCart()` method
+5. `goeye_flutter_app/lib/screens/product_detail_screen.dart` - Changed to single API call
+6. `goeye_flutter_app/lib/widgets/cart_drawer.dart` - Fixed currency display
+7. `goeye_flutter_app/lib/widgets/lens_selector_drawer.dart` - Button text update
 
 ---
 

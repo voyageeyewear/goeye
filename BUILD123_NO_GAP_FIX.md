@@ -4,7 +4,7 @@
 **Date:** November 12, 2025
 
 ## 📦 APK File
-`Eyejack-v12.3.0-Build123-NO-GAP-ABOVE-CART.apk`
+`Goeye-v12.3.0-Build123-NO-GAP-ABOVE-CART.apk`
 
 ## ✅ What Was Fixed
 
@@ -15,7 +15,7 @@
 
 ## 🎯 Changes Made
 
-### File: `eyejack_flutter_app/lib/screens/collection_screen.dart`
+### File: `goeye_flutter_app/lib/screens/collection_screen.dart`
 
 1. **Line 1016:** Removed `const SizedBox(height: 4)` 
    - Before: Had 4px gap before buttons
@@ -50,12 +50,12 @@
 
 ### For Android Device:
 ```bash
-adb install -r Eyejack-v12.3.0-Build123-NO-GAP-ABOVE-CART.apk
+adb install -r Goeye-v12.3.0-Build123-NO-GAP-ABOVE-CART.apk
 ```
 
 ### For Emulator:
 ```bash
-adb -e install -r Eyejack-v12.3.0-Build123-NO-GAP-ABOVE-CART.apk
+adb -e install -r Goeye-v12.3.0-Build123-NO-GAP-ABOVE-CART.apk
 ```
 
 ## 🔍 Verification

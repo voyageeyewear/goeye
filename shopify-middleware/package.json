@@ -1,7 +1,7 @@
 {
   "name": "shopify-middleware",
   "version": "1.0.0",
-  "description": "Eyejack Shopify API Middleware",
+  "description": "Goeye Shopify API Middleware",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

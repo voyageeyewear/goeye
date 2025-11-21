@@ -4,7 +4,7 @@
 **Date:** November 12, 2025
 
 ## 📦 APK File
-`Eyejack-v12.5.0-Build125-MORE-SPACING-ROUNDED.apk`
+`Goeye-v12.5.0-Build125-MORE-SPACING-ROUNDED.apk`
 
 ## ✅ What Changed
 
@@ -62,7 +62,7 @@
 
 ## 🔧 Technical Changes
 
-### File: `eyejack_flutter_app/lib/screens/collection_screen.dart`
+### File: `goeye_flutter_app/lib/screens/collection_screen.dart`
 
 #### 1. Changed from SpaceEvenly to Fixed Spacing (Lines 884-1013)
 **Before:**

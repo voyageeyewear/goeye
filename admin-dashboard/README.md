@@ -1,6 +1,6 @@
-# Eyejack Admin Dashboard
+# Goeye Admin Dashboard
 
-A professional, elegant admin dashboard for managing the Eyejack Flutter app content in real-time.
+A professional, elegant admin dashboard for managing the Goeye Flutter app content in real-time.
 
 **⚠️ Admin Tool - Designed for Local Use Only**
 
@@ -123,4 +123,4 @@ The dashboard runs locally but manages production data through the Railway API.
 
 ## License
 
-Proprietary - Eyejack Application
+Proprietary - Goeye Application

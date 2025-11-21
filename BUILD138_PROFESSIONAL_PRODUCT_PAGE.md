@@ -109,10 +109,10 @@ Added beautiful image collage section above Product Specifications:
 
 ```bash
 # Uninstall old version first
-adb uninstall com.eyejack.shopify_app
+adb uninstall com.goeye.shopify_app
 
 # Install new version
-adb install Eyejack-v12.10.0-Build138-PROFESSIONAL-CART.apk
+adb install Goeye-v12.10.0-Build138-PROFESSIONAL-CART.apk
 ```
 
 ---

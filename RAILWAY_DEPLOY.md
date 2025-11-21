@@ -2,7 +2,7 @@
 
 ## Code Pushed to GitHub
 
-✅ **Repository:** https://github.com/voyageeyewear/eyejack.git  
+✅ **Repository:** https://github.com/voyageeyewear/goeye.git  
 ✅ **Branch:** main
 
 ---
@@ -17,7 +17,7 @@ Visit: https://railway.app
 
 1. Click **"New Project"**
 2. Select **"Deploy from GitHub repo"**
-3. Choose repository: **`voyageeyewear/eyejack`**
+3. Choose repository: **`voyageeyewear/goeye`**
 4. Railway will detect it's a Node.js project
 
 ### 3. **Configure Environment Variables**
@@ -25,7 +25,7 @@ Visit: https://railway.app
 Go to **Variables** tab and add:
 
 ```bash
-SHOPIFY_STORE_DOMAIN=eyejack1907.myshopify.com
+SHOPIFY_STORE_DOMAIN=goeyee.myshopify.com
 SHOPIFY_ADMIN_ACCESS_TOKEN=YOUR_SHOPIFY_ADMIN_TOKEN
 SHOPIFY_STOREFRONT_ACCESS_TOKEN=YOUR_STOREFRONT_TOKEN
 SHOPIFY_API_KEY=YOUR_API_KEY
@@ -58,7 +58,7 @@ https://your-app-name.up.railway.app
 
 ### 7. **Update Flutter App**
 
-Update `eyejack_flutter_app/lib/config/api_config.dart`:
+Update `goeye_flutter_app/lib/config/api_config.dart`:
 
 ```dart
 static const String baseUrl = 'https://your-app-name.up.railway.app';

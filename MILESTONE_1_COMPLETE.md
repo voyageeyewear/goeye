@@ -8,7 +8,7 @@
 
 ## 🎯 Milestone Overview
 
-Successfully implemented a **complete live customization system** for the Eyejack app's collection pages. Admins can now change colors, fonts, sizes, and toggle features **without rebuilding the app** - changes apply instantly on next app launch!
+Successfully implemented a **complete live customization system** for the Goeye app's collection pages. Admins can now change colors, fonts, sizes, and toggle features **without rebuilding the app** - changes apply instantly on next app launch!
 
 ---
 
@@ -178,7 +178,7 @@ Successfully implemented a **complete live customization system** for the Eyejac
 
 **Version**: 12.6.1  
 **Build**: 129  
-**APK**: `Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk`  
+**APK**: `Goeye-v12.6.1-Build129-FITS-IN-CARD.apk`  
 **Size**: 54.7MB  
 **Status**: ✅ Installed and tested on emulator
 
@@ -343,7 +343,7 @@ Not just code - complete guides for:
 
 - **Dashboard**: http://localhost:5174/collection-settings
 - **API Endpoint**: https://motivated-intuition-production.up.railway.app/api/collection/settings
-- **GitHub Repo**: https://github.com/voyageeyewear/eyejack.git
+- **GitHub Repo**: https://github.com/voyageeyewear/goeye.git
 - **Tag**: `v12.7.0-Milestone1-CollectionSettings`
 
 ---

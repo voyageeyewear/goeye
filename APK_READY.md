@@ -1,9 +1,9 @@
-# 📱 Eyejack Production APK - Ready to Install!
+# 📱 Goeye Production APK - Ready to Install!
 
 ## ✅ APK Details
 
-**File Name**: `Eyejack-Production-v1.0.apk`  
-**Location**: `/Users/ssenterprises/Eyejack Native Application/`  
+**File Name**: `Goeye-Production-v1.0.apk`  
+**Location**: `/Users/ssenterprises/Goeye Native Application/`  
 **Size**: 50 MB  
 **Build Date**: October 30, 2025  
 **Build Type**: Release (Optimized)
@@ -24,8 +24,8 @@ This APK includes:
 ### Method 1: Install via ADB (Recommended)
 
 ```bash
-cd "/Users/ssenterprises/Eyejack Native Application"
-adb install Eyejack-Production-v1.0.apk
+cd "/Users/ssenterprises/Goeye Native Application"
+adb install Goeye-Production-v1.0.apk
 ```
 
 ### Method 2: Transfer to Phone
@@ -108,8 +108,8 @@ After installation, test these features:
 - `/api/shopify/checkout/*` - Checkout operations
 - `/api/shopify/lens-options` - Lens products
 
-**Shopify Store**: eyejack1907.myshopify.com  
-**Live Website**: https://eyejack.in
+**Shopify Store**: goeyee.myshopify.com  
+**Live Website**: https://goeye.in
 
 ## 🔧 Configuration Details
 
@@ -124,7 +124,7 @@ timeout: 30 seconds
 Merchant ID: 19g6iluwldmy4
 Environment: prod
 Merchant Type: shopify
-Shop Domain: eyejack1907.myshopify.com
+Shop Domain: goeyee.myshopify.com
 ```
 
 ### Android Permissions
@@ -137,7 +137,7 @@ Shop Domain: eyejack1907.myshopify.com
 ### Issue: Images not loading
 **Solution**:
 1. Check internet connection
-2. Clear app data: Settings → Apps → Eyejack Eyewear → Storage → Clear Data
+2. Clear app data: Settings → Apps → Goeye Eyewear → Storage → Clear Data
 3. Restart the app
 4. Wait 10-20 seconds for Railway cold start
 
@@ -181,7 +181,7 @@ Shop Domain: eyejack1907.myshopify.com
 
 ### For Updates:
 When making changes:
-1. Edit code in `eyejack_flutter_app/`
+1. Edit code in `goeye_flutter_app/`
 2. Run `flutter build apk --release`
 3. New APK will be in `build/app/outputs/flutter-apk/`
 
@@ -197,7 +197,7 @@ If you encounter any issues:
 
 ## 🎉 Ready to Install!
 
-Your Eyejack Native Application is ready for testing. The APK is fully configured with:
+Your Goeye Native Application is ready for testing. The APK is fully configured with:
 - ✅ Railway production backend
 - ✅ All images and videos enabled
 - ✅ GoKwik checkout integrated
@@ -206,8 +206,8 @@ Your Eyejack Native Application is ready for testing. The APK is fully configure
 
 **Install Command**:
 ```bash
-adb install Eyejack-Production-v1.0.apk
+adb install Goeye-Production-v1.0.apk
 ```
 
-Enjoy your new Eyejack mobile app! 🚀👓
+Enjoy your new Goeye mobile app! 🚀👓
 

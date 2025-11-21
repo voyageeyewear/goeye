@@ -18,7 +18,7 @@ Every time you want to manage your app content:
 1. Open Terminal
 2. Navigate to the dashboard folder:
    ```bash
-   cd "/Users/ssenterprises/Eyejack Native Application/admin-dashboard"
+   cd "/Users/ssenterprises/Goeye Native Application/admin-dashboard"
    ```
 3. Start the dashboard:
    ```bash
@@ -188,7 +188,7 @@ Or:
 ### Dashboard won't load
 ```bash
 # Restart the dev server
-cd "/Users/ssenterprises/Eyejack Native Application/admin-dashboard"
+cd "/Users/ssenterprises/Goeye Native Application/admin-dashboard"
 npm run dev
 ```
 

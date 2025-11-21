@@ -2,7 +2,7 @@
 
 ## 📱 Final APK
 
-**File Name**: `Eyejack-Complete-WithVideos.apk`  
+**File Name**: `Goeye-Complete-WithVideos.apk`  
 **Size**: 52.7 MB  
 **Build Date**: October 30, 2025, 1:49 PM  
 **Status**: ✅ Production Ready
@@ -78,12 +78,12 @@
 
 ### Step 1: Uninstall Old Version
 ```bash
-adb uninstall com.eyejack.eyejack_shopify_app
+adb uninstall com.goeye.goeye_shopify_app
 ```
 
 ### Step 2: Install New APK
 ```bash
-adb install "/Users/ssenterprises/Eyejack Native Application/Eyejack-Complete-WithVideos.apk"
+adb install "/Users/ssenterprises/Goeye Native Application/Goeye-Complete-WithVideos.apk"
 ```
 
 ### Step 3: Wait for Railway Deploy
@@ -186,7 +186,7 @@ After pushing code:
 
 ## 🎉 Ready for Production!
 
-Your Eyejack Native App is now **100% complete** with:
+Your Goeye Native App is now **100% complete** with:
 - ✅ Perfect rupee symbol display
 - ✅ Professional black header
 - ✅ Auto-playing videos in slider

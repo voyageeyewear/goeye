@@ -91,7 +91,7 @@ You now have a complete feature that allows **live customization of collection p
 
 ### Deployment Status
 - ✅ **Code Committed**: Commit `c158db3`
-- ✅ **Pushed to GitHub**: https://github.com/voyageeyewear/eyejack.git
+- ✅ **Pushed to GitHub**: https://github.com/voyageeyewear/goeye.git
 - ✅ **Railway Deploying**: Auto-deployment in progress
 - ✅ **Dashboard Running**: http://localhost:5173
 
@@ -438,7 +438,7 @@ You now have a **professional, production-ready feature** for live app customiza
 
 - **Dashboard**: http://localhost:5173
 - **API Endpoint**: https://motivated-intuition-production.up.railway.app/api/collection/settings
-- **Repository**: https://github.com/voyageeyewear/eyejack.git
+- **Repository**: https://github.com/voyageeyewear/goeye.git
 - **Quick Start**: `COLLECTION_SETTINGS_QUICK_START.md`
 - **Full Guide**: `COLLECTION_SETTINGS_FEATURE.md`
 

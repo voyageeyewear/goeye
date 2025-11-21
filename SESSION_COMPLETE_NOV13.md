@@ -6,7 +6,7 @@
 
 #### 1. **Emulator Launch** ✅
 - Opened latest Build 129 in Android emulator
-- APK: `Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk`
+- APK: `Goeye-v12.6.1-Build129-FITS-IN-CARD.apk`
 
 #### 2. **Critical Bug Fix: DNS Issue** ✅
 - **Problem Identified**: Emulator couldn't resolve Railway domain
@@ -41,7 +41,7 @@ Updated 3 README files with:
 - **Version**: 12.6.1
 - **Build**: 129
 - **Status**: ✅ Running in emulator
-- **APK**: `Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk`
+- **APK**: `Goeye-v12.6.1-Build129-FITS-IN-CARD.apk`
 
 ### Backend (Railway)
 - **URL**: https://motivated-intuition-production.up.railway.app
@@ -56,7 +56,7 @@ Updated 3 README files with:
 - **App**: ✅ Running
 
 ### Git Repository
-- **Remote**: https://github.com/voyageeyewear/eyejack.git
+- **Remote**: https://github.com/voyageeyewear/goeye.git
 - **Branch**: main
 - **Latest Commit**: d460119
 - **Status**: ✅ All changes pushed
@@ -95,8 +95,8 @@ adb shell ping -c 2 motivated-intuition-production.up.railway.app
 ## 📝 Files Modified/Created
 
 ### Modified Files
-- `eyejack_flutter_app/lib/screens/collection_screen.dart` - Layout improvements
-- `eyejack_flutter_app/pubspec.yaml` - Version bump to 12.6.1+129
+- `goeye_flutter_app/lib/screens/collection_screen.dart` - Layout improvements
+- `goeye_flutter_app/pubspec.yaml` - Version bump to 12.6.1+129
 - `README.md` - Updated with Build 129 and DNS troubleshooting
 - `shopify-middleware/README.md` - Added DNS and health check sections
 
@@ -151,14 +151,14 @@ adb emu kill
 sleep 30
 
 # Install and launch
-adb install -r Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk
-adb shell am start -n com.eyejack.app/.MainActivity
+adb install -r Goeye-v12.6.1-Build129-FITS-IN-CARD.apk
+adb shell am start -n com.goeye.app/.MainActivity
 ```
 
 ### For Real Devices
 No DNS issues! Just install normally:
 ```bash
-adb install -r Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk
+adb install -r Goeye-v12.6.1-Build129-FITS-IN-CARD.apk
 ```
 
 ---
@@ -263,12 +263,12 @@ adb devices
 
 ### Launch App
 ```bash
-adb shell am start -n com.eyejack.app/.MainActivity
+adb shell am start -n com.goeye.app/.MainActivity
 ```
 
 ### Clear App Data
 ```bash
-adb shell pm clear com.eyejack.app
+adb shell pm clear com.goeye.app
 ```
 
 ---

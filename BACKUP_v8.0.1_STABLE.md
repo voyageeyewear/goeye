@@ -10,7 +10,7 @@
 
 - **Version:** 8.0.1
 - **Build Number:** 81
-- **APK:** `Eyejack-v8.0.1-Build81-VideoThumbnails.apk`
+- **APK:** `Goeye-v8.0.1-Build81-VideoThumbnails.apk`
 - **Git Tag:** `v8.0.1-stable`
 - **Git Commit:** `44239f2`
 
@@ -83,7 +83,7 @@ https://motivated-intuition-production.up.railway.app/api/shopify/theme-sections
 
 ### Flutter App
 ```
-eyejack_flutter_app/
+goeye_flutter_app/
 ├── lib/
 │   ├── main.dart (entry point, splash screen)
 │   ├── config/
@@ -130,14 +130,14 @@ shopify-middleware/
         "name": "Sunglasses",
         "handle": "sunglasses",
         "type": "image",
-        "image": "https://eyejack.in/cdn/shop/files/female.png?v=1761800301&width=200"
+        "image": "https://goeye.in/cdn/shop/files/female.png?v=1761800301&width=200"
       },
       {
         "name": "New Arrivals",
         "handle": "new-arrivals",
         "type": "video",
-        "video": "https://eyejack.in/.../4adbfe1a16244dbbb0d89805a901bfdc.HD-1080p-7.2Mbps-61208466.mp4",
-        "image": "https://eyejack.in/cdn/shop/files/new_arrival-03.png?v=1761800347&width=200"
+        "video": "https://goeye.in/.../4adbfe1a16244dbbb0d89805a901bfdc.HD-1080p-7.2Mbps-61208466.mp4",
+        "image": "https://goeye.in/cdn/shop/files/new_arrival-03.png?v=1761800347&width=200"
       }
     ]
   }
@@ -157,7 +157,7 @@ git tag -l
 git checkout v8.0.1-stable
 
 # Build APK
-cd eyejack_flutter_app
+cd goeye_flutter_app
 flutter build apk --release
 ```
 
@@ -167,14 +167,14 @@ flutter build apk --release
 git checkout 44239f2
 
 # Build APK
-cd eyejack_flutter_app
+cd goeye_flutter_app
 flutter build apk --release
 ```
 
 ### Option 3: Using Existing APK
 ```bash
 # Simply install the backed-up APK
-adb install -r Eyejack-v8.0.1-Build81-VideoThumbnails.apk
+adb install -r Goeye-v8.0.1-Build81-VideoThumbnails.apk
 ```
 
 ---
@@ -234,11 +234,11 @@ adb install -r Eyejack-v8.0.1-Build81-VideoThumbnails.apk
 - **Tag:** `v8.0.1-stable`
 - **Commit:** `44239f2`
 - **Branch:** `main`
-- **Remote:** `https://github.com/voyageeyewear/eyejack.git`
+- **Remote:** `https://github.com/voyageeyewear/goeye.git`
 
 ### Local Files
-- **APK:** `Eyejack-v8.0.1-Build81-VideoThumbnails.apk` (54.6 MB)
-- **Source:** `/Users/ssenterprises/Eyejack Native Application/`
+- **APK:** `Goeye-v8.0.1-Build81-VideoThumbnails.apk` (54.6 MB)
+- **Source:** `/Users/ssenterprises/Goeye Native Application/`
 
 ### Railway Deployment
 - **URL:** `https://motivated-intuition-production.up.railway.app`

@@ -2,7 +2,7 @@
 
 ## ✅ Successfully Pushed to GitHub!
 
-**Repository**: `https://github.com/voyageeyewear/eyejack.git`  
+**Repository**: `https://github.com/voyageeyewear/goeye.git`  
 **Branch**: `main`  
 **Commit**: `74d355b`  
 **Date**: October 30, 2025
@@ -63,8 +63,8 @@
 
 **1. Clone & Setup Middleware:**
 ```bash
-git clone https://github.com/voyageeyewear/eyejack.git
-cd "Eyejack Native Application/shopify-middleware"
+git clone https://github.com/voyageeyewear/goeye.git
+cd "Goeye Native Application/shopify-middleware"
 npm install
 # Create .env file with your Shopify credentials
 node server.js
@@ -72,7 +72,7 @@ node server.js
 
 **2. Setup Flutter App:**
 ```bash
-cd ../eyejack_flutter_app
+cd ../goeye_flutter_app
 flutter pub get
 # Edit lib/config/api_config.dart for your API endpoint
 ```
@@ -253,6 +253,6 @@ This deployment represents a **complete, production-ready** implementation of th
 ---
 
 **Built with ❤️ by the EyeJack Development Team**  
-**Repository**: https://github.com/voyageeyewear/eyejack  
+**Repository**: https://github.com/voyageeyewear/goeye  
 **Last Updated**: October 30, 2025 at 01:10 IST
 

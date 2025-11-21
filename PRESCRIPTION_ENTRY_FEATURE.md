@@ -60,7 +60,7 @@ When users reach Step 4 (Add Your Prescription), they now see **3 options**:
 ```json
 {
   "4. Prescription Type": "upload",
-  "Prescription File": "https://eyejack.in/cdn/shop/files/prescription.pdf",
+  "Prescription File": "https://goeye.in/cdn/shop/files/prescription.pdf",
   "File Name": "prescription_demo.pdf"
 }
 ```

@@ -53,7 +53,7 @@ I've created a **COMPLETELY FRESH BUILD** with:
 This is the **MOST AGGRESSIVE** method:
 
 ```bash
-cd "/Users/ssenterprises/Eyejack Native Application"
+cd "/Users/ssenterprises/Goeye Native Application"
 ./NUCLEAR_INSTALL_v12.sh
 ```
 
@@ -72,12 +72,12 @@ cd "/Users/ssenterprises/Eyejack Native Application"
 If you don't have ADB access:
 
 1. **On Your Phone:**
-   - Go to Settings → Apps → Eyejack
+   - Go to Settings → Apps → Goeye
    - Tap "Uninstall"
    - **Restart your phone** ← IMPORTANT!
 
 2. **Transfer APK:**
-   - Copy `Eyejack-v12.0.0-Build120-NUCLEAR-FRESH.apk` to your phone
+   - Copy `Goeye-v12.0.0-Build120-NUCLEAR-FRESH.apk` to your phone
    - Use Google Drive, WhatsApp, or USB
 
 3. **Install:**
@@ -100,22 +100,22 @@ If you prefer to run commands manually:
 adb devices
 
 # 2. Force stop
-adb shell am force-stop com.eyejack.app
+adb shell am force-stop com.goeye.app
 
 # 3. Clear data
-adb shell pm clear com.eyejack.app
+adb shell pm clear com.goeye.app
 
 # 4. Uninstall
-adb uninstall com.eyejack.app
+adb uninstall com.goeye.app
 
 # 5. Clear system cache (NUCLEAR!)
 adb shell pm trim-caches 999G
 
 # 6. Install fresh
-adb install "/Users/ssenterprises/Eyejack Native Application/Eyejack-v12.0.0-Build120-NUCLEAR-FRESH.apk"
+adb install "/Users/ssenterprises/Goeye Native Application/Goeye-v12.0.0-Build120-NUCLEAR-FRESH.apk"
 
 # 7. Launch
-adb shell am start -n com.eyejack.app/.MainActivity
+adb shell am start -n com.goeye.app/.MainActivity
 ```
 
 ---
@@ -145,7 +145,7 @@ If you **STILL** see the old layout after all this:
 ### **Step 1: Verify APK Installation**
 ```bash
 # Check installed version
-adb shell dumpsys package com.eyejack.app | grep versionName
+adb shell dumpsys package com.goeye.app | grep versionName
 ```
 Should show: `versionName=12.0.0`
 
@@ -166,16 +166,16 @@ Should show: `versionName=12.0.0`
 ### **Step 4: Check for Multiple Instances**
 ```bash
 # Check if multiple versions are installed
-adb shell pm list packages | grep eyejack
+adb shell pm list packages | grep goeye
 ```
-Should only show: `package:com.eyejack.app`
+Should only show: `package:com.goeye.app`
 
 ### **Step 5: Factory Reset App Data**
 ```bash
 # Remove EVERYTHING related to the app
-adb shell pm clear com.eyejack.app
-adb shell rm -rf /data/data/com.eyejack.app
-adb shell rm -rf /sdcard/Android/data/com.eyejack.app
+adb shell pm clear com.goeye.app
+adb shell rm -rf /data/data/com.goeye.app
+adb shell rm -rf /sdcard/Android/data/com.goeye.app
 ```
 
 ---
@@ -236,11 +236,11 @@ If you've tried EVERYTHING and still see the old layout:
 1. **Take a screenshot** of the app showing the version number
 2. **Run this command** and share output:
    ```bash
-   adb shell dumpsys package com.eyejack.app | grep -A 5 "versionName"
+   adb shell dumpsys package com.goeye.app | grep -A 5 "versionName"
    ```
 3. **Check if it's actually the old APK** by verifying the file date:
    ```bash
-   ls -lh "/Users/ssenterprises/Eyejack Native Application/Eyejack-v12.0.0-Build120-NUCLEAR-FRESH.apk"
+   ls -lh "/Users/ssenterprises/Goeye Native Application/Goeye-v12.0.0-Build120-NUCLEAR-FRESH.apk"
    ```
 
 ---
@@ -250,7 +250,7 @@ If you've tried EVERYTHING and still see the old layout:
 - **Version:** v12.0.0
 - **Build Number:** 120
 - **Build Date:** November 12, 2025
-- **Package Name:** com.eyejack.app
+- **Package Name:** com.goeye.app
 - **APK Size:** ~52 MB
 - **Min SDK:** 21 (Android 5.0)
 - **Target SDK:** 34 (Android 14)

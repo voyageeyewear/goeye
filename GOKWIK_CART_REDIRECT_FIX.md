@@ -14,7 +14,7 @@ https://checkout.shopify.com/...
 
 This went directly to **Shopify's checkout**, not **Gokwik's checkout**. The Gokwik widget was not loading because:
 
-1. **Gokwik's JavaScript only loads on your store's domain** (`www.eyejack.in`)
+1. **Gokwik's JavaScript only loads on your store's domain** (`www.goeye.in`)
 2. **Shopify's checkout domain** doesn't have Gokwik installed
 3. **External apps** can't trigger Gokwik when opening Shopify's checkout directly
 
@@ -25,7 +25,7 @@ This went directly to **Shopify's checkout**, not **Gokwik's checkout**. The Gok
 Instead of opening Shopify's checkout URL directly, we now redirect to **your store's cart page**:
 
 ```
-https://www.eyejack.in/cart
+https://www.goeye.in/cart
 ```
 
 **Why this works:**
@@ -50,9 +50,9 @@ const checkoutUrl = cart.checkoutUrl;
 **New Logic** (CORRECT):
 ```javascript
 // This goes to YOUR store's cart page ✅
-const STORE_URL = 'https://www.eyejack.in';
+const STORE_URL = 'https://www.goeye.in';
 const cartUrl = `${STORE_URL}/cart`;
-// Returns: https://www.eyejack.in/cart
+// Returns: https://www.goeye.in/cart
 ```
 
 ---
@@ -64,7 +64,7 @@ const cartUrl = `${STORE_URL}/cart`;
 1. **User adds items** → Frame + Lens added to Shopify cart ✅
 2. **User opens cart drawer** → Sees all items ✅
 3. **User clicks "Proceed to Checkout"** → App shows loading message ✅
-4. **App opens URL**: `https://www.eyejack.in/cart` ✅
+4. **App opens URL**: `https://www.goeye.in/cart` ✅
 5. **Browser loads**: Your store's cart page with all items ✅
 6. **User clicks "Checkout"** on your cart page ✅
 7. **Gokwik intercepts**: Recognizes merchant ID (`19g6iluwldmy4`) ✅
@@ -84,7 +84,7 @@ const cartUrl = `${STORE_URL}/cart`;
 {
   "success": true,
   "data": {
-    "checkoutUrl": "https://www.eyejack.in/cart",
+    "checkoutUrl": "https://www.goeye.in/cart",
     "merchantId": "19g6iluwldmy4",
     "environment": "prod",
     "cartId": "gid://shopify/Cart/...",
@@ -97,7 +97,7 @@ const cartUrl = `${STORE_URL}/cart`;
 ```
 
 **Key Changes:**
-- `checkoutUrl` now points to **your store's cart** (`www.eyejack.in/cart`)
+- `checkoutUrl` now points to **your store's cart** (`www.goeye.in/cart`)
 - Added `shopifyCheckoutUrl` for reference (but not used)
 
 ---
@@ -119,7 +119,7 @@ const cartUrl = `${STORE_URL}/cart`;
    - See loading message: "Opening Gokwik checkout..."
 
 4. **Browser opens** ✅:
-   - Should open `https://www.eyejack.in/cart`
+   - Should open `https://www.goeye.in/cart`
    - Should see your store's cart page
    - Should see all the items you added
 
@@ -173,7 +173,7 @@ App → Your Store's Cart → Gokwik Checkout
 
 ### **Store URL**
 ```javascript
-const STORE_URL = 'https://www.eyejack.in';
+const STORE_URL = 'https://www.goeye.in';
 ```
 
 ### **Gokwik Settings**
@@ -186,7 +186,7 @@ const STORE_URL = 'https://www.eyejack.in';
 ## 📝 **Code Changes Summary**
 
 ### **Files Modified:**
-1. `/Users/ssenterprises/Eyejack Native Application/shopify-middleware/services/shopifyService.js`
+1. `/Users/ssenterprises/Goeye Native Application/shopify-middleware/services/shopifyService.js`
    - Updated `createGokwikCheckout()` function
    - Changed `checkoutUrl` to point to merchant's cart page
    - Added comments explaining the approach
@@ -199,7 +199,7 @@ const STORE_URL = 'https://www.eyejack.in';
 - [x] Middleware restarted
 - [x] No Flutter app changes needed (already supports URL opening)
 - [ ] **User needs to test**: Add items and click checkout
-- [ ] **Verify**: Opens `www.eyejack.in/cart` in browser
+- [ ] **Verify**: Opens `www.goeye.in/cart` in browser
 - [ ] **Verify**: Cart page shows all items
 - [ ] **Verify**: Clicking checkout triggers Gokwik
 
@@ -211,7 +211,7 @@ When you test now:
 
 1. **Add items** (frame + lens) ✅
 2. **Click checkout button** ✅
-3. **Browser opens**: `https://www.eyejack.in/cart` ✅
+3. **Browser opens**: `https://www.goeye.in/cart` ✅
 4. **See your cart page** with all items ✅
 5. **Click "Checkout"** on cart page ✅
 6. **Gokwik intercepts** and redirects ✅
@@ -223,7 +223,7 @@ When you test now:
 
 | Before | After |
 |--------|-------|
-| ❌ `checkout.shopify.com` | ✅ `www.eyejack.in/cart` |
+| ❌ `checkout.shopify.com` | ✅ `www.goeye.in/cart` |
 | ❌ Shopify's checkout | ✅ Your store's cart page |
 | ❌ No Gokwik | ✅ Gokwik loads |
 | ❌ Plain checkout | ✅ Enhanced Gokwik checkout |
@@ -252,7 +252,7 @@ Gokwik uses **JavaScript injection** on your store's pages:
    - Creates a Gokwik checkout session
    - Redirects to Gokwik's checkout page
 
-4. **This ONLY works on your store's domain** (`www.eyejack.in`)
+4. **This ONLY works on your store's domain** (`www.goeye.in`)
    - Doesn't work on `checkout.shopify.com`
    - That's why we redirect to your cart page first!
 

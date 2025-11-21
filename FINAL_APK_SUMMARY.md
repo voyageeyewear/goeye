@@ -2,7 +2,7 @@
 
 ## 📱 APK Details
 
-**File Name**: `Eyejack-FINAL-BlackHeader-NoText.apk`  
+**File Name**: `Goeye-FINAL-BlackHeader-NoText.apk`  
 **Size**: 50 MB  
 **Build Date**: October 30, 2025, 1:46 PM  
 **Build Type**: Release (Production-ready)
@@ -41,8 +41,8 @@ Your hero slider is showing **images** instead of **videos** because the Shopify
 ```json
 {
   "type": "image",  // ❌ Should be "video" for MP4 files
-  "desktopImage": "https://eyejack.in/cdn/shop/files/...",
-  "mobileImage": "https://eyejack.in/cdn/shop/files/..."
+  "desktopImage": "https://goeye.in/cdn/shop/files/...",
+  "mobileImage": "https://goeye.in/cdn/shop/files/..."
 }
 ```
 
@@ -50,8 +50,8 @@ Your hero slider is showing **images** instead of **videos** because the Shopify
 ```json
 {
   "type": "video",  // ✅ For MP4 files
-  "videoUrl": "https://eyejack.in/cdn/shop/files/your-video.mp4",
-  "posterImage": "https://eyejack.in/cdn/shop/files/thumbnail.jpg"
+  "videoUrl": "https://goeye.in/cdn/shop/files/your-video.mp4",
+  "posterImage": "https://goeye.in/cdn/shop/files/thumbnail.jpg"
 }
 ```
 
@@ -72,12 +72,12 @@ You need to update the Shopify theme settings to configure video slides:
 
 ### Uninstall Old Version First:
 ```bash
-adb uninstall com.eyejack.eyejack_shopify_app
+adb uninstall com.goeye.goeye_shopify_app
 ```
 
 ### Install New APK:
 ```bash
-adb install "/Users/ssenterprises/Eyejack Native Application/Eyejack-FINAL-BlackHeader-NoText.apk"
+adb install "/Users/ssenterprises/Goeye Native Application/Goeye-FINAL-BlackHeader-NoText.apk"
 ```
 
 ## ✨ What You'll See Now

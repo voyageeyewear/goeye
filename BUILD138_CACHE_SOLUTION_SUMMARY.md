@@ -24,7 +24,7 @@ flutter build apk --release
 ```
 
 ### 2. **Created Fresh APK**
-- **Filename:** `Eyejack-v12.10.0-Build138-FRESH-20251113_165946.apk`
+- **Filename:** `Goeye-v12.10.0-Build138-FRESH-20251113_165946.apk`
 - **Size:** 54.7 MB
 - **Build Time:** 5:50 minutes
 - **Status:** ✅ Successfully built and installed on emulator
@@ -32,19 +32,19 @@ flutter build apk --release
 ### 3. **Installed with Complete Cache Clear**
 ```bash
 # Force stopped app
-adb shell am force-stop com.eyejack.shopify_app
+adb shell am force-stop com.goeye.shopify_app
 
 # Cleared app data
-adb shell pm clear com.eyejack.shopify_app
+adb shell pm clear com.goeye.shopify_app
 
 # Uninstalled old version
-adb uninstall com.eyejack.shopify_app
+adb uninstall com.goeye.shopify_app
 
 # Installed fresh APK
-adb install Eyejack-v12.10.0-Build138-FRESH-20251113_165946.apk
+adb install Goeye-v12.10.0-Build138-FRESH-20251113_165946.apk
 
 # Cleared cache again after install
-adb shell pm clear com.eyejack.shopify_app
+adb shell pm clear com.goeye.shopify_app
 ```
 
 ---
@@ -88,7 +88,7 @@ Located **above "Product Specifications"** heading
 ## 📱 Test It Now!
 
 ### On Emulator (Currently Running):
-1. Open the Eyejack app
+1. Open the Goeye app
 2. Navigate to any product page
 3. **Check bottom:** See new professional sticky cart
 4. **Scroll down:** After videos, see "Product Highlights" collage
@@ -127,20 +127,20 @@ Located **above "Product Specifications"** heading
 
 ### Quick Fix (30 seconds):
 ```bash
-cd "/Users/ssenterprises/Eyejack Native Application"
+cd "/Users/ssenterprises/Goeye Native Application"
 ./INSTALL_FRESH_BUILD138.sh
 ```
 
 ### Manual Fix:
 ```bash
 # On device, clear app data manually:
-# Settings → Apps → Eyejack → Storage → Clear Data
+# Settings → Apps → Goeye → Storage → Clear Data
 
 # Or via ADB:
-adb shell pm clear com.eyejack.shopify_app
+adb shell pm clear com.goeye.shopify_app
 
 # Then restart app
-adb shell am start -n com.eyejack.shopify_app/.MainActivity
+adb shell am start -n com.goeye.shopify_app/.MainActivity
 ```
 
 ---
@@ -162,9 +162,9 @@ adb install -r app.apk
 rm -rf ~/.gradle
 
 # Always uninstall first, then install fresh
-adb uninstall com.eyejack.shopify_app
+adb uninstall com.goeye.shopify_app
 adb install app.apk
-adb shell pm clear com.eyejack.shopify_app
+adb shell pm clear com.goeye.shopify_app
 ```
 
 ---
@@ -203,7 +203,7 @@ adb shell pm clear com.eyejack.shopify_app
 ### For Next Builds:
 ```bash
 # Simple clean (usually enough)
-cd eyejack_flutter_app
+cd goeye_flutter_app
 flutter clean
 flutter build apk --release
 
@@ -214,7 +214,7 @@ flutter build apk --release
 ### Pro Tip:
 **Always run `pm clear` after installing APK** to ensure fresh start:
 ```bash
-adb install app.apk && adb shell pm clear com.eyejack.shopify_app
+adb install app.apk && adb shell pm clear com.goeye.shopify_app
 ```
 
 ---
@@ -223,22 +223,22 @@ adb install app.apk && adb shell pm clear com.eyejack.shopify_app
 
 ```bash
 # Rebuild fresh APK
-cd eyejack_flutter_app && flutter clean && flutter build apk --release
+cd goeye_flutter_app && flutter clean && flutter build apk --release
 
 # Install with cache clear
 cd .. && ./INSTALL_FRESH_BUILD138.sh
 
 # Manual cache clear only
-adb shell pm clear com.eyejack.shopify_app
+adb shell pm clear com.goeye.shopify_app
 
 # Check installed version
-adb shell dumpsys package com.eyejack.shopify_app | grep versionName
+adb shell dumpsys package com.goeye.shopify_app | grep versionName
 
 # Force stop app
-adb shell am force-stop com.eyejack.shopify_app
+adb shell am force-stop com.goeye.shopify_app
 
 # Start app
-adb shell am start -n com.eyejack.shopify_app/.MainActivity
+adb shell am start -n com.goeye.shopify_app/.MainActivity
 ```
 
 ---

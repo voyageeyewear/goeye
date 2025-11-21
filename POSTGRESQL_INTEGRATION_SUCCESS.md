@@ -286,7 +286,7 @@ curl -X PUT https://motivated-intuition-production.up.railway.app/api/admin/sect
           "name": "Sunglasses - TEST",
           "handle": "sunglasses",
           "type": "image",
-          "image": "https://eyejack.in/cdn/shop/files/female.png?v=1761800301&width=200"
+          "image": "https://goeye.in/cdn/shop/files/female.png?v=1761800301&width=200"
         }
       ]
     }

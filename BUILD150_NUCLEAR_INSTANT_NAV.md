@@ -114,7 +114,7 @@ onTap: () async {
 
 ## 📱 APK Details
 
-**File**: `Eyejack-v12.21.0-Build150-NUCLEAR-INSTANT-NAV.apk`
+**File**: `Goeye-v12.21.0-Build150-NUCLEAR-INSTANT-NAV.apk`
 - **Size**: 54.7MB
 - **Build**: 150
 - **Version**: 12.21.0
@@ -210,7 +210,7 @@ Normal rebuilds can keep cached:
 
 Run this to confirm Build 150:
 ```bash
-adb shell dumpsys package com.eyejack.app | grep version
+adb shell dumpsys package com.goeye.app | grep version
 ```
 
 Expected output:

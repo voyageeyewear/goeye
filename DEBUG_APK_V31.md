@@ -22,7 +22,7 @@ This APK includes **advanced debugging** to help us identify why images aren't s
 
 ## 📦 Installation
 
-**File:** `Eyejack-v3.0.0-Build31-DEBUG-LOGS.apk`  
+**File:** `Goeye-v3.0.0-Build31-DEBUG-LOGS.apk`  
 **Version:** 3.0.0 Build 31  
 **Size:** 52.9 MB
 

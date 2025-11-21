@@ -8,7 +8,7 @@
 
 2. **Navigate to the dashboard folder:**
    ```bash
-   cd "/Users/ssenterprises/Eyejack Native Application/admin-dashboard"
+   cd "/Users/ssenterprises/Goeye Native Application/admin-dashboard"
    ```
 
 3. **Start the dashboard:**
@@ -188,7 +188,7 @@ Steps:
 ### Problem: Dashboard won't start
 **Solution:**
 ```bash
-cd "/Users/ssenterprises/Eyejack Native Application/admin-dashboard"
+cd "/Users/ssenterprises/Goeye Native Application/admin-dashboard"
 npm install
 npm run dev
 ```

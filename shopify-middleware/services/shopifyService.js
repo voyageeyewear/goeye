@@ -23,43 +23,105 @@ const adminClient = axios.create({
   },
 });
 
-// Fetch theme sections (matching eyejack.in homepage)
+// Helper function to parse theme section from Shopify Theme API
+const parseThemeSection = (sectionId, sectionContent) => {
+  try {
+    // Try to parse as JSON first (for JSON sections)
+    if (sectionContent.trim().startsWith('{')) {
+      const sectionJson = JSON.parse(sectionContent);
+      return {
+        type: sectionJson.type || sectionId.replace(/[-_]/g, '_'),
+        settings: sectionJson.settings || sectionJson
+      };
+    }
+    
+    // If it's a Liquid file, extract settings from schema
+    // This is a simplified parser - you may need to enhance based on your theme structure
+    return null;
+  } catch (error) {
+    console.warn(`Error parsing section ${sectionId}:`, error.message);
+    return null;
+  }
+};
+
+// Fetch theme sections from Shopify Theme API (goeye.in)
 exports.fetchThemeSections = async () => {
   try {
-    // Fetch data needed for homepage sections
-    const [collections, allProducts, shopInfo] = await Promise.all([
-      this.fetchCollections(),
-      this.fetchProducts(50),
-      this.fetchShopInfo()
-    ]);
+    // First, get the active theme ID
+    const themesResponse = await adminClient.get('/themes.json');
+    const themes = themesResponse.data.themes;
+    const activeTheme = themes.find(theme => theme.role === 'main');
+    
+    if (!activeTheme) {
+      throw new Error('No active theme found');
+    }
 
-    // Filter products by collection for specific sections
-    const diwaliProducts = allProducts.slice(0, 20); // Featured products for Diwali section
+    const themeId = activeTheme.id;
+    console.log(`📦 Fetching theme sections from active theme: ${themeId}`);
 
-    // Create homepage layout matching eyejack.in (New BOGO Theme)
-    // Order: Announcement bars → Header (Flutter AppBar) → USP Strip → Instagram → Slideshow → Rest
-    const sections = [
-      {
-        id: 'announcement-bars',
-        type: 'announcement_bars',
-        settings: {
-          bars: [
-            { text: 'BUY 2 AT FLAT 1299/-', backgroundColor: '#52b1e2', textColor: '#FFFFFF' },
-            { text: 'BUY 2 AT FLAT 999/-', backgroundColor: '#52b1e2', textColor: '#FFFFFF' },
-            { text: 'BUY 2 AT FLAT 799/-', backgroundColor: '#52b1e2', textColor: '#FFFFFF' }
-          ]
+    // Fetch the index.json template which contains section order and settings
+    let sections = [];
+    
+    try {
+      const indexResponse = await adminClient.get(`/themes/${themeId}/assets.json`, {
+        params: {
+          'asset[key]': 'templates/index.json'
         }
-      },
-      {
-        id: 'app-header',
-        type: 'app_header',
-        settings: {
-          logo: 'https://eyejack.in/cdn/shop/files/colored-logo.png',
-          storeName: 'Eyejack Eyewear',
-          showSearch: true,
-          showCart: true
+      });
+
+      if (indexResponse.data.asset && indexResponse.data.asset.value) {
+        const indexTemplate = JSON.parse(indexResponse.data.asset.value);
+        
+        // Get section order and settings from index template
+        const sectionOrder = indexTemplate.sections_order || [];
+        const sectionsSettings = indexTemplate.sections || {};
+        
+        // Build sections array from theme template
+        for (const sectionId of sectionOrder) {
+          const sectionData = sectionsSettings[sectionId];
+          if (sectionData) {
+            sections.push({
+              id: sectionId,
+              type: sectionData.type || sectionId.replace(/[-_]/g, '_'),
+              settings: sectionData.settings || {}
+            });
+          }
         }
-      },
+      }
+    } catch (themeError) {
+      console.warn('⚠️ Could not fetch from theme API, using fallback:', themeError.message);
+    }
+
+    // If no sections from theme, fall back to fetching collections and products
+    if (sections.length === 0) {
+      console.log('⚠️ No sections found in theme, using fallback...');
+      const [collections, allProducts, shopInfo] = await Promise.all([
+        this.fetchCollections(),
+        this.fetchProducts(50),
+        this.fetchShopInfo()
+      ]);
+
+      // Create basic homepage layout matching goeye.in structure
+      sections = [
+        {
+          id: 'announcement-bars',
+          type: 'announcement_bars',
+          settings: {
+            bars: [
+              { text: 'Welcome to Goeye', backgroundColor: '#52b1e2', textColor: '#FFFFFF' }
+            ]
+          }
+        },
+        {
+          id: 'app-header',
+          type: 'app_header',
+          settings: {
+            logo: 'https://goeye.in/cdn/shop/files/colored-logo.png',
+            storeName: 'Goeye Eyewear',
+            showSearch: true,
+            showCart: true
+          }
+        },
       {
         id: 'usp-moving-strip',
         type: 'moving_usp_strip',
@@ -75,7 +137,7 @@ exports.fetchThemeSections = async () => {
           ]
         }
       },
-      // NEW: 5 Circular Categories Section (from www.eyejack.in)
+      // NEW: 5 Circular Categories Section (from www.goeye.in)
       {
         id: 'circular-categories',
         type: 'circular_categories',
@@ -85,33 +147,33 @@ exports.fetchThemeSections = async () => {
               name: 'Sunglasses',
               handle: 'sunglasses',
               type: 'image',
-              image: 'https://eyejack.in/cdn/shop/files/female.png?v=1761800301&width=200'
+              image: 'https://goeye.in/cdn/shop/files/female.png?v=1761800301&width=200'
             },
             {
               name: 'Eyeglasses',
               handle: 'eyeglasses',
               type: 'image',
-              image: 'https://eyejack.in/cdn/shop/files/male-04.png?v=1761800323&width=200'
+              image: 'https://goeye.in/cdn/shop/files/male-04.png?v=1761800323&width=200'
             },
             {
               name: 'New Arrivals',
               handle: 'new-arrivals',
               type: 'video',
-              video: 'https://eyejack.in/cdn/shop/videos/c/vp/4adbfe1a16244dbbb0d89805a901bfdc/4adbfe1a16244dbbb0d89805a901bfdc.HD-1080p-7.2Mbps-61208466.mp4?v=0',
-              image: 'https://eyejack.in/cdn/shop/files/new_arrival-03.png?v=1761800347&width=200'
+              video: 'https://goeye.in/cdn/shop/videos/c/vp/4adbfe1a16244dbbb0d89805a901bfdc/4adbfe1a16244dbbb0d89805a901bfdc.HD-1080p-7.2Mbps-61208466.mp4?v=0',
+              image: 'https://goeye.in/cdn/shop/files/new_arrival-03.png?v=1761800347&width=200'
             },
             {
               name: 'View all',
               handle: 'all',
               type: 'image',
-              image: 'https://eyejack.in/cdn/shop/files/view_all-02.png?v=1761800398&width=200'
+              image: 'https://goeye.in/cdn/shop/files/view_all-02.png?v=1761800398&width=200'
             },
             {
               name: 'BOGO',
               handle: 'bogo-sale',
               type: 'video',
-              video: 'https://eyejack.in/cdn/shop/videos/c/vp/4f471d46b36f41388dad48760935d743/4f471d46b36f41388dad48760935d743.HD-1080p-7.2Mbps-61208515.mp4?v=0',
-              image: 'https://eyejack.in/cdn/shop/files/bogo-01.png?v=1761800260&width=200',
+              video: 'https://goeye.in/cdn/shop/videos/c/vp/4f471d46b36f41388dad48760935d743/4f471d46b36f41388dad48760935d743.HD-1080p-7.2Mbps-61208515.mp4?v=0',
+              image: 'https://goeye.in/cdn/shop/files/bogo-01.png?v=1761800260&width=200',
               badge: 'SALE LIVE'
             }
           ]
@@ -129,10 +191,10 @@ exports.fetchThemeSections = async () => {
               type: 'image',
               heading: '',
               subheading: '',
-              desktopImage: 'https://eyejack.in/cdn/shop/files/diwali_eyejack_copy_2.jpg',
-              mobileImage: 'https://eyejack.in/cdn/shop/files/Artboard_2_copy_4.png',
+              desktopImage: 'https://goeye.in/cdn/shop/files/diwali_goeye_copy_2.jpg',
+              mobileImage: 'https://goeye.in/cdn/shop/files/Artboard_2_copy_4.png',
               ctaText: '',
-              link: 'https://eyejack.in/collections/all'
+              link: 'https://goeye.in/collections/all'
             },
             {
               type: 'video',
@@ -140,7 +202,7 @@ exports.fetchThemeSections = async () => {
               subheading: '',
               videoUrl: 'https://cdn.shopify.com/videos/c/o/v/7efdcf899c844767b8731446460d3bca.mp4',
               ctaText: '',
-              link: 'https://eyejack.in/collections/sunglasses'
+              link: 'https://goeye.in/collections/sunglasses'
             },
             {
               type: 'video',
@@ -148,7 +210,7 @@ exports.fetchThemeSections = async () => {
               subheading: '',
               videoUrl: 'https://cdn.shopify.com/videos/c/o/v/3f15c9a81cd04925874a15cff12c3dc1.mp4',
               ctaText: '',
-              link: 'https://eyejack.in/collections/eyeglasses'
+              link: 'https://goeye.in/collections/eyeglasses'
             }
           ]
         }
@@ -176,25 +238,25 @@ exports.fetchThemeSections = async () => {
               name: 'Men Eyeglasses', 
               label: 'Men', 
               handle: 'eyeglasses',
-              image: 'https://eyejack.in/cdn/shop/files/im-01.jpg?v=1759574084'
+              image: 'https://goeye.in/cdn/shop/files/im-01.jpg?v=1759574084'
             },
             { 
               name: 'Women Eyeglasses', 
               label: 'Women', 
               handle: 'eyeglasses',
-              image: 'https://eyejack.in/cdn/shop/files/im-02.jpg?v=1759574105'
+              image: 'https://goeye.in/cdn/shop/files/im-02.jpg?v=1759574105'
             },
             { 
               name: 'Sale Eyeglasses', 
               label: 'Sale', 
               handle: 'sale',
-              image: 'https://eyejack.in/cdn/shop/files/wolf.webp?v=1759572749'
+              image: 'https://goeye.in/cdn/shop/files/wolf.webp?v=1759572749'
             },
             { 
               name: 'Unisex Eyeglasses', 
               label: 'Unisex', 
               handle: 'eyeglasses',
-              image: 'https://eyejack.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png?v=1759574329'
+              image: 'https://goeye.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png?v=1759574329'
             }
           ]
         }
@@ -209,30 +271,30 @@ exports.fetchThemeSections = async () => {
               name: 'Men Sunglasses', 
               label: 'Men', 
               handle: 'sunglasses',
-              image: 'https://eyejack.in/cdn/shop/files/2502PCL1474-men_3.jpg?v=1748241296'
+              image: 'https://goeye.in/cdn/shop/files/2502PCL1474-men_3.jpg?v=1748241296'
             },
             { 
               name: 'Women Sunglasses', 
               label: 'Women', 
               handle: 'sunglasses',
-              image: 'https://eyejack.in/cdn/shop/files/2502PCL1474-women_2.jpg?v=1748241296'
+              image: 'https://goeye.in/cdn/shop/files/2502PCL1474-women_2.jpg?v=1748241296'
             },
             { 
               name: 'Sale Sunglasses', 
               label: 'Sale', 
               handle: 'sale',
-              image: 'https://eyejack.in/cdn/shop/files/im-07.jpg?v=1759574222'
+              image: 'https://goeye.in/cdn/shop/files/im-07.jpg?v=1759574222'
             },
             { 
               name: 'Unisex Sunglasses', 
               label: 'Unisex', 
               handle: 'sunglasses',
-              image: 'https://eyejack.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png?v=1759574329'
+              image: 'https://goeye.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png?v=1759574329'
             }
           ]
         }
       },
-      // NEW: Video Slider Section (from www.eyejack.in) - positioned after sunglasses
+      // NEW: Video Slider Section (from www.goeye.in) - positioned after sunglasses
       {
         id: 'video-slider',
         type: 'video_slider',
@@ -245,33 +307,33 @@ exports.fetchThemeSections = async () => {
           videos: [
             {
               videoUrl: 'https://cdn.shopify.com/videos/c/o/v/e0e1269320dc42e099e89020cfe0d789.mp4',
-              thumbnail: 'https://eyejack.in/cdn/shop/files/2502PCL1474-women_2.jpg?v=1748241296',
+              thumbnail: 'https://goeye.in/cdn/shop/files/2502PCL1474-women_2.jpg?v=1748241296',
               title: 'Eyewear Collection',
-              link: 'https://eyejack.in/collections/all'
+              link: 'https://goeye.in/collections/all'
             },
             {
               videoUrl: 'https://cdn.shopify.com/videos/c/o/v/6bab26bb066640ee88e75fbdcde5d938.mp4',
-              thumbnail: 'https://eyejack.in/cdn/shop/files/im-02.jpg?v=1759574105',
+              thumbnail: 'https://goeye.in/cdn/shop/files/im-02.jpg?v=1759574105',
               title: 'Featured Styles',
-              link: 'https://eyejack.in/collections/sunglasses'
+              link: 'https://goeye.in/collections/sunglasses'
             },
             {
               videoUrl: 'https://cdn.shopify.com/videos/c/o/v/1e69a10818ff424cace3b25ead46d028.mp4',
-              thumbnail: 'https://eyejack.in/cdn/shop/files/im-01.jpg?v=1759574084',
+              thumbnail: 'https://goeye.in/cdn/shop/files/im-01.jpg?v=1759574084',
               title: 'New Arrivals',
-              link: 'https://eyejack.in/collections/new-arrivals'
+              link: 'https://goeye.in/collections/new-arrivals'
             },
             {
               videoUrl: 'https://cdn.shopify.com/videos/c/o/v/93372000dd3043eebccffffc21930874.mp4',
-              thumbnail: 'https://eyejack.in/cdn/shop/files/wolf.webp?v=1759572749',
+              thumbnail: 'https://goeye.in/cdn/shop/files/wolf.webp?v=1759572749',
               title: 'Premium Collection',
-              link: 'https://eyejack.in/collections/eyeglasses'
+              link: 'https://goeye.in/collections/eyeglasses'
             },
             {
               videoUrl: 'https://cdn.shopify.com/videos/c/o/v/a47919d1f45942d8b0a517811908ae37.mp4',
-              thumbnail: 'https://eyejack.in/cdn/shop/files/im-07.jpg?v=1759574222',
+              thumbnail: 'https://goeye.in/cdn/shop/files/im-07.jpg?v=1759574222',
               title: 'Trending Now',
-              link: 'https://eyejack.in/collections/sale'
+              link: 'https://goeye.in/collections/sale'
             }
           ]
         }
@@ -297,42 +359,42 @@ exports.fetchThemeSections = async () => {
               subtitle: 'Buy 1 Get 1 Free', 
               handle: 'work-essentials',
               backgroundType: 'video',
-              backgroundUrl: 'https://eyejack.in/cdn/shop/videos/c/vp/c0b3c15c6b1c4275b745e3c1c6df6ae2/c0b3c15c6b1c4275b745e3c1c6df6ae2.HD-720p-4.5Mbps-61053410.mp4?v=0'
+              backgroundUrl: 'https://goeye.in/cdn/shop/videos/c/vp/c0b3c15c6b1c4275b745e3c1c6df6ae2/c0b3c15c6b1c4275b745e3c1c6df6ae2.HD-720p-4.5Mbps-61053410.mp4?v=0'
             },
             { 
               name: 'Student Styles', 
               subtitle: 'Buy 1 Get 1 Free', 
               handle: 'student-styles',
               backgroundType: 'video',
-              backgroundUrl: 'https://eyejack.in/cdn/shop/videos/c/vp/c0b3c15c6b1c4275b745e3c1c6df6ae2/c0b3c15c6b1c4275b745e3c1c6df6ae2.HD-720p-4.5Mbps-61053410.mp4?v=0'
+              backgroundUrl: 'https://goeye.in/cdn/shop/videos/c/vp/c0b3c15c6b1c4275b745e3c1c6df6ae2/c0b3c15c6b1c4275b745e3c1c6df6ae2.HD-720p-4.5Mbps-61053410.mp4?v=0'
             },
             { 
               name: 'Premium Collection', 
               subtitle: 'Buy 1 Get 1 Free', 
               handle: 'premium-collection',
               backgroundType: 'image',
-              backgroundUrl: 'https://eyejack.in/cdn/shop/files/homepage-banner-min.jpg?v=1731068527&width=600'
+              backgroundUrl: 'https://goeye.in/cdn/shop/files/homepage-banner-min.jpg?v=1731068527&width=600'
             },
             { 
               name: 'Minimal Classics', 
               subtitle: 'Buy 1 Get 1 Free', 
               handle: 'minimal-classics',
               backgroundType: 'image',
-              backgroundUrl: 'https://eyejack.in/cdn/shop/files/CherryShotAi-gallery-0d197933-ddd5-43db-9c78-54e89e427d3e.png?v=1759579707&width=600'
+              backgroundUrl: 'https://goeye.in/cdn/shop/files/CherryShotAi-gallery-0d197933-ddd5-43db-9c78-54e89e427d3e.png?v=1759579707&width=600'
             },
             { 
               name: 'Fashion Forward', 
               subtitle: 'Buy 1 Get 1 Free', 
               handle: 'fashion-forward',
               backgroundType: 'image',
-              backgroundUrl: 'https://eyejack.in/cdn/shop/files/CherryShotAi-generated-1759579501634.jpg?v=1759579705&width=600'
+              backgroundUrl: 'https://goeye.in/cdn/shop/files/CherryShotAi-generated-1759579501634.jpg?v=1759579705&width=600'
             },
             { 
               name: 'Reading Glasses', 
               subtitle: 'Buy 1 Get 1 Free', 
               handle: 'reading-glasses',
               backgroundType: 'image',
-              backgroundUrl: 'https://eyejack.in/cdn/shop/files/homepage-banner-2-min.jpg?v=1731068527&width=600'
+              backgroundUrl: 'https://goeye.in/cdn/shop/files/homepage-banner-2-min.jpg?v=1731068527&width=600'
             }
           ]
         }
@@ -379,7 +441,7 @@ exports.fetchThemeSections = async () => {
         id: 'homepage-features',
         type: 'homepage_features',
         settings: {
-          title: 'Why Choose Eyejack?',
+          title: 'Why Choose Goeye?',
           subtitle: 'Premium eyewear designed for modern living'
         }
       },
@@ -403,7 +465,7 @@ exports.fetchThemeSections = async () => {
         type: 'homepage_faq',
         settings: {
           title: 'Frequently Asked Questions',
-          subtitle: 'Everything you need to know about Eyejack'
+          subtitle: 'Everything you need to know about Goeye'
         }
       }
     ];

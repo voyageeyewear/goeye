@@ -124,7 +124,7 @@ Failed to load...          [Clear message]
 **Gender Categories Image Source:**
 ```javascript
 // OLD:
-image: 'https://eyejack.in/cdn/shop/files/men-eyeglasses.jpg'
+image: 'https://goeye.in/cdn/shop/files/men-eyeglasses.jpg'
 
 // NEW:
 image: allProducts.find(p => 
@@ -198,11 +198,11 @@ if (_error != null) {
 
 ## 📦 APK Details
 
-**File:** `Eyejack-v2.0.0-Build21-AllFixed.apk`  
+**File:** `Goeye-v2.0.0-Build21-AllFixed.apk`  
 **Version:** 2.0.0 Build 21  
 **Size:** ~53 MB  
 **Built:** October 30, 2025  
-**Location:** `/Users/ssenterprises/Eyejack Native Application/`
+**Location:** `/Users/ssenterprises/Goeye Native Application/`
 
 ---
 
@@ -211,13 +211,13 @@ if (_error != null) {
 ### ⚠️ Complete Uninstall Required!
 
 1. **Uninstall old app:**
-   - Settings → Apps → Eyejack → Force Stop
+   - Settings → Apps → Goeye → Force Stop
    - Clear Data → Clear Cache → Uninstall
    
 2. **Restart phone** (IMPORTANT!)
 
 3. **Install new APK:**
-   - Transfer `Eyejack-v2.0.0-Build21-AllFixed.apk`
+   - Transfer `Goeye-v2.0.0-Build21-AllFixed.apk`
    - Install on device
 
 ---

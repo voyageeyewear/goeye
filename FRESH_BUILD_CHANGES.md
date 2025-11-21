@@ -2,7 +2,7 @@
 
 ## 📱 APK Details
 
-**File Name**: `Eyejack-Clean-Fresh-Build.apk`  
+**File Name**: `Goeye-Clean-Fresh-Build.apk`  
 **Size**: 50 MB  
 **Build Date**: October 30, 2025, 1:37 PM  
 **Build Type**: Release (Optimized & Clean)
@@ -83,16 +83,16 @@ To see the changes, you **MUST** uninstall the old app first:
 
 ```bash
 # Method 1: Via ADB
-adb uninstall com.eyejack.eyejack_shopify_app
+adb uninstall com.goeye.goeye_shopify_app
 
 # Method 2: On Phone
-Settings → Apps → Eyejack Eyewear → Uninstall
+Settings → Apps → Goeye Eyewear → Uninstall
 ```
 
 ### Then Install Fresh APK:
 
 ```bash
-adb install "/Users/ssenterprises/Eyejack Native Application/Eyejack-Clean-Fresh-Build.apk"
+adb install "/Users/ssenterprises/Goeye Native Application/Goeye-Clean-Fresh-Build.apk"
 ```
 
 ## ⚠️ Why You Must Uninstall First
@@ -162,7 +162,7 @@ This is a **completely fresh, clean build** with:
 - ✅ All fixes properly applied
 - ✅ Optimized for production
 
-**Your Eyejack app is now ready with perfect rupee symbol display!** 🎉
+**Your Goeye app is now ready with perfect rupee symbol display!** 🎉
 
 ---
 

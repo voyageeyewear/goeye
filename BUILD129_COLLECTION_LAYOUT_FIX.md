@@ -3,7 +3,7 @@
 **Version:** 12.6.1  
 **Build:** 129  
 **Date:** November 13, 2025  
-**APK:** `Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk`
+**APK:** `Goeye-v12.6.1-Build129-FITS-IN-CARD.apk`
 
 ---
 
@@ -28,8 +28,8 @@
 4. **Border Radius**: Added rounded corners to buttons for modern look
 
 ### Files Modified
-- `eyejack_flutter_app/lib/screens/collection_screen.dart`
-- `eyejack_flutter_app/pubspec.yaml` (version bump)
+- `goeye_flutter_app/lib/screens/collection_screen.dart`
+- `goeye_flutter_app/pubspec.yaml` (version bump)
 
 ---
 
@@ -59,8 +59,8 @@ adb emu kill
 adb wait-for-device
 
 # Install and launch
-adb install -r Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk
-adb shell am start -n com.eyejack.app/.MainActivity
+adb install -r Goeye-v12.6.1-Build129-FITS-IN-CARD.apk
+adb shell am start -n com.goeye.app/.MainActivity
 ```
 
 ### Alternative DNS Fix
@@ -85,7 +85,7 @@ Expected response:
 {
   "status": "OK",
   "message": "Shopify Middleware API is running",
-  "store": "eyejack1907.myshopify.com",
+  "store": "goeyee.myshopify.com",
   "database": "Connected"
 }
 ```
@@ -107,7 +107,7 @@ Both should resolve to IP: `66.33.22.215`
 
 ### Fresh Install
 ```bash
-cd "/Users/ssenterprises/Eyejack Native Application"
+cd "/Users/ssenterprises/Goeye Native Application"
 
 # Kill old emulator
 adb emu kill
@@ -122,15 +122,15 @@ adb emu kill
 sleep 30
 
 # Install
-adb install -r Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk
+adb install -r Goeye-v12.6.1-Build129-FITS-IN-CARD.apk
 
 # Launch
-adb shell am start -n com.eyejack.app/.MainActivity
+adb shell am start -n com.goeye.app/.MainActivity
 ```
 
 ### Update Existing Installation
 ```bash
-adb install -r Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk
+adb install -r Goeye-v12.6.1-Build129-FITS-IN-CARD.apk
 ```
 
 ---
@@ -148,7 +148,7 @@ git push origin main
 
 **Commit:** `a40d014`  
 **Branch:** `main`  
-**Repository:** https://github.com/voyageeyewear/eyejack.git
+**Repository:** https://github.com/voyageeyewear/goeye.git
 
 ---
 
@@ -221,16 +221,16 @@ git push origin main
 - For persistent issues, use `adb root` and set DNS manually
 
 ### App Issues
-- Clear app data: `adb shell pm clear com.eyejack.app`
+- Clear app data: `adb shell pm clear com.goeye.app`
 - Reinstall APK: `adb install -r [APK_FILE]`
-- Check logs: `adb logcat | grep -i eyejack`
+- Check logs: `adb logcat | grep -i goeye`
 
 ---
 
 **Built with ❤️ for EyeJack**
 
 **Backend:** https://motivated-intuition-production.up.railway.app ✅  
-**Store:** www.eyejack.in  
+**Store:** www.goeye.in  
 **Status:** Production Ready  
 **Last Updated:** November 13, 2025
 

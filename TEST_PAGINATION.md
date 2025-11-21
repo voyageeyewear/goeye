@@ -185,7 +185,7 @@ Pagination works if:
 
 ### Verify Build
 ```bash
-adb shell dumpsys package com.eyejack.app | grep version
+adb shell dumpsys package com.goeye.app | grep version
 ```
 Should show: `versionCode=152`
 
@@ -196,7 +196,7 @@ adb logcat -d | grep "📦 Loaded page"
 
 ### Restart App
 ```bash
-adb shell monkey -p com.eyejack.app -c android.intent.category.LAUNCHER 1
+adb shell monkey -p com.goeye.app -c android.intent.category.LAUNCHER 1
 ```
 
 ---

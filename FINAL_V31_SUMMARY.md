@@ -31,7 +31,7 @@ Android is being extremely stubborn about clearing the cache.
 
 I've created a **NEW APK with CACHE-BUSTING**:
 
-**File:** `Eyejack-v3.0.0-Build31-DEBUG-LOGS.apk`
+**File:** `Goeye-v3.0.0-Build31-DEBUG-LOGS.apk`
 
 ### What's Fixed:
 
@@ -47,7 +47,7 @@ I've created a **NEW APK with CACHE-BUSTING**:
 
 ### Step 1: Nuclear Uninstall
 ```
-Settings → Apps → Eyejack
+Settings → Apps → Goeye
 ├─ Force Stop
 ├─ Storage → Clear Data (ALL DATA!)
 ├─ Storage → Clear Cache
@@ -68,7 +68,7 @@ Wait 1 full minute after restart
 
 ### Step 4: Install Fresh APK
 ```
-Transfer: Eyejack-v3.0.0-Build31-DEBUG-LOGS.apk
+Transfer: Goeye-v3.0.0-Build31-DEBUG-LOGS.apk
 Install it
 Open app
 Wait 10 seconds
@@ -143,7 +143,7 @@ But the debug logs will tell us!
 
 ## 📦 Files Ready
 
-1. **`Eyejack-v3.0.0-Build31-DEBUG-LOGS.apk`** - The APK to install
+1. **`Goeye-v3.0.0-Build31-DEBUG-LOGS.apk`** - The APK to install
 2. **`DEBUG_APK_V31.md`** - Detailed debug instructions
 3. **`FINAL_V31_SUMMARY.md`** - This summary
 

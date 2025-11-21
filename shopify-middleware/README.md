@@ -1,6 +1,6 @@
 # Shopify Middleware API
 
-Backend API service that connects the EyeJack Flutter mobile app to the Shopify store, providing optimized data and theme section management.
+Backend API service that connects the Goeye Flutter mobile app to the Shopify store, providing optimized data and theme section management.
 
 ## 🎯 Overview
 
@@ -22,7 +22,7 @@ This Node.js/Express middleware serves as the intermediary between the Flutter m
 - ✅ **Railway Deployed**: Production backend updated
 
 ### Core Features
-- ✅ **Theme Sections**: Dynamic homepage layout matching eyejack.in
+- ✅ **Theme Sections**: Dynamic homepage layout matching goeye.in
 - ✅ **Homepage Sections**: 
   - Announcement bars
   - Moving USP strip
@@ -137,7 +137,7 @@ Returns homepage layout with sections (in order):
               "name": "Men Eyeglasses",
               "label": "Men",
               "handle": "eyeglasses",
-              "image": "https://eyejack.in/cdn/shop/files/im-01.jpg?v=1759574084"
+              "image": "https://goeye.in/cdn/shop/files/im-01.jpg?v=1759574084"
             }
           ]
         }
@@ -322,8 +322,8 @@ GET /api/shopify/search?q=sunglasses
                   ▼
 ┌─────────────────────────────────────────┐
 │       Shopify Store                     │
-│       eyejack1907.myshopify.com         │
-│       (www.eyejack.in)                  │
+│       goeyee.myshopify.com         │
+│       (www.goeye.in)                  │
 └─────────────────────────────────────────┘
 ```
 
@@ -350,7 +350,7 @@ shopify-middleware/
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `SHOPIFY_STORE_DOMAIN` | Shopify store domain | `eyejack1907.myshopify.com` |
+| `SHOPIFY_STORE_DOMAIN` | Shopify store domain | `goeyee.myshopify.com` |
 | `SHOPIFY_ADMIN_ACCESS_TOKEN` | Admin API access token | `shpat_...` |
 | `SHOPIFY_STOREFRONT_ACCESS_TOKEN` | Storefront API token | `0032c...` |
 | `SHOPIFY_API_VERSION` | API version | `2025-01` |
@@ -436,7 +436,7 @@ Set in Railway dashboard under "Variables" tab.
 
 #### Heroku
 ```bash
-heroku create eyejack-middleware
+heroku create goeye-middleware
 heroku config:set SHOPIFY_STORE_DOMAIN=...
 heroku config:set SHOPIFY_STOREFRONT_ACCESS_TOKEN=...
 git push heroku main
@@ -510,7 +510,7 @@ curl https://motivated-intuition-production.up.railway.app/health
 {
   "status": "OK",
   "message": "Shopify Middleware API is running",
-  "store": "eyejack1907.myshopify.com",
+  "store": "goeyee.myshopify.com",
   "database": "Connected"
 }
 ```
@@ -536,7 +536,7 @@ Proprietary and confidential.
 ---
 
 **Production URL**: https://motivated-intuition-production.up.railway.app  
-**Store**: eyejack1907.myshopify.com (www.eyejack.in)  
+**Store**: goeyee.myshopify.com (www.goeye.in)  
 **API Version**: 2025-01  
 **Status**: ✅ **LIVE & OPERATIONAL**  
 **Last Updated**: November 13, 2025

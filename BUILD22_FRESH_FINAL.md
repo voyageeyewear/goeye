@@ -8,11 +8,11 @@
 
 ## 📦 APK Details
 
-**File:** `Eyejack-v2.0.0-Build22-FRESH-FINAL.apk`  
+**File:** `Goeye-v2.0.0-Build22-FRESH-FINAL.apk`  
 **Version:** 2.0.0 Build 22  
 **Size:** 52.8 MB  
 **Built:** October 30, 2025 @ 4:00 PM  
-**Location:** `/Users/ssenterprises/Eyejack Native Application/`
+**Location:** `/Users/ssenterprises/Goeye Native Application/`
 
 ---
 
@@ -49,7 +49,7 @@
 - Matches live website design
 
 ### 7. **Section Order** ✅
-- Correct order matching www.eyejack.in:
+- Correct order matching www.goeye.in:
   1. Announcement Bars (blue)
   2. Header (logo centered)
   3. Moving USP Strip
@@ -69,7 +69,7 @@
 ### Step 1: Completely Uninstall Old App
 
 1. **Open Settings** on your Android phone
-2. **Go to:** Apps → Eyejack Eyewear
+2. **Go to:** Apps → Goeye Eyewear
 3. **Force Stop** the app
 4. **Clear Data:**
    - Tap Storage
@@ -91,7 +91,7 @@
 ### Step 3: Install Fresh APK
 
 1. **Transfer APK to phone:**
-   - File name: `Eyejack-v2.0.0-Build22-FRESH-FINAL.apk`
+   - File name: `Goeye-v2.0.0-Build22-FRESH-FINAL.apk`
    - Via USB, Google Drive, Email, or Nearby Share
 
 2. **Locate APK on phone:**
@@ -141,7 +141,7 @@
 ```
 ┌──────────────────────────────────┐
 │  Follow Us on Instagram          │
-│  📷 @eyejack.in                  │
+│  📷 @goeye.in                  │
 ├──────────────────────────────────┤
 │ ○ ○ ○ ○ ○ ○  (scroll →)        │
 │ Story bubbles with gradient      │
@@ -182,14 +182,14 @@
 On your computer, the terminal should show:
 ```
 🚀 Shopify Middleware API running on http://0.0.0.0:3000
-📦 Store: eyejack1907.myshopify.com
+📦 Store: goeyee.myshopify.com
 🌐 Environment: undefined
 ```
 
 ### If Backend is Not Running:
 
 ```bash
-cd "/Users/ssenterprises/Eyejack Native Application/shopify-middleware"
+cd "/Users/ssenterprises/Goeye Native Application/shopify-middleware"
 npm start
 ```
 
@@ -205,7 +205,7 @@ npm start
 
 The app should connect to your computer's IP address.
 
-**Check file:** `eyejack_flutter_app/lib/config/api_config.dart`
+**Check file:** `goeye_flutter_app/lib/config/api_config.dart`
 
 Should look like:
 ```dart
@@ -316,7 +316,7 @@ After fresh install, verify:
 
 **This is your final, production-ready APK!**
 
-**File:** `Eyejack-v2.0.0-Build22-FRESH-FINAL.apk`  
+**File:** `Goeye-v2.0.0-Build22-FRESH-FINAL.apk`  
 **Status:** ✅ Ready for Installation  
 **All Features:** ✅ Working
 

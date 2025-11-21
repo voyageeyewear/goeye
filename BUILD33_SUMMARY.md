@@ -8,7 +8,7 @@
 
 ## 📦 APK Details
 
-**File:** `Eyejack-v3.0.0-Build33-PrescriptionOptions.apk`  
+**File:** `Goeye-v3.0.0-Build33-PrescriptionOptions.apk`  
 **Version:** 3.0.0 Build 33  
 **Size:** 52.9 MB  
 **Built:** November 3, 2025  
@@ -110,7 +110,7 @@ Users now see **3 options** when they reach Step 4:
 ```json
 {
   "4. Prescription Type": "upload",
-  "Prescription File": "https://eyejack.in/cdn/shop/files/prescription.pdf",
+  "Prescription File": "https://goeye.in/cdn/shop/files/prescription.pdf",
   "File Name": "prescription.pdf"
 }
 ```
@@ -144,7 +144,7 @@ Users now see **3 options** when they reach Step 4:
 
 1. **Install APK:**
    ```bash
-   adb install Eyejack-v3.0.0-Build33-PrescriptionOptions.apk
+   adb install Goeye-v3.0.0-Build33-PrescriptionOptions.apk
    ```
 
 2. **Navigate to Lens Selector:**
@@ -241,7 +241,7 @@ Step 4: Add Your Prescription
 
 ### Fresh Install:
 1. Transfer APK to phone
-2. Install `Eyejack-v3.0.0-Build33-PrescriptionOptions.apk`
+2. Install `Goeye-v3.0.0-Build33-PrescriptionOptions.apk`
 3. Open app
 4. Test lens selector
 

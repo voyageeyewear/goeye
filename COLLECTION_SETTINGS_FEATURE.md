@@ -101,7 +101,7 @@ The Collection Page Settings feature allows you to customize the appearance of y
 ### Mobile App (Flutter)
 
 8. **Settings Model**: `collection_settings_model.dart`
-   - Location: `eyejack_flutter_app/lib/models/`
+   - Location: `goeye_flutter_app/lib/models/`
    - Parses JSON from API
 
 9. **API Service**: Updated `api_service.dart`
@@ -198,7 +198,7 @@ Dashboard will open at: http://localhost:5173
 
 ### Option 1: Using Provider (Recommended)
 
-Create a provider in `eyejack_flutter_app/lib/providers/`:
+Create a provider in `goeye_flutter_app/lib/providers/`:
 
 ```dart
 // collection_settings_provider.dart

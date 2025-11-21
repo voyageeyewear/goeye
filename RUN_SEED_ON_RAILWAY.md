@@ -15,7 +15,7 @@ npm i -g @railway/cli
 railway login
 
 # 3. Link to your project
-cd "/Users/ssenterprises/Eyejack Native Application/shopify-middleware"
+cd "/Users/ssenterprises/Goeye Native Application/shopify-middleware"
 railway link
 
 # 4. Select your project from list
@@ -75,7 +75,7 @@ CREATE TABLE app_theme (
 ### Option 3: One-Line Command
 
 ```bash
-cd "/Users/ssenterprises/Eyejack Native Application/shopify-middleware" && railway run node scripts/seedDatabase.js
+cd "/Users/ssenterprises/Goeye Native Application/shopify-middleware" && railway run node scripts/seedDatabase.js
 ```
 
 ---

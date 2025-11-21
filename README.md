@@ -1,10 +1,10 @@
-# EyeJack Native Application
+# Goeye Native Application
 
-A complete Flutter-based e-commerce mobile application for EyeJack eyewear store with **PostgreSQL-powered dynamic content management** and a **professional admin dashboard** for real-time app content updates without requiring app rebuilds.
+A complete Flutter-based e-commerce mobile application for Goeye eyewear store with **PostgreSQL-powered dynamic content management** and a **professional admin dashboard** for real-time app content updates without requiring app rebuilds.
 
 ## 🎯 Project Overview
 
-EyeJack Native Application is a full-featured mobile e-commerce app that replicates the functionality of the live EyeJack Shopify store (www.eyejack.in) with enhanced mobile-first user experience. The app now features a **PostgreSQL backend** and an **elegant admin dashboard** that allows content management without code changes or app rebuilds.
+Goeye Native Application is a full-featured mobile e-commerce app that replicates the functionality of the live Goeye Shopify store (www.goeye.in) with enhanced mobile-first user experience. The app now features a **PostgreSQL backend** and an **elegant admin dashboard** that allows content management without code changes or app rebuilds.
 
 ## 🎉 Milestones Achieved
 
@@ -26,7 +26,7 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 
 **Version:** 12.24.0 (Build 156) - **GoKwik Checkout SDK Integration + iOS App Store Ready**  
 **Release Date:** January 2025  
-**Android APK:** `Eyejack-v12.24.0-Build156-ALL-SCREENS-CHECKOUT.apk`  
+**Android APK:** `Goeye-v12.24.0-Build156-ALL-SCREENS-CHECKOUT.apk`  
 **iOS Status:** ✅ Ready for App Store submission
 
 ### 🏷️ What's New in v12.24.0 - **GoKwik Checkout SDK Integration + iOS App Store Ready**
@@ -110,7 +110,7 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 - ✅ **Dual Action Buttons**: "Add To Cart" (black) + "Select Lens" (green)
 - ✅ **Modern Product Page**: FireLens-inspired design with clean layouts
 - ✅ **Homepage Sections**: 4 beautiful sections at bottom (Features, Stats, Video, FAQ)
-- ✅ **Centered Logo**: Eyejack logo centered in header
+- ✅ **Centered Logo**: Goeye logo centered in header
 - ✅ **Announcement Bars**: Unified blue color (#52b1e2) with smaller height (32px)
 - ✅ **Moving USP Strip**: Scrolling trust badges (COD, Easy EMI, Easy Return, Support)
 - ✅ **Gender Categories**: Image-based category cards for Men/Women/Sale/Unisex
@@ -123,7 +123,7 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 - ✅ **4-Step Lens Selector**: Intuitive lens customization wizard with modern UI
   - Step 1: Lens Type (Single Vision / Zero Power / Frame Only)
   - Step 2: Power Type (Anti-glare / Blue Block / Colour Lenses)
-  - Step 3: **Real Lens Products** from Shopify (filtered by type, same as www.eyejack.in)
+  - Step 3: **Real Lens Products** from Shopify (filtered by type, same as www.goeye.in)
   - Step 4: Prescription Entry (Upload / Manual / Email Later)
 - ✅ **Enhanced Step Indicators**: Circular badges with connecting lines and active shadows
 - ✅ **Modern Header**: Large title, step counter, styled close button
@@ -190,7 +190,7 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
 - **Production Backend**: https://motivated-intuition-production.up.railway.app
 - **Database**: PostgreSQL on Railway (crossover.proxy.rlwy.net:31441)
 - **Admin Dashboard**: Local (http://localhost:5173)
-- **Shopify Store**: eyejack1907.myshopify.com (www.eyejack.in)
+- **Shopify Store**: goeyee.myshopify.com (www.goeye.in)
 - **CDN**: Shopify CDN for all images
 - **API Version**: 2025-01
 
@@ -282,8 +282,8 @@ EyeJack Native Application is a full-featured mobile e-commerce app that replica
          ▼
 ┌─────────────────────────────────────────┐
 │       Shopify Store Backend             │
-│       (eyejack1907.myshopify.com)       │
-│       www.eyejack.in (Live Store)       │
+│       (goeyee.myshopify.com)       │
+│       www.goeye.in (Live Store)       │
 └─────────────────────────────────────────┘
 ```
 
@@ -310,8 +310,8 @@ Flutter App → Railway API → Shopify API → Products → User
 ## 📂 Project Structure
 
 ```
-Eyejack Native Application/
-├── eyejack_flutter_app/           # Flutter mobile application
+Goeye Native Application/
+├── goeye_flutter_app/           # Flutter mobile application
 │   ├── lib/
 │   │   ├── config/
 │   │   │   └── api_config.dart    # Railway production URL
@@ -412,8 +412,8 @@ Eyejack Native Application/
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/voyageeyewear/eyejack.git
-cd "Eyejack Native Application"
+git clone https://github.com/voyageeyewear/goeye.git
+cd "Goeye Native Application"
 ```
 
 ### 2. Setup Middleware (Node.js Backend)
@@ -428,7 +428,7 @@ npm install
 Create `.env` file:
 
 ```env
-SHOPIFY_STORE_DOMAIN=eyejack1907.myshopify.com
+SHOPIFY_STORE_DOMAIN=goeyee.myshopify.com
 SHOPIFY_ADMIN_ACCESS_TOKEN=shpat_xxxxxxxxxxxxxxxxxxxxx
 SHOPIFY_STOREFRONT_ACCESS_TOKEN=xxxxxxxxxxxxxxxxxxxxxxx
 SHOPIFY_API_VERSION=2025-01
@@ -519,7 +519,7 @@ Dashboard will be available at: **http://localhost:5173**
 ### 4. Setup Flutter App
 
 ```bash
-cd eyejack_flutter_app
+cd goeye_flutter_app
 flutter pub get
 ```
 
@@ -576,15 +576,15 @@ The app displays sections in this specific order:
 4. **Hero Slider** - Videos and images (full width, no cropping)
 5. **Category Grid** - 4 quick category boxes
 6. **Eyeglasses Section** - Gender categories with CDN images:
-   - Men: `https://eyejack.in/cdn/shop/files/im-01.jpg`
-   - Women: `https://eyejack.in/cdn/shop/files/im-02.jpg`
-   - Sale: `https://eyejack.in/cdn/shop/files/wolf.webp`
-   - Unisex: `https://eyejack.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png`
+   - Men: `https://goeye.in/cdn/shop/files/im-01.jpg`
+   - Women: `https://goeye.in/cdn/shop/files/im-02.jpg`
+   - Sale: `https://goeye.in/cdn/shop/files/wolf.webp`
+   - Unisex: `https://goeye.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png`
 7. **Sunglasses Section** - Gender categories with CDN images:
-   - Men: `https://eyejack.in/cdn/shop/files/2502PCL1474-men_3.jpg`
-   - Women: `https://eyejack.in/cdn/shop/files/2502PCL1474-women_2.jpg`
-   - Sale: `https://eyejack.in/cdn/shop/files/im-07.jpg`
-   - Unisex: `https://eyejack.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png`
+   - Men: `https://goeye.in/cdn/shop/files/2502PCL1474-men_3.jpg`
+   - Women: `https://goeye.in/cdn/shop/files/2502PCL1474-women_2.jpg`
+   - Sale: `https://goeye.in/cdn/shop/files/im-07.jpg`
+   - Unisex: `https://goeye.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png`
 8. **Diwali Collection** - Featured products
 9. **Exclusive Eyewear** - Collection cards
 10. **Offers Section** - Promotional offers
@@ -600,7 +600,7 @@ Required in `android/app/src/main/AndroidManifest.xml`:
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 <application
-    android:label="Eyejack"
+    android:label="Goeye"
     android:usesCleartextTraffic="true"
     ...>
 ```
@@ -755,8 +755,8 @@ adb emu kill
 
 # Wait for boot, then install APK
 adb wait-for-device
-adb install -r Eyejack-v12.8.3-Build136-TAG-BASED-SPECS-FINAL.apk
-adb shell am start -n com.eyejack.app/.MainActivity
+adb install -r Goeye-v12.8.3-Build136-TAG-BASED-SPECS-FINAL.apk
+adb shell am start -n com.goeye.app/.MainActivity
 ```
 
 **Alternative**: Use `adb root` then set DNS manually
@@ -767,7 +767,7 @@ adb shell setprop net.dns2 8.8.4.4
 ```
 
 ### App Shows Old Data
-**Solution**: Pull down to refresh or clear app data (Settings → Apps → Eyejack → Clear Data)
+**Solution**: Pull down to refresh or clear app data (Settings → Apps → Goeye → Clear Data)
 
 ### Images Not Loading
 **Solution**: 
@@ -790,7 +790,7 @@ adb shell setprop net.dns2 8.8.4.4
 **Fixed**: All bars use #52b1e2 in backend
 
 ### Gender Category Images Not Showing
-**Fixed**: Using specific CDN URLs from eyejack.in
+**Fixed**: Using specific CDN URLs from goeye.in
 
 ## 🚢 Deployment
 
@@ -816,7 +816,7 @@ Railway detects changes and deploys automatically (60-90 seconds).
 
 ### APK Distribution
 
-**Latest APK**: `Eyejack-v12.22.2-Build154-Pagination.apk`
+**Latest APK**: `Goeye-v12.22.2-Build154-Pagination.apk`
 
 Build new version:
 ```bash
@@ -829,7 +829,7 @@ flutter pub get
 flutter build apk --release
 
 # Copy APK
-cp build/app/outputs/flutter-apk/app-release.apk Eyejack-v3.0.0-Build33.apk
+cp build/app/outputs/flutter-apk/app-release.apk Goeye-v3.0.0-Build33.apk
 ```
 
 ## 📱 App Releases
@@ -914,11 +914,11 @@ For issues or questions:
 
 ---
 
-**Built with ❤️ for EyeJack**
+**Built with ❤️ for Goeye**
 
 **Production URL**: https://motivated-intuition-production.up.railway.app  
-**Live Store**: www.eyejack.in  
-**Latest Android APK**: Eyejack-v12.24.0-Build156-ALL-SCREENS-CHECKOUT.apk  
+**Live Store**: www.goeye.in  
+**Latest Android APK**: Goeye-v12.24.0-Build156-ALL-SCREENS-CHECKOUT.apk  
 **iOS Status**: ✅ Ready for App Store submission (v12.24.0 Build 156)  
 **Last Updated**: January 2025  
 **Current Version**: 12.24.0 (Build 156) - GoKwik Checkout + iOS App Store Ready  

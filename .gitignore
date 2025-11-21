@@ -1,4 +1,14 @@
 # Flutter
+goeye_flutter_app/.dart_tool/
+goeye_flutter_app/.flutter-plugins
+goeye_flutter_app/.flutter-plugins-dependencies
+goeye_flutter_app/.packages
+goeye_flutter_app/.pub-cache/
+goeye_flutter_app/.pub/
+goeye_flutter_app/build/
+goeye_flutter_app/fvm/
+goeye_flutter_app/ios/Pods/
+goeye_flutter_app/android/app/build/
 eyejack_flutter_app/.dart_tool/
 eyejack_flutter_app/.flutter-plugins
 eyejack_flutter_app/.flutter-plugins-dependencies

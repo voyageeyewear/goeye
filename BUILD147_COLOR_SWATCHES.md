@@ -79,7 +79,7 @@ Examples:
 
 ### 🚀 APK Details
 
-**File**: `Eyejack-v12.19.0-Build147-COLOR-SWATCHES.apk`
+**File**: `Goeye-v12.19.0-Build147-COLOR-SWATCHES.apk`
 **Size**: 54.7MB
 **Status**: ✅ Installed and running on emulator
 

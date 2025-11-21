@@ -4,7 +4,7 @@
 **Date:** November 12, 2025
 
 ## 📦 APK File
-`Eyejack-v12.4.0-Build124-BIG-IMAGES-BIG-TEXT.apk`
+`Goeye-v12.4.0-Build124-BIG-IMAGES-BIG-TEXT.apk`
 
 ## ✅ Major Design Improvements
 
@@ -63,7 +63,7 @@ NO WASTED SPACE! ✅
 
 ## 🔧 Technical Changes
 
-### File: `eyejack_flutter_app/lib/screens/collection_screen.dart`
+### File: `goeye_flutter_app/lib/screens/collection_screen.dart`
 
 #### 1. Image Height (Line 806)
 ```dart
@@ -115,7 +115,7 @@ height: 36, // Buy 1 Get 1 Free - BIGGER!
 
 ### For Real Device:
 ```bash
-adb install -r Eyejack-v12.4.0-Build124-BIG-IMAGES-BIG-TEXT.apk
+adb install -r Goeye-v12.4.0-Build124-BIG-IMAGES-BIG-TEXT.apk
 ```
 
 ## 🔍 How to Verify

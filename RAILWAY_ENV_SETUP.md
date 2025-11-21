@@ -9,7 +9,7 @@ Then click on your **shopify-middleware** service → **Variables** tab
 ## Required Environment Variables:
 
 ```
-SHOPIFY_STORE_DOMAIN=eyejack1907.myshopify.com
+SHOPIFY_STORE_DOMAIN=goeyee.myshopify.com
 SHOPIFY_STOREFRONT_ACCESS_TOKEN=<your-storefront-token>
 SHOPIFY_ADMIN_ACCESS_TOKEN=<your-admin-token>
 SHOPIFY_API_VERSION=2025-01
@@ -39,11 +39,11 @@ NODE_ENV=production
 {
   "success": true,
   "data": {
-    "name": "Eyejack Eyewear",
+    "name": "Goeye Eyewear",
     "description": "...",
     "primaryDomain": {
-      "url": "https://eyejack.in",
-      "host": "eyejack.in"
+      "url": "https://goeye.in",
+      "host": "goeye.in"
     }
   }
 }

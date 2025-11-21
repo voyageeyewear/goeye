@@ -104,7 +104,7 @@ Black  → #000000 (Pure black)
 - `BUILD148_WORKING_COLOR_SWATCHES.md` - Full documentation
 - `QUICK_TEST_GUIDE_BUILD148.md` - Quick test instructions
 - `BUILD148_SUMMARY.md` - This file
-- `Eyejack-v12.20.0-Build148-WORKING-SWATCHES.apk` - Working APK
+- `Goeye-v12.20.0-Build148-WORKING-SWATCHES.apk` - Working APK
 
 ### Modified:
 - `color_swatch_widget.dart` - Complete rewrite with navigation
@@ -142,7 +142,7 @@ Update Selected Color
 
 ## 📦 APK Details
 
-**File**: `Eyejack-v12.20.0-Build148-WORKING-SWATCHES.apk`
+**File**: `Goeye-v12.20.0-Build148-WORKING-SWATCHES.apk`
 - **Size**: 54.7MB
 - **Build Time**: 4.3 seconds
 - **Status**: ✅ Installed on emulator
@@ -194,9 +194,9 @@ The app is **running on your emulator** right now with:
 ## 📱 Quick Install (if needed)
 
 ```bash
-adb uninstall com.eyejack.app
-adb install Eyejack-v12.20.0-Build148-WORKING-SWATCHES.apk
-adb shell monkey -p com.eyejack.app -c android.intent.category.LAUNCHER 1
+adb uninstall com.goeye.app
+adb install Goeye-v12.20.0-Build148-WORKING-SWATCHES.apk
+adb shell monkey -p com.goeye.app -c android.intent.category.LAUNCHER 1
 ```
 
 ---

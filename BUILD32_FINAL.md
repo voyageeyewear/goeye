@@ -8,11 +8,11 @@
 
 ## 📦 APK Details
 
-**File:** `Eyejack-v3.0.0-Build32-FINAL.apk`  
+**File:** `Goeye-v3.0.0-Build32-FINAL.apk`  
 **Version:** 3.0.0 Build 32  
 **Size:** 52.9 MB  
 **Built:** October 30, 2025  
-**Location:** `/Users/ssenterprises/Eyejack Native Application/`
+**Location:** `/Users/ssenterprises/Goeye Native Application/`
 
 ---
 
@@ -24,16 +24,16 @@
    - Cleaner, simpler layout
 
 ### 2. **Eyeglasses Images - UPDATED** ✅
-   - **Men:** `https://eyejack.in/cdn/shop/files/im-01.jpg`
-   - **Women:** `https://eyejack.in/cdn/shop/files/im-02.jpg`
-   - **Sale:** `https://eyejack.in/cdn/shop/files/wolf.webp`
-   - **Unisex:** `https://eyejack.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png`
+   - **Men:** `https://goeye.in/cdn/shop/files/im-01.jpg`
+   - **Women:** `https://goeye.in/cdn/shop/files/im-02.jpg`
+   - **Sale:** `https://goeye.in/cdn/shop/files/wolf.webp`
+   - **Unisex:** `https://goeye.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png`
 
 ### 3. **Sunglasses Images - UPDATED** ✅
-   - **Men:** `https://eyejack.in/cdn/shop/files/2502PCL1474-men_3.jpg`
-   - **Women:** `https://eyejack.in/cdn/shop/files/2502PCL1474-women_2.jpg`
-   - **Sale:** `https://eyejack.in/cdn/shop/files/im-07.jpg`
-   - **Unisex:** `https://eyejack.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png`
+   - **Men:** `https://goeye.in/cdn/shop/files/2502PCL1474-men_3.jpg`
+   - **Women:** `https://goeye.in/cdn/shop/files/2502PCL1474-women_2.jpg`
+   - **Sale:** `https://goeye.in/cdn/shop/files/im-07.jpg`
+   - **Unisex:** `https://goeye.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png`
 
 ### 4. **All Previous Features** ✅
    - ✅ All announcement bars same blue color (#52b1e2)
@@ -65,11 +65,11 @@ Verified at: October 30, 2025 @ 4:45 PM
 ### Option 1: Fresh Install (Recommended)
 
 1. **Uninstall old app:**
-   - Settings → Apps → Eyejack
+   - Settings → Apps → Goeye
    - Uninstall
 
 2. **Install Build 32:**
-   - Transfer `Eyejack-v3.0.0-Build32-FINAL.apk` to phone
+   - Transfer `Goeye-v3.0.0-Build32-FINAL.apk` to phone
    - Tap to install
    - Open app
 
@@ -138,7 +138,7 @@ Should return:
 - ✅ gender-categories-sunglasses with 2502PCL1474-men_3, 2502PCL1474-women_2, im-07, View_all...
 
 ### Check App Version:
-- Settings → Apps → Eyejack
+- Settings → Apps → Goeye
 - Should show: **Version 3.0.0 (32)**
 
 ---
@@ -176,12 +176,12 @@ After installing Build 32:
 
 ### If Images Don't Show:
 1. Pull down to refresh homepage
-2. Clear app data: Settings → Apps → Eyejack → Storage → Clear Data
+2. Clear app data: Settings → Apps → Goeye → Storage → Clear Data
 3. Reopen app
 
 ### If Instagram Still Appears:
 - You're using an old APK!
-- Make sure you installed `Eyejack-v3.0.0-Build32-FINAL.apk`
+- Make sure you installed `Goeye-v3.0.0-Build32-FINAL.apk`
 - Check version: Should be Build 32
 
 ### If Announcement Colors Change:
@@ -223,22 +223,22 @@ After installing Build 32:
 ## 📝 Backend URLs Verified
 
 ### Eyeglasses:
-- Men: [im-01.jpg](https://eyejack.in/cdn/shop/files/im-01.jpg?v=1759574084) ✅
-- Women: [im-02.jpg](https://eyejack.in/cdn/shop/files/im-02.jpg?v=1759574105) ✅
-- Sale: [wolf.webp](https://eyejack.in/cdn/shop/files/wolf.webp?v=1759572749) ✅
-- Unisex: [View_all...png](https://eyejack.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png?v=1759574329) ✅
+- Men: [im-01.jpg](https://goeye.in/cdn/shop/files/im-01.jpg?v=1759574084) ✅
+- Women: [im-02.jpg](https://goeye.in/cdn/shop/files/im-02.jpg?v=1759574105) ✅
+- Sale: [wolf.webp](https://goeye.in/cdn/shop/files/wolf.webp?v=1759572749) ✅
+- Unisex: [View_all...png](https://goeye.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png?v=1759574329) ✅
 
 ### Sunglasses:
-- Men: [2502PCL1474-men_3.jpg](https://eyejack.in/cdn/shop/files/2502PCL1474-men_3.jpg?v=1748241296) ✅
-- Women: [2502PCL1474-women_2.jpg](https://eyejack.in/cdn/shop/files/2502PCL1474-women_2.jpg?v=1748241296) ✅
-- Sale: [im-07.jpg](https://eyejack.in/cdn/shop/files/im-07.jpg?v=1759574222) ✅
-- Unisex: [View_all...png](https://eyejack.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png?v=1759574329) ✅
+- Men: [2502PCL1474-men_3.jpg](https://goeye.in/cdn/shop/files/2502PCL1474-men_3.jpg?v=1748241296) ✅
+- Women: [2502PCL1474-women_2.jpg](https://goeye.in/cdn/shop/files/2502PCL1474-women_2.jpg?v=1748241296) ✅
+- Sale: [im-07.jpg](https://goeye.in/cdn/shop/files/im-07.jpg?v=1759574222) ✅
+- Unisex: [View_all...png](https://goeye.in/cdn/shop/files/View_all_New_Launch_Unisex_icon-03.png?v=1759574329) ✅
 
-All URLs verified accessible from your eyejack.in CDN! ✅
+All URLs verified accessible from your goeye.in CDN! ✅
 
 ---
 
-**Install `Eyejack-v3.0.0-Build32-FINAL.apk` and test!** 🎉
+**Install `Goeye-v3.0.0-Build32-FINAL.apk` and test!** 🎉
 
 ---
 

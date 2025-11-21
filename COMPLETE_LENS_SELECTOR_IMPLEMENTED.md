@@ -122,7 +122,7 @@ The lens selector now has **6 complete steps** matching your Shopify live theme,
 Your cart (2)
 =============
 
-[Image] EYEJACK                    Rs. 299.00
+[Image] GOEYE                    Rs. 299.00
         UPTO +/- 5
         1. Lens Type: With power/Single Vision
         2. Power Type: Anti glare lenses
@@ -276,7 +276,7 @@ Subtotal:                           Rs. 1,298.00
 
 ## 📦 **New APK**
 
-**File**: `Eyejack-Complete-Lens-Selector.apk` (48MB)
+**File**: `Goeye-Complete-Lens-Selector.apk` (48MB)
 
 **Includes**:
 - ✅ 6-step lens selector

@@ -300,7 +300,7 @@ Silver: #C0C0C0  // Silver
 
 ## 📊 APK Details
 
-**File**: `Eyejack-v12.20.0-Build148-WORKING-SWATCHES.apk`
+**File**: `Goeye-v12.20.0-Build148-WORKING-SWATCHES.apk`
 **Size**: 54.7MB
 **Build Time**: 4.3 seconds (incremental)
 **Status**: ✅ Installed and running on emulator
@@ -337,14 +337,14 @@ Silver: #C0C0C0  // Silver
 
 ### Install Script:
 ```bash
-adb uninstall com.eyejack.app
-adb install Eyejack-v12.20.0-Build148-WORKING-SWATCHES.apk
-adb shell monkey -p com.eyejack.app -c android.intent.category.LAUNCHER 1
+adb uninstall com.goeye.app
+adb install Goeye-v12.20.0-Build148-WORKING-SWATCHES.apk
+adb shell monkey -p com.goeye.app -c android.intent.category.LAUNCHER 1
 ```
 
 ### Verify Version:
 ```bash
-adb shell dumpsys package com.eyejack.app | grep version
+adb shell dumpsys package com.goeye.app | grep version
 # Expected: versionCode=148 versionName=12.20.0
 ```
 

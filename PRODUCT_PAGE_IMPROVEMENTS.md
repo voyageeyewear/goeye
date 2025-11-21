@@ -60,7 +60,7 @@ Home > Sunglasses > EyeJack Astra... ← NEW breadcrumbs
 
 ## Files Modified
 
-**eyejack_flutter_app/lib/screens/product_detail_screen.dart**
+**goeye_flutter_app/lib/screens/product_detail_screen.dart**
 - Added `_isDescriptionExpanded` state variable
 - Created `_buildBreadcrumbs()` widget
 - Modified `_buildImageGallery()` - changed BoxFit to contain
@@ -96,9 +96,9 @@ _isDescriptionExpanded ? full_text : truncated_text
 
 ## APK Details
 
-**File:** `Eyejack-ProductPage-Fixed.apk`  
+**File:** `Goeye-ProductPage-Fixed.apk`  
 **Size:** 50 MB  
-**Location:** `/Users/ssenterprises/Eyejack Native Application/`
+**Location:** `/Users/ssenterprises/Goeye Native Application/`
 
 ## Testing Checklist
 

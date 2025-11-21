@@ -13,7 +13,7 @@
 #### Latest Release Section
 - ✅ Updated version to **12.6.1 (Build 129)**
 - ✅ Changed release date to **November 13, 2025**
-- ✅ Updated APK filename to `Eyejack-v12.6.1-Build129-FITS-IN-CARD.apk`
+- ✅ Updated APK filename to `Goeye-v12.6.1-Build129-FITS-IN-CARD.apk`
 - ✅ Added new features list for Build 129:
   - Improved layout with perfectly fitting cards
   - Better spacing and margins
@@ -141,8 +141,8 @@ Confirmed and documented:
 Build 129: Collection screen layout fixes and improvements
 
 Modified:
-- eyejack_flutter_app/lib/screens/collection_screen.dart
-- eyejack_flutter_app/pubspec.yaml
+- goeye_flutter_app/lib/screens/collection_screen.dart
+- goeye_flutter_app/pubspec.yaml
 
 Added:
 - BUILD123_NO_GAP_FIX.md
@@ -172,7 +172,7 @@ Added:
 
 ### GitHub
 - ✅ All changes pushed to `main` branch
-- ✅ Repository: https://github.com/voyageeyewear/eyejack.git
+- ✅ Repository: https://github.com/voyageeyewear/goeye.git
 - ✅ Latest commit: `22aa441`
 
 ### Local Files

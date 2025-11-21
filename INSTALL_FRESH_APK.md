@@ -10,7 +10,7 @@ The app wasn't updating because Android cached the old version. Follow these ste
 
 ### Step 1: **Uninstall Old App**
 1. On your Android device, go to **Settings** → **Apps**
-2. Find **Eyejack Eyewear** (or **eyejack_shopify_app**)
+2. Find **Goeye Eyewear** (or **goeye_shopify_app**)
 3. Tap on it
 4. Tap **Uninstall**
 5. Confirm uninstallation
@@ -19,10 +19,10 @@ The app wasn't updating because Android cached the old version. Follow these ste
 ### Step 2: **Transfer New APK**
 Transfer this file to your phone:
 ```
-Eyejack-v1.0.0-Build7-AllFixed.apk
+Goeye-v1.0.0-Build7-AllFixed.apk
 ```
 
-Location: `/Users/ssenterprises/Eyejack Native Application/`
+Location: `/Users/ssenterprises/Goeye Native Application/`
 
 Transfer via:
 - USB cable
@@ -32,7 +32,7 @@ Transfer via:
 
 ### Step 3: **Install New APK**
 1. On your phone, locate the APK file (usually in Downloads folder)
-2. Tap on **Eyejack-v1.0.0-Build7-AllFixed.apk**
+2. Tap on **Goeye-v1.0.0-Build7-AllFixed.apk**
 3. If prompted, allow "Install unknown apps" from your file manager
 4. Tap **Install**
 5. Wait for installation to complete
@@ -125,13 +125,13 @@ After installing, check these:
 ### If Changes Still Don't Show:
 
 1. **Clear App Cache:**
-   - Settings → Apps → Eyejack → Storage → Clear Cache
+   - Settings → Apps → Goeye → Storage → Clear Cache
    - Uninstall and reinstall again
 
 2. **Verify APK File:**
    - Check file size: Should be ~50 MB
    - Check timestamp: October 30, 14:52 (2:52 PM)
-   - File name: `Eyejack-v1.0.0-Build7-AllFixed.apk`
+   - File name: `Goeye-v1.0.0-Build7-AllFixed.apk`
 
 3. **Check Version:**
    - After installing, open app
@@ -151,7 +151,7 @@ After installing, check these:
 
 **MUST DO:**
 1. Uninstall old version FIRST
-2. Install `Eyejack-v1.0.0-Build7-AllFixed.apk`
+2. Install `Goeye-v1.0.0-Build7-AllFixed.apk`
 3. Verify changes are visible
 
 ---

@@ -17,7 +17,7 @@ Your app downloaded the old data (without images) and cached it. The app doesn't
 
 **On your phone:**
 
-1. Open the Eyejack app
+1. Open the Goeye app
 2. On the home screen, **swipe down** (pull to refresh)
 3. The app should reload all data
 4. Images should now appear!
@@ -30,15 +30,15 @@ Your app downloaded the old data (without images) and cached it. The app doesn't
 
 1. **Force Close App:**
    - Recent Apps button
-   - Swipe away Eyejack app
+   - Swipe away Goeye app
 
 2. **Clear App Data:**
-   - Settings → Apps → Eyejack Eyewear
+   - Settings → Apps → Goeye Eyewear
    - Storage → **Clear Data** (NOT just Clear Cache!)
    - Confirm
 
 3. **Reopen App:**
-   - Launch Eyejack app
+   - Launch Goeye app
    - Wait for home screen to load
    - Images should appear!
 
@@ -50,7 +50,7 @@ If above doesn't work:
 
 1. **Uninstall app completely**
 2. **Restart phone**
-3. **Reinstall:** `Eyejack-v2.0.0-Build21-AllFixed.apk`
+3. **Reinstall:** `Goeye-v2.0.0-Build21-AllFixed.apk`
 
 ---
 
@@ -122,7 +122,7 @@ Search for "gender-categories-eyeglasses" and you should see image URLs like:
 **Detailed Steps:**
 
 1. **Open App:**
-   - Launch Eyejack Eyewear
+   - Launch Goeye Eyewear
 
 2. **Go to Home Screen:**
    - If you're on a product page, go back to home
@@ -173,7 +173,7 @@ Search for "gender-categories-eyeglasses" and you should see image URLs like:
 
 **Check API Config:**
 ```dart
-// eyejack_flutter_app/lib/config/api_config.dart
+// goeye_flutter_app/lib/config/api_config.dart
 static const String baseUrl = 'http://192.168.X.X:3000'; // Your computer's IP
 ```
 

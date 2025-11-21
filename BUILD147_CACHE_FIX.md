@@ -9,33 +9,33 @@ Performed a **complete clean installation** with the following steps:
 
 ### 1. Clear App Data
 ```bash
-adb shell pm clear com.eyejack.app
+adb shell pm clear com.goeye.app
 ```
 - Removes all cached data, preferences, and files
 - Resets app to fresh state
 
 ### 2. Force Stop App
 ```bash
-adb shell am force-stop com.eyejack.app
+adb shell am force-stop com.goeye.app
 ```
 - Ensures app is not running in background
 
 ### 3. Complete Uninstall
 ```bash
-adb uninstall com.eyejack.app
+adb uninstall com.goeye.app
 ```
 - Removes app completely from device
 - Clears all system caches
 
 ### 4. Fresh Install
 ```bash
-adb install "Eyejack-v12.19.0-Build147-COLOR-SWATCHES.apk"
+adb install "Goeye-v12.19.0-Build147-COLOR-SWATCHES.apk"
 ```
 - Installs Build 147 from scratch
 
 ### 5. Verification
 ```bash
-adb shell dumpsys package com.eyejack.app | grep "versionName\|versionCode"
+adb shell dumpsys package com.goeye.app | grep "versionName\|versionCode"
 ```
 Result:
 - ✅ versionName=12.19.0
@@ -45,7 +45,7 @@ Result:
 
 - **App Version**: 12.19.0
 - **Build Number**: 147
-- **Package**: com.eyejack.app
+- **Package**: com.goeye.app
 - **Status**: ✅ Running fresh on emulator
 - **Features**: Color swatches enabled for Matrix products
 
@@ -84,11 +84,11 @@ Now that Build 147 is fresh, test the color swatches:
 
 For future builds, always use the fresh install script or run:
 ```bash
-adb uninstall com.eyejack.app && adb install [NEW_APK_PATH]
+adb uninstall com.goeye.app && adb install [NEW_APK_PATH]
 ```
 
 ## Files
-- APK: `Eyejack-v12.19.0-Build147-COLOR-SWATCHES.apk`
+- APK: `Goeye-v12.19.0-Build147-COLOR-SWATCHES.apk`
 - Script: `INSTALL_BUILD147_FRESH.sh`
 - Docs: `BUILD147_COLOR_SWATCHES.md`
 

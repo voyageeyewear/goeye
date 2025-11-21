@@ -1,7 +1,7 @@
 {
-  "name": "eyejack-backend",
+  "name": "goeye-backend",
   "version": "1.0.0",
-  "description": "Eyejack Shopify Integration",
+  "description": "Goeye Shopify Integration",
   "scripts": {
     "start": "cd shopify-middleware && npm start",
     "install": "cd shopify-middleware && npm install"

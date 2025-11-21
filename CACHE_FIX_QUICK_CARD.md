@@ -4,7 +4,7 @@
 
 ### ⚡ FASTEST FIX (30 seconds):
 ```bash
-cd "/Users/ssenterprises/Eyejack Native Application"
+cd "/Users/ssenterprises/Goeye Native Application"
 ./INSTALL_FRESH_BUILD138.sh
 ```
 
@@ -14,23 +14,23 @@ cd "/Users/ssenterprises/Eyejack Native Application"
 
 ### Clear App Cache Only (5 seconds):
 ```bash
-adb shell pm clear com.eyejack.shopify_app
+adb shell pm clear com.goeye.shopify_app
 ```
 
 ### Reinstall Fresh (15 seconds):
 ```bash
-adb uninstall com.eyejack.shopify_app && \
-adb install Eyejack-v12.10.0-Build138-FRESH-20251113_165946.apk && \
-adb shell pm clear com.eyejack.shopify_app
+adb uninstall com.goeye.shopify_app && \
+adb install Goeye-v12.10.0-Build138-FRESH-20251113_165946.apk && \
+adb shell pm clear com.goeye.shopify_app
 ```
 
 ### Rebuild + Install (3-5 minutes):
 ```bash
-cd eyejack_flutter_app && flutter clean && \
+cd goeye_flutter_app && flutter clean && \
 flutter build apk --release && cd .. && \
-adb uninstall com.eyejack.shopify_app && \
-adb install eyejack_flutter_app/build/app/outputs/flutter-apk/app-release.apk && \
-adb shell pm clear com.eyejack.shopify_app
+adb uninstall com.goeye.shopify_app && \
+adb install goeye_flutter_app/build/app/outputs/flutter-apk/app-release.apk && \
+adb shell pm clear com.goeye.shopify_app
 ```
 
 ---
@@ -39,16 +39,16 @@ adb shell pm clear com.eyejack.shopify_app
 
 ```bash
 # Delete all caches and rebuild from scratch
-cd eyejack_flutter_app
+cd goeye_flutter_app
 flutter clean
 rm -rf build/ android/.gradle/ android/app/build/
 rm -rf ~/.gradle
 flutter pub get
 flutter build apk --release
 cd ..
-adb uninstall com.eyejack.shopify_app
-adb install eyejack_flutter_app/build/app/outputs/flutter-apk/app-release.apk
-adb shell pm clear com.eyejack.shopify_app
+adb uninstall com.goeye.shopify_app
+adb install goeye_flutter_app/build/app/outputs/flutter-apk/app-release.apk
+adb shell pm clear com.goeye.shopify_app
 ```
 
 **Time:** ~6 minutes (Gradle cache rebuild takes longest)
@@ -59,7 +59,7 @@ adb shell pm clear com.eyejack.shopify_app
 
 ### After Every Fresh Install:
 ```bash
-adb shell pm clear com.eyejack.shopify_app
+adb shell pm clear com.goeye.shopify_app
 ```
 
 ### Before Every Build:
@@ -82,10 +82,10 @@ flutter clean
 
 ```bash
 # Check version
-adb shell dumpsys package com.eyejack.shopify_app | grep versionName
+adb shell dumpsys package com.goeye.shopify_app | grep versionName
 # Should show: versionName=12.10.0
 
-adb shell dumpsys package com.eyejack.shopify_app | grep versionCode
+adb shell dumpsys package com.goeye.shopify_app | grep versionCode
 # Should show: versionCode=138
 ```
 
@@ -100,7 +100,7 @@ adb devices
 
 # If multiple devices, specify one
 adb -s DEVICE_ID install app.apk
-adb -s DEVICE_ID shell pm clear com.eyejack.shopify_app
+adb -s DEVICE_ID shell pm clear com.goeye.shopify_app
 ```
 
 ### Restart Device:

@@ -1,8 +1,8 @@
-# Eyejack v6.0.1 - BoAt-Style UI Update
+# Goeye v6.0.1 - BoAt-Style UI Update
 
 ## 🎉 Build 61 - Product Page Redesign
 
-**APK File:** `Eyejack-v6.0.1-BoatStyle-Build61.apk` (52MB)
+**APK File:** `Goeye-v6.0.1-BoatStyle-Build61.apk` (52MB)
 **Version:** 6.0.1 (Build 61)
 **Date:** November 5, 2024
 
@@ -58,7 +58,7 @@ The lens selector **maintains all 4 steps** exactly as before:
 - Blue Block
 - Colour
 
-**Step 3: Select Lens Package** ✅ **REAL PRODUCTS FROM EYEJACK.IN**
+**Step 3: Select Lens Package** ✅ **REAL PRODUCTS FROM GOEYE.IN**
 - Fetches actual lens products from your Shopify store
 - Displays based on selected power type
 - Shows:
@@ -86,7 +86,7 @@ The backend has been **restarted** with 4 new sections at the end:
 2. Go to Homepage
 3. **Scroll all the way to the bottom**
 4. You'll see:
-   - **"Why Choose Eyejack?"** - 6 feature cards
+   - **"Why Choose Goeye?"** - 6 feature cards
    - **"Trusted by Thousands"** - Statistics (black background)
    - **"See How It Works"** - Video demo section
    - **"Frequently Asked Questions"** - FAQ section
@@ -108,7 +108,7 @@ The lens selector fetches **real lens products** from your Shopify store via API
    - `blue-block-lens`
    - `colour-lens`
 3. Products are categorized and displayed in Step 3
-4. **Same products as www.eyejack.in** (fetched from the same Shopify store)
+4. **Same products as www.goeye.in** (fetched from the same Shopify store)
 
 **Product Details Shown:**
 - Product image
@@ -142,14 +142,14 @@ The lens selector fetches **real lens products** from your Shopify store via API
 
 1. **Uninstall old version** (very important!)
    ```
-   Settings → Apps → Eyejack → Uninstall
+   Settings → Apps → Goeye → Uninstall
    ```
 
 2. **Restart phone** (clears cache)
 
 3. **Install new APK**
    ```
-   Transfer Eyejack-v6.0.1-BoatStyle-Build61.apk to phone
+   Transfer Goeye-v6.0.1-BoatStyle-Build61.apk to phone
    Tap to install
    ```
 
@@ -237,7 +237,7 @@ Select Lens (Green) → Opens 4-step lens selector
 - "Select Lens" button opens 4-step selector ✅
 
 ### ✅ 4. Real Lens Products in Step 3
-**Request:** "In the lens selector in step 3 i want to show same product that are showing in the live website www.eyejack.in."
+**Request:** "In the lens selector in step 3 i want to show same product that are showing in the live website www.goeye.in."
 **Solution:** Already fetching real products from Shopify API - same as live website! ✅
 
 ---
@@ -260,7 +260,7 @@ Select Lens (Green) → Opens 4-step lens selector
 
 3. **App cache?**
    - Pull down to refresh homepage
-   - Or clear app data: Settings → Apps → Eyejack → Clear Data
+   - Or clear app data: Settings → Apps → Goeye → Clear Data
 
 ### Why Lens Selector Shows Real Products
 
@@ -270,7 +270,7 @@ The app fetches lens products from your Shopify store by:
 2. Categorizing them by type (anti-glare, blue-block, colour)
 3. Displaying them with full details
 
-**These are the SAME products** as on www.eyejack.in because they come from the same Shopify store!
+**These are the SAME products** as on www.goeye.in because they come from the same Shopify store!
 
 ---
 
@@ -296,7 +296,7 @@ The app fetches lens products from your Shopify store by:
 
 ---
 
-**Built with ❤️ for Eyejack**  
+**Built with ❤️ for Goeye**  
 *Version 6.0.1 - Build 61*  
 *November 5, 2024*
 

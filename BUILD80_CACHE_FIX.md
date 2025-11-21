@@ -90,13 +90,13 @@ Already fixed in Build 79, carried forward:
 
 ```bash
 # 1. Uninstall old app COMPLETELY (CRITICAL!)
-adb uninstall com.eyejack.shopify_app
+adb uninstall com.goeye.shopify_app
 
 # 2. Wait 5 seconds
 sleep 5
 
 # 3. Install Build 80
-adb install -r Eyejack-v8.0.0-Build80-AggressiveCacheBusting.apk
+adb install -r Goeye-v8.0.0-Build80-AggressiveCacheBusting.apk
 
 # 4. Open app and check circular categories
 ```
@@ -126,11 +126,11 @@ adb logcat | grep '🔍 Circular categories'
 This will show:
 ```
 🔍 Circular categories found:
-   - Sunglasses: type=image, image=https://eyejack.in/cdn/shop/files/female.png...
-   - Eyeglasses: type=image, image=https://eyejack.in/cdn/shop/files/male-04.png...
-   - New Arrivals: type=video, image=https://eyejack.in/cdn/shop/files/new_arrival...
-   - View all: type=image, image=https://eyejack.in/cdn/shop/files/view_all-02.png...
-   - BOGO: type=video, image=https://eyejack.in/cdn/shop/files/bogo-01.png...
+   - Sunglasses: type=image, image=https://goeye.in/cdn/shop/files/female.png...
+   - Eyeglasses: type=image, image=https://goeye.in/cdn/shop/files/male-04.png...
+   - New Arrivals: type=video, image=https://goeye.in/cdn/shop/files/new_arrival...
+   - View all: type=image, image=https://goeye.in/cdn/shop/files/view_all-02.png...
+   - BOGO: type=video, image=https://goeye.in/cdn/shop/files/bogo-01.png...
 ```
 
 If this shows correct data but UI still wrong → Widget rendering issue (contact me)
@@ -175,7 +175,7 @@ Possible causes (very unlikely):
 
 - **Version:** 8.0.0
 - **Build Number:** 80
-- **APK Name:** `Eyejack-v8.0.0-Build80-AggressiveCacheBusting.apk`
+- **APK Name:** `Goeye-v8.0.0-Build80-AggressiveCacheBusting.apk`
 - **Size:** 54.6 MB
 - **Min SDK:** Android 5.0 (API 21)
 - **Target SDK:** Android 13 (API 33)

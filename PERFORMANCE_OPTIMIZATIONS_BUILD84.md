@@ -272,11 +272,11 @@ Same image, 90% smaller! 🎉
 
 ```bash
 # Install the optimized build
-adb install -r Eyejack-v8.1.0-PerformanceOptimized-Build84.apk
+adb install -r Goeye-v8.1.0-PerformanceOptimized-Build84.apk
 
 # For complete fresh start (recommended)
-adb uninstall com.eyejack.shopify_app
-adb install Eyejack-v8.1.0-PerformanceOptimized-Build84.apk
+adb uninstall com.goeye.shopify_app
+adb install Goeye-v8.1.0-PerformanceOptimized-Build84.apk
 ```
 
 ---
