@@ -10,6 +10,8 @@ import {
   X 
 } from 'lucide-react';
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { healthAPI } from '../lib/api';
 import { cn } from '../lib/utils';
 
 const navigation = [
@@ -24,6 +26,17 @@ const navigation = [
 export function Layout() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Check database connection status
+  const { data: healthData } = useQuery({
+    queryKey: ['health'],
+    queryFn: () => healthAPI.getHealth(),
+    refetchInterval: 10000, // Check every 10 seconds
+    retry: 1,
+  });
+
+  const dbStatus = healthData?.data?.database || 'Checking...';
+  const isConnected = dbStatus === 'Connected';
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -43,7 +56,7 @@ export function Layout() {
         )}
       >
         <div className="flex h-16 items-center justify-between px-6 border-b border-gray-200">
-          <h1 className="text-xl font-bold text-blue-600">Eyejack Admin</h1>
+          <h1 className="text-xl font-bold text-blue-600">Goeye Admin</h1>
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden text-gray-500 hover:text-gray-900"
@@ -75,9 +88,19 @@ export function Layout() {
         </nav>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
-          <div className="text-xs text-gray-600">
-            <p className="font-medium">Eyejack v8.0.1</p>
-            <p>PostgreSQL Connected</p>
+          <div className="text-xs">
+            <p className="font-medium text-gray-900">Goeye v1.2.0</p>
+            <div className="flex items-center gap-2 mt-1">
+              <div className={cn(
+                "h-2 w-2 rounded-full",
+                isConnected ? "bg-green-500" : "bg-red-500"
+              )} />
+              <p className={cn(
+                isConnected ? "text-green-600" : "text-red-600"
+              )}>
+                PostgreSQL {dbStatus}
+              </p>
+            </div>
           </div>
         </div>
       </div>

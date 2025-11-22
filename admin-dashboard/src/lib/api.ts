@@ -34,5 +34,10 @@ export const previewAPI = {
   getPreview: () => api.get('/api/shopify/theme-sections'),
 };
 
+// Health check API
+export const healthAPI = {
+  getHealth: () => api.get('/health'),
+};
+
 export default api;
 
