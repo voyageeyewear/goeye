@@ -116,7 +116,9 @@ export function CollectionSettings() {
       
       // Check if database is connected
       if (data.warning && data.warning.includes('Database not connected')) {
-        alert('⚠️ Settings saved locally (browser storage). Changes will NOT appear in the app until database is connected. Database connection required for app to see changes.');
+        // Show less intrusive notification
+        console.warn('⚠️ Settings saved locally. Database not connected.');
+        // Don't show alert - the warning banner is already visible
       } else {
         alert('✅ Settings saved successfully! Changes will appear in the app on next launch.');
       }
@@ -126,7 +128,8 @@ export function CollectionSettings() {
       if (settings) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
         setIsLocalStorage(true);
-        alert('⚠️ Database error, but settings saved locally. Changes will NOT appear in the app until database is connected.');
+        console.warn('⚠️ Settings saved locally. Database error occurred.');
+        // Don't show alert - the warning banner is already visible
       } else {
         alert(`❌ Error: ${error.response?.data?.error || error.message}`);
       }
@@ -229,12 +232,36 @@ export function CollectionSettings() {
       )}
 
       {isLocalStorage && (
-        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-          <p className="text-orange-800 text-sm font-medium">
-            ⚠️ Database Not Connected: Settings are saved in browser storage only. 
-            Changes will NOT appear in the Flutter app until the database is connected.
-            To make changes visible in the app, connect the PostgreSQL database on Railway.
-          </p>
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0">
+              <svg className="w-5 h-5 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-orange-800 font-semibold mb-1">Database Not Connected</h3>
+              <p className="text-orange-700 text-sm mb-2">
+                Settings are saved in browser storage only. Changes will NOT appear in the Flutter app until the database is connected.
+              </p>
+              <details className="text-sm">
+                <summary className="text-orange-800 cursor-pointer font-medium hover:text-orange-900">
+                  How to connect the database →
+                </summary>
+                <div className="mt-2 pl-4 border-l-2 border-orange-300 text-orange-700">
+                  <ol className="list-decimal list-inside space-y-1">
+                    <li>Go to <a href="https://railway.app" target="_blank" className="underline">Railway Dashboard</a></li>
+                    <li>Open your Goeye project</li>
+                    <li>Click "+ New" → "Database" → "PostgreSQL"</li>
+                    <li>Click on your middleware service → "Variables" tab</li>
+                    <li>Add variable: <code className="bg-orange-100 px-1 rounded">DATABASE_URL</code> = <code className="bg-orange-100 px-1 rounded">${{Postgres.DATABASE_URL}}</code></li>
+                    <li>Wait 60-90 seconds for redeployment</li>
+                    <li>Refresh this page - status should change to "Connected"</li>
+                  </ol>
+                </div>
+              </details>
+            </div>
+          </div>
         </div>
       )}
 
