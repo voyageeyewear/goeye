@@ -254,7 +254,7 @@ export function CollectionSettings() {
                     <li>Open your Goeye project</li>
                     <li>Click "+ New" → "Database" → "PostgreSQL"</li>
                     <li>Click on your middleware service → "Variables" tab</li>
-                    <li>Add variable: <code className="bg-orange-100 px-1 rounded">DATABASE_URL</code> = <code className="bg-orange-100 px-1 rounded">${{Postgres.DATABASE_URL}}</code></li>
+                    <li>Add variable: <code className="bg-orange-100 px-1 rounded">DATABASE_URL</code> = <code className="bg-orange-100 px-1 rounded">{'${{Postgres.DATABASE_URL}}'}</code></li>
                     <li>Wait 60-90 seconds for redeployment</li>
                     <li>Refresh this page - status should change to "Connected"</li>
                   </ol>
